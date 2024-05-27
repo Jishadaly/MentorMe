@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router ,Routes , Route  } from 'react-router-dom'
-import Signup from './pages/user/Signup'
+import Signup from './pages/user/Signup.js'
 
 
 function App() {
@@ -9,7 +9,6 @@ function App() {
       <Router>
          <Routes>
             <Route path='/signUp' element={<Signup/>} />
-            
          </Routes>
       </Router>
     </div>
