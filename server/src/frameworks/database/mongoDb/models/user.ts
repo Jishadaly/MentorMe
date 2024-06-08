@@ -13,7 +13,19 @@ export interface Iuser extends Document {
      profilePic:string;
      isGoogleUser:boolean;
      isBlocked:boolean;
-}
+     verified:boolean;
+     isMentee:boolean;
+     isMentor:boolean;
+     // Mentor-specific fields
+     Languages:Array<string>;
+     yearOfExperience:string;
+     skills:Array<string>
+     communicationPreference:Array<string>;
+     company:string;
+     availablity:string;
+     mentorVerification:Boolean;
+     linkedinURL:string;
+} 
 
 
 const userSchema = new Schema<Iuser>({
@@ -47,8 +59,6 @@ const userSchema = new Schema<Iuser>({
   
   interests: {
     type: [String],
-    require: true,
-    default: []
   },
 
   currentType: {
@@ -76,7 +86,18 @@ const userSchema = new Schema<Iuser>({
     type:Boolean,
     default:false
   },
-})
+  verified: {
+    type:Boolean,
+    default:false
+  },
+  isMentee: {
+    type:Boolean,
+    default:false
+  },
+  isMentor: {
+    type:Boolean,
+    default:false
+  },
+});
 
-export const Users = mongoose.model<Iuser>('Users' , userSchema )
-
+export const Users = mongoose.model<Iuser>('Users' , userSchema );
