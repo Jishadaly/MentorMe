@@ -7,13 +7,14 @@ import { useDispatch , useSelector } from 'react-redux';
 import { loginUser } from '@/redux/userAuthSlice';
 
 
-function UserLogin() {
+function UserLogin(){
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.auth);
-
+  
   const handleSubmit = async (values, { setSubmitting }) => {
-    console.log('Submitting form with values:', values); 
+    
     setSubmitting(true);
     const { email, password } = values;
     dispatch(loginUser({ endpoint: 'user/login', userData: { email, password } }))

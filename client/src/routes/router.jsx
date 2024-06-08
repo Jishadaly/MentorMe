@@ -11,6 +11,8 @@ import MenteeHome from '../pages/mentee/MenteeHome'
 import MentorApplicationForm from '@/pages/mentor/MentorApplicationForm'
 import MenteeAditionalForm from '@/pages/mentee/menteeAditionalForm'
 import RoleSelectorCard from '@/componets/modal/roleSelectorCard'
+import AdminLogin from '@/pages/admin/AdminLogin'
+import AdminHome from '@/pages/admin/Home'
 
 
 const router = createBrowserRouter(
@@ -25,6 +27,9 @@ const router = createBrowserRouter(
       <Route path='/chooseRole/:userId' element={<RoleSelectorCard/>} />
       <Route path='/mentorAppForm/:userId' element={<MentorApplicationForm/>} />
       <Route path='/menteeAppForm/:userId' element={<MenteeAditionalForm/>} />
+      <Route path='/admin/login' element={<AdminLogin/>} />
+      <Route path='/admin/home' element={<AdminHome/>} />
+
       <Route path="*" element={ <h1>Page not found</h1>}/>
     </Route>
   )

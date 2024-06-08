@@ -11,8 +11,7 @@ function MentorApplicationForm() {
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  const userId = useParams()
-  console.log('Received userId:', userId);
+  const userId = useParams();
 
   useEffect(() => {
     fetchLocations(setLocations, setLoading);
@@ -45,7 +44,7 @@ function MentorApplicationForm() {
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
-            {({ values, isSubmitting, handleChange }) => (
+            {({ values, touched ,  isSubmitting, handleChange }) => (
               <Form>
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                   <div className="flex flex-col">
@@ -55,7 +54,7 @@ function MentorApplicationForm() {
                       type="text"
                       name="name"
                     />
-                    <ErrorMessage name="name" component="div" className="text-red-500 text-sm" />
+                    {touched.name && errors.name && <div className="text-red-500">{errors.name}</div>}
                   </div>
                   <div className="flex flex-col">
                     <label className="text-gray-700">Email*</label>
@@ -64,7 +63,7 @@ function MentorApplicationForm() {
                       type="text"
                       name="email"
                     />
-                    <ErrorMessage name="email" component="div" className="text-red-500 text-sm" />
+                    {touched.email && errors.email && <div className="text-red-500">{errors.email}</div>}
                   </div>
                   <div className="flex flex-col md:col-span-2">
                     <label className="text-gray-700">Bio*</label>
@@ -74,7 +73,7 @@ function MentorApplicationForm() {
                       rows="5"
                       name="bio"
                     />
-                    <ErrorMessage name="bio" component="div" className="text-red-500 text-sm" />
+                   {touched.bio && errors.bio && <div className="text-red-500">{errors.bio}</div>}
                   </div>
                   <div className="flex flex-col">
                     <label className="text-gray-700">Job Title*</label>
@@ -83,7 +82,7 @@ function MentorApplicationForm() {
                       type="text"
                       name="jobTitle"
                     />
-                    <ErrorMessage name="jobTitle" component="div" className="text-red-500 text-sm" />
+                    {touched.jobTitle && errors.jobTitle && <div className="text-red-500">{errors.jobTitle}</div>}
                   </div>
                   <div className="flex flex-col">
                     <label className="text-gray-700">Company (Optional)</label>
@@ -109,7 +108,7 @@ function MentorApplicationForm() {
                         </option>
                       ))}
                     </Field>
-                    <ErrorMessage name="location" component="div" className="text-red-500 text-sm" />
+                    {touched.location && errors.location && <div className="text-red-500">{errors.location}</div>}
                   </div>
                   <div className="flex flex-col">
                     <label className="text-gray-700">Programming Languages*</label>
@@ -151,7 +150,7 @@ function MentorApplicationForm() {
                               </span>
                             ))}
                           </div>
-                          <ErrorMessage name="programmingLanguages" component="div" className="text-red-500 text-sm" />
+                          {touched.programmingLanguages && errors.programmingLanguages && <div className="text-red-500">{errors.programmingLanguages}</div>}
                         </>
                       )}
                     </FieldArray>
@@ -196,7 +195,7 @@ function MentorApplicationForm() {
                               </span>
                             ))}
                           </div>
-                          <ErrorMessage name="skills" component="div" className="text-red-500 text-sm" />
+                          {touched.skills && errors.skills && <div className="text-red-500">{errors.skills}</div>}
                         </>
                       )}
                     </FieldArray>
@@ -241,7 +240,7 @@ function MentorApplicationForm() {
                               </span>
                             ))}
                           </div>
-                          <ErrorMessage name="languagePreference" component="div" className="text-red-500 text-sm" />
+                          {touched.languagePreference && errors.languagePreference && <div className="text-red-500">{errors.languagePreference}</div>}
                         </>
                       )}
                     </FieldArray>
@@ -253,7 +252,7 @@ function MentorApplicationForm() {
                       type="url"
                       name="linkedInProfile"
                     />
-                    <ErrorMessage name="linkedInProfile" component="div" className="text-red-500 text-sm" />
+                    {touched.linkedInProfile && errors.linkedInProfile && <div className="text-red-500">{errors.linkedInProfile}</div>}
                   </div>
                 </div>
                 <div className="my-4">
@@ -264,7 +263,7 @@ function MentorApplicationForm() {
                     component="textarea"
                     name="motivation"
                   />
-                  <ErrorMessage name="motivation" component="div" className="text-red-500 text-sm" />
+                  {touched.motivation && errors.motivation && <div className="text-red-500">{errors.motivation}</div>}
                 </div>
                 <div className="my-2 w-full md:w-1/2 lg:w-1/4">
                   <button

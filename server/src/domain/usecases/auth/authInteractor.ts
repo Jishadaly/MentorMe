@@ -4,6 +4,7 @@ import { createUser , verifyUserdb , getUserbyEMail } from "../../repositories/u
 import { Request } from "express";
 import { Encrypt } from "../../helper/hashPassword";
 import { generateToken } from "../../helper/jwtHelper";
+import {  findAdmin } from "../../repositories/adminReposetory";
 
 
 
@@ -74,6 +75,29 @@ export default {
         }
 
         return { token , user }
-    }
+    },
+
+    adminLogger :async(cred:{email:string , password:string})=>{
+        try {
+            const admin = await findAdmin(cred.email);
+  
+            if (!admin) {
+               throw new Error("user email not match")
+            }
+      
+            if( cred.password !== admin.password ){
+               throw new Error ("user entered password is not matching")
+            }
+            const token = await generateToken(admin.id , cred.email)
+            return {admin , token}
+
+        } catch (error:any ){
+            console.error(`Error: ${error.message}`);
+            throw error;
+        }
+
+     }
+
+
 
 }

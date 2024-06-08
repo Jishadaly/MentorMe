@@ -1,6 +1,8 @@
 import { ApplicationForm } from "../entities/mentorApplication";
 import MentorApplication from "../../frameworks/database/mongoDb/models/mentorApplicationModel";
 import { sameUser } from "./userRepository";
+
+
 export default {
   saveApplicationForm:async(formData:ApplicationForm)=>{
     try {
@@ -21,6 +23,5 @@ export default {
     } catch (error) {
       throw error
     }
-      
   }
 }

@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express"
 import userInteractor from "../../domain/usecases/auth/authInteractor";
 import { otpGeneratorFun } from "../../domain/utils/generateOtp";
 import sendMail from "../../domain/helper/sendMail";
+import authInteractor from "../../domain/usecases/auth/authInteractor";
 // const session = require('express-session')
 // import session from 'express-session'
 
@@ -56,6 +57,27 @@ export default {
          res.status(500).json({error: error.message});
          next(error);
       }
-  }
+  },
+
+  adminLogin:async(req:Request , res:Response , next:NextFunction)=>{
+   try {
+
+      console.log(req.body);
+      
+     const { email , password } = req.body
+      if (!email && !password) {
+         throw new Error("user credentials not there")
+      }
+     const credentials = {
+       email , password
+     }
+      const response = await authInteractor.adminLogger(credentials);
+      res.status(200).json({message:"admin logged successfully" , response});
+   } catch (error:any) {
+      console.log(error);
+      res.status(500).json({error:error.message})
+   }
+}               
+
 }
 
