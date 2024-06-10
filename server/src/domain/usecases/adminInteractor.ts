@@ -1,4 +1,5 @@
-import { findAdmin } from "../repositories/adminReposetory"
+import {  getMentoresForVerification ,updateMentorVerificationVerify , updateMentorVerificationReject} from "../repositories/adminReposetory"
+import { findAdmin } from "../repositories/adminReposetory";
 
 
 export default {
@@ -14,7 +15,32 @@ export default {
       }
 
       return admin;
-   }
+   },
+   getMentorsforVerification:async()=>{
+      try {
+         const data = await getMentoresForVerification();
+         return data
+      } catch (error:any) {
+         throw new Error(error)
+      }
+      
+   },
+   verifyMentorRequest:async(userId:string)=>{
+      try {
+         const response  = await updateMentorVerificationVerify(userId);
+         return response;
+      } catch (error:any) {
+         throw new Error(error)
+      }
+   },
+   rejectMentorRequest:async(userId:string)=>{
+      try {
+         const response  = await updateMentorVerificationReject(userId);
+         return response;
+      } catch (error:any) {
+         throw new Error(error)
+      }
+   },
 
    
 }

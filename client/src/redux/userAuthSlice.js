@@ -24,6 +24,31 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const mentorLogin = createAsyncThunk(
+  'auth/mentorLogin',
+  async ({ endpoint, mentorData }, thunkAPI) => {
+    console.log(endpoint , mentorData);
+    try {
+     
+      const response = await authInstanceAxios.post(`/${endpoint}`, mentorData);
+      console.log("responsddsds",response);
+      const user = response.data.user;
+      const token = response.data.response.token;
+
+      // Save to localStorage
+      localStorage.setItem('mentor', JSON.stringify(user));
+      localStorage.setItem('Mentortoken', token);
+
+
+      return { user, token };
+
+      
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
@@ -54,7 +79,21 @@ const authSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+      .addCase(mentorLogin.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(mentorLogin.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+      })
+      .addCase(mentorLogin.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      
   },
 });
 

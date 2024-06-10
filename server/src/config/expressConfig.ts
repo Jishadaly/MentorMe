@@ -1,6 +1,7 @@
 import { Application, Request, Response, NextFunction, ErrorRequestHandler } from 'express'; import bodyParser from 'express';
 import { connectToDb } from "./dbConfig";
 import session from 'express-session';
+// import bodyParser from 'body-parser';
 const cors = require('cors');
 
 const corsOption = {
@@ -49,4 +50,5 @@ export function configureExpress(app: Application): void {
    app.use(errorHandler);
    connectToDb();
 }
+
 

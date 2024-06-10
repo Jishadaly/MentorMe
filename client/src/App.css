@@ -1,0 +1,15 @@
+/* Tailwind CSS in your global stylesheet or Tailwind configuration */
+
+body {
+  margin: 10px;
+  padding: 0;
+}
+
+#root {
+  display: flex;
+}
+
+.main-content {
+  margin-left: 16rem; /* width of the sidebar */
+  margin-top: 4rem; /* height of the header */
+}

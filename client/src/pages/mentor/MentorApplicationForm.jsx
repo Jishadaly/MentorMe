@@ -4,12 +4,13 @@ import { initialValues, validationSchema } from '@/utils/validations/mentorAppFo
 import { fetchLocations } from '@/Api/services/thirdParty/fetchLocation';
 import { mentorApplicationFormApi } from '@/Api/services/auth/user-auth-service';
 import { toast } from 'sonner';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 
 function MentorApplicationForm() {
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate()
   
   const userId = useParams();
 
@@ -23,6 +24,7 @@ function MentorApplicationForm() {
     try {
       const response = await mentorApplicationFormApi('user/mentorAppicationForm' , applicationData);
       toast.success(response.data.message);
+      navigate('/MentorConfirmationPage');
       
     } catch (error) {
       toast.error(error.response.data.error);
@@ -44,7 +46,7 @@ function MentorApplicationForm() {
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
-            {({ values, touched ,  isSubmitting, handleChange }) => (
+            {({ values, touched , errors, isSubmitting, handleChange }) => (
               <Form>
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                   <div className="flex flex-col">

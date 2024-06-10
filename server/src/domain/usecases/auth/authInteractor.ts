@@ -1,6 +1,6 @@
 
 import { IUser } from "../../entities/types/user/user";
-import { createUser , verifyUserdb , getUserbyEMail } from "../../repositories/userRepository";
+import { createUser , verifyUserdb , getUserbyEMail ,checkIsmentor} from "../../repositories/userRepository";
 import { Request } from "express";
 import { Encrypt } from "../../helper/hashPassword";
 import { generateToken } from "../../helper/jwtHelper";
@@ -65,6 +65,34 @@ export default {
         if(existingUser && existingUser.isBlocked){
             throw new Error('Account is Blocked');
         }
+        
+        const token = await generateToken(existingUser.id , email)
+        const user={ 
+            id:existingUser.id,
+            name:existingUser.userName,
+            email:existingUser,
+            phone:existingUser.phone
+        }
+
+        return { token , user }
+    },
+    loginMentor : async (email:string , password:string )=> {
+        const existingUser = await getUserbyEMail(email);
+        if(!existingUser){
+            throw new Error('User not fount');
+        }
+        const isMentor = await checkIsmentor(email);
+        if (!isMentor) {
+            throw new Error("you are not approved please confirm your application form");
+        }
+        const isValid = await Encrypt.comparePassword(password , existingUser.password);
+        if (!isValid) {
+            throw new Error("Invalid password");
+        }
+        if(existingUser && existingUser.isBlocked){
+            throw new Error('Account is Blocked');
+        }
+        
         
         const token = await generateToken(existingUser.id , email)
         const user={ 

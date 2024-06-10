@@ -51,13 +51,29 @@ export default {
           console.log(req.body);
           const { email , password } = req.body
           const response = await userInteractor.loginUser(email ,password);
-          res.status(200).json({message : "login success" , response})
+          res.status(200).json({message : "user login success" , response})
       } catch (error:any) {
          console.log(error.message);
          res.status(500).json({error: error.message});
          next(error);
       }
   },
+
+  mentorLogin: async (req:Request , res:Response , next:NextFunction) =>{
+   try {
+
+       console.log(req.body);
+       const { email , password } = req.body
+       const response = await userInteractor.loginMentor(email ,password);
+       console.log(response);
+       
+       res.status(200).json({message : "Mentro login success" , response})
+   } catch (error:any) {
+      console.log(error.message);
+      res.status(500).json(error);
+      next(error);
+   }
+},
 
   adminLogin:async(req:Request , res:Response , next:NextFunction)=>{
    try {

@@ -46,3 +46,7 @@ export const getUserbyEMail = async (email:string)=> {
 export const sameUser = async(user:string)=>{
    return await Users.findById(user)
 }
+
+export const checkIsmentor = async(email:string)=>{
+  return await Users.findOne({email:email} , {isMentor:true})
+}

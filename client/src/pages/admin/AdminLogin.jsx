@@ -21,7 +21,7 @@ function AdminLogin() {
     setSubmitting(true);
     const { email, password } = values
 
-    dispatch(loginAdmin({endpoint:'admin/login' , adminData : {email, password}}))
+    dispatch(loginAdmin({ endpoint: 'admin/login', adminData: { email, password } }))
       .unwrap()
       .then(() => {
         toast.success("admin logged succesfully");
@@ -31,9 +31,9 @@ function AdminLogin() {
         console.log(err);
         toast.error(err.error)
       })
-
-
     }
+
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="relative w-full max-w-md bg-white px-6 pt-10 pb-8 shadow-xl ring-1 ring-gray-900/5 sm:rounded-xl sm:px-10">
