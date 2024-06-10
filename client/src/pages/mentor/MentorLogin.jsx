@@ -34,7 +34,7 @@ function MentorLogin(){
     <div className="h-screen md:flex">
       <div className="relative overflow-hidden md:flex w-1/2 bg-gradient-to-tr from-blue-800 to-purple-700 justify-around items-center hidden">
         <div>
-          <h1 className="text-white font-bold text-4xl font-sans">Be A Mentor</h1>
+          <h1 className="text-white font-bold text-4xl font-sans">Be a mentor</h1>
           <p className="text-white mt-1">The most popular mentorship platform</p>
           <button type="button" className="block w-28 bg-white text-indigo-800 mt-4 py-2 rounded-2xl font-bold mb-2">
             Read More
@@ -117,6 +117,11 @@ function MentorLogin(){
               <div className="mt-4">
                 <span onClick={() => navigate('/signup')} className="text-sm font-sans">
                   Don't have an account? <a className="text-blue-500">Sign up</a>
+                </span>
+              </div>
+              <div className="mt-4">
+                <span  onClick={() => navigate('/userLogin')} className="text-sm font-sans cursor-pointer">
+                   <a className="text-blue-500">login as a Mentee</a>
                 </span>
               </div>
             </Form>

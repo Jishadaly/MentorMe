@@ -18,20 +18,29 @@ import AdminProtected from './adminProtected'
 import ConfirmationPage from '@/pages/mentor/requestLoadingPage'
 import MentorHome from '@/pages/mentor/MentorHome'
 import MentorLogin from '@/pages/mentor/MentorLogin'
+import MentorProtected from './mentorProtected'
+import LandingPage from '@/pages/LandingPage'
+import PageNotFound from '@/pages/notFount'
+
 
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/'>
+      <Route index element={<LandingPage />} />
+      {/* <Route path="/userLogin" element={<UserLogin />} /> */}
+
       <Route element={<Protected/>}>
-          <Route index element={<MenteeHome/>}/>
+          <Route path='/menteeHome' element={<MenteeHome/>}/>
       </Route>
 
       <Route element={<AdminProtected/>}>
       <Route path='/admin/home' element={<AdminHome/>} />
       </Route>
 
-      {/* <Route element={} /> */}
+      <Route element={<MentorProtected/>}>
+      <Route path='/mentorHome' element={<MentorHome/>}/>
+      </Route>
 
       <Route path="/userLogin" element={<UserLogin />} />
       <Route path="/MentorLogin" element={<MentorLogin />} />
@@ -42,10 +51,11 @@ const router = createBrowserRouter(
       <Route path='/mentorAppForm/:userId' element={<MentorApplicationForm/>} />
       <Route path='/menteeAppForm/:userId' element={<MenteeAditionalForm/>} />
       <Route path='/MentorConfirmationPage' element={<ConfirmationPage/>} />
-      <Route path='/mentorHome' element={<MentorHome/>} />
-
       <Route path='/admin/login' element={<AdminLogin/>} />
-      <Route path="*" element={ <h1>Page not found</h1>}/>
+
+
+      
+      <Route path="*" element={ <PageNotFound/>}/>
 
     </Route>
     

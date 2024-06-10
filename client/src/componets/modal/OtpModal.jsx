@@ -16,9 +16,23 @@
     export function OtpModal({ isOpen, onClose , email }) {
       
       const [otp,setOtp] = React.useState('');
-      console.log(otp)
+      const [timeLeft, setTimeLeft] = React.useState(60); // Initial time left: 60 seconds
       const navigate = useNavigate();
-      
+    
+      React.useEffect(() => {
+        if (isOpen) {
+          const timer = setTimeout(() => {
+            if (timeLeft > 0) {
+              setTimeLeft(prevTime => prevTime - 1);
+            }
+          }, 1000);
+    
+          
+          return () => clearTimeout(timer);
+        }
+      }, [isOpen, timeLeft]);
+
+
 
       const handleChange = (e) => {
             setOtp(e.target.value)
@@ -67,8 +81,8 @@
         </div>
         <DialogBody className="px-4 pb-4">
           <Typography className="mb-4" color="gray" variant="lead">
-            Please enter the OTP sent to your email. <span className='text-sm'>OTP is valid for 1 minute.</span>
-          </Typography>
+            Please enter the OTP sent to your email. <span className='text-sm text-red-800'>{timeLeft} seconds remaining.</span>
+            </Typography>
 
             <div className="mb-4">
             <Input className="text-center" maxLength={4} placeholder="Enter OTP" value={otp} onChange={handleChange} />

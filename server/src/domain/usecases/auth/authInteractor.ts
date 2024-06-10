@@ -5,6 +5,7 @@ import { Request } from "express";
 import { Encrypt } from "../../helper/hashPassword";
 import { generateToken } from "../../helper/jwtHelper";
 import {  findAdmin } from "../../repositories/adminReposetory";
+import { rmSync } from "fs";
 
 
 
@@ -82,8 +83,13 @@ export default {
             throw new Error('User not fount');
         }
         const isMentor = await checkIsmentor(email);
-        if (!isMentor) {
-            throw new Error("you are not approved please confirm your application form");
+        console.log("erfbrbfjbjb",isMentor);
+        
+        if ( isMentor?.isMentor === false) {
+            console.log("no mentor");
+            
+            throw new Error("Access Denied: You are not approved. Please confirm your application form.");
+            
         }
         const isValid = await Encrypt.comparePassword(password , existingUser.password);
         if (!isValid) {

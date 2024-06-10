@@ -1,12 +1,13 @@
 import { ApplicationForm } from "../entities/mentorApplication";
 import MentorApplication from "../../frameworks/database/mongoDb/models/mentorApplicationModel";
 import { sameUser } from "./userRepository";
+import { Users } from "../../frameworks/database/mongoDb/models/user";
 
 
 export default {
   saveApplicationForm:async(formData:ApplicationForm)=>{
     try {
-      
+
       // if (formData.user) {
       //   const checkUser = await sameUser(formData.user);
       //   console.log(checkUser);
@@ -24,5 +25,10 @@ export default {
     } catch (error) {
       throw error
     }
+  },
+
+  getMentors:async()=>{
+     return await MentorApplication.find({status:"Approved"});
   }
 }
+

@@ -28,5 +28,14 @@ export default {
       console.log(error);
       res.status(400).json({ error: error.message });
      }
+  },
+
+  getMentors:async(req:Request , res:Response , next:NextFunction)=>{
+    try {
+        const mentors = await mentorInteractor.getMentors();
+        res.status(200).json({message:"fetched succecfully" , mentors});
+    } catch (error) {
+      res.status(500).json(error)
+    }
   }
 }

@@ -7,7 +7,8 @@ const userRouter = express.Router();
 userRouter.post('/api/user/signup',authController.userRegistration);
 userRouter.post('/api/user/verifyOTP' , authController.verifyOTP);
 userRouter.post('/api/user/login',authController.userLogin);
-userRouter.post('/api/user/mentorLogin',authController.userLogin);
+userRouter.post('/api/user/mentorLogin',authController.mentorLogin);
 userRouter.post('/api/user/mentorAppicationForm',mentorController.mentorApplicationFormSub);
+userRouter.get('/api/user/getMentors',mentorController.getMentors)
 
 export default userRouter;

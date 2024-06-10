@@ -21,7 +21,7 @@ function UserLogin(){
       .unwrap()
       .then(() => {
         toast.success("User logged in successfully");
-        navigate('/');
+        navigate('/menteeHome');
       })
       .catch((err) => {
         console.error(err)
@@ -117,6 +117,11 @@ function UserLogin(){
               <div className="mt-4">
                 <span onClick={() => navigate('/signup')} className="text-sm font-sans">
                   Don't have an account? <a className="text-blue-500">Sign up</a>
+                </span>
+              </div>
+              <div className="mt-4">
+                <span onClick={() => navigate('/MentorLogin')} className="text-sm font-sans cursor-pointer">
+                   <a className="text-blue-500">login as a Mentor</a>
                 </span>
               </div>
             </Form>

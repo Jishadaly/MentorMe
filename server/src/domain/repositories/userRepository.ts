@@ -15,6 +15,10 @@ export const createUser = async (userData: IUser , hashedPassword:string) => {
     }
     const existingUser = await checkExistingUser(userData.email, userData.name);
     if (existingUser) {
+      
+      if (existingUser.verified === false) {
+          return existingUser
+      }
       throw new Error("A user with that email or username already exists.");
     }
     const newUser = new Users({
@@ -24,6 +28,7 @@ export const createUser = async (userData: IUser , hashedPassword:string) => {
       phone: userData.phone,
     });
     return await newUser.save();
+
   } catch (error) {
     throw error
   }
@@ -48,5 +53,7 @@ export const sameUser = async(user:string)=>{
 }
 
 export const checkIsmentor = async(email:string)=>{
+  console.log("checkcehdckcheck");
+  
   return await Users.findOne({email:email} , {isMentor:true})
 }

@@ -10,5 +10,14 @@ export default {
       console.log(error);
       throw  error
      }
+  },
+  getMentors:async()=>{
+       try {
+          const response = await mentorRepository.getMentors();
+          return response
+       } catch (error:any) {
+         throw new Error(error)
+       }
   }
+  
 }

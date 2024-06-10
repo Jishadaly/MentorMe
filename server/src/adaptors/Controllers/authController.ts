@@ -37,7 +37,7 @@ export default {
       try {
           const response = await userInteractor.verifyUser(req, req.body);
           console.log(response);
-          res.status(200).json({message : "verify success" , response})
+          res.status(200).json({message : "verify success" , response});
       } catch (error:any) {
          console.error(error.message);
           res.status(500).json({ error: error.message });
@@ -61,8 +61,7 @@ export default {
 
   mentorLogin: async (req:Request , res:Response , next:NextFunction) =>{
    try {
-
-       console.log(req.body);
+       console.log("controller",req.body);
        const { email , password } = req.body
        const response = await userInteractor.loginMentor(email ,password);
        console.log(response);
@@ -70,7 +69,7 @@ export default {
        res.status(200).json({message : "Mentro login success" , response})
    } catch (error:any) {
       console.log(error.message);
-      res.status(500).json(error);
+      res.status(500).json({error: error.message});
       next(error);
    }
 },
