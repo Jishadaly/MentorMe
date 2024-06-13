@@ -1,4 +1,4 @@
-import { authInstanceAxios } from "./auth/user-auth-service"
+import { authInstanceAxios } from "../axiosInstence";
 
 export const  getMentors = async(endPoint )=>{
   console.log(endPoint);

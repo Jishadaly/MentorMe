@@ -18,6 +18,19 @@ export default {
        } catch (error:any) {
          throw new Error(error)
        }
-  }
+  },
+  getMentor:async(mentorId:string)=>{
+   console.log(mentorId);
+   
+   try {
+      const response = await mentorRepository.getMentor(mentorId);
+      console.log("rerspnd usecase",response);
+      
+      return response
+      return mentorId
+   } catch (error:any) {
+     throw new Error(error)
+   }
+}
   
 }

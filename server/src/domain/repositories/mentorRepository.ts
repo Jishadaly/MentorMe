@@ -27,8 +27,11 @@ export default {
     }
   },
 
-  getMentors:async()=>{
+getMentors:async()=>{
      return await MentorApplication.find({status:"Approved"});
+  },
+  getMentor:async(mentorId:string)=>{
+    return await MentorApplication.findById(mentorId);
   }
 }
 

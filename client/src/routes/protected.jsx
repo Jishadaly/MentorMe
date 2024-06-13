@@ -3,7 +3,7 @@ import { Navigate, Outlet } from "react-router-dom";
 const Protected = () => {
   const token = localStorage.getItem("token");
 
-  return token ? <Outlet /> : <Navigate to="/userLogin" />;
+  return token ? <Outlet /> : <Navigate to="/mentee/login" />;
 };
 
 export default Protected;

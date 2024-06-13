@@ -43,10 +43,10 @@ const LandingPage = () => {
             Find your programming mentor or mentee and level up your skills.
           </h3>
           <div className="flex justify-center">
-            <button onClick={()=> navigate('/mentorhome')} className="bg-white font-bold rounded-full py-4 px-8 shadow-lg uppercase tracking-wider mr-4">
+            <button onClick={()=> navigate('/mentor/home')} className="bg-white font-bold rounded-full py-4 px-8 shadow-lg uppercase tracking-wider mr-4">
               Mentor
             </button>
-            <button onClick={()=> navigate('/menteeHome')} className="bg-white font-bold rounded-full py-4 px-8 shadow-lg uppercase tracking-wider">
+            <button onClick={()=> navigate('/mentee/home')} className="bg-white font-bold rounded-full py-4 px-8 shadow-lg uppercase tracking-wider">
               Mentee
             </button>
           </div>

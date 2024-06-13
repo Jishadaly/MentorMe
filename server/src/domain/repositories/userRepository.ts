@@ -1,5 +1,7 @@
 import { Users, Iuser } from '../../frameworks/database/mongoDb/models/user';
 import { IUser } from '../entities/types/user/user';
+import { generatePassword } from '../utils/generatePassword';
+import { Encrypt } from '../helper/hashPassword';
 
 
 export const checkExistingUser = async (email: string, userName: string) => {
@@ -56,4 +58,31 @@ export const checkIsmentor = async(email:string)=>{
   console.log("checkcehdckcheck");
   
   return await Users.findOne({email:email} , {isMentor:true})
+}
+
+export const saveGoogleUser =async(userData:IUser)=>{
+
+     if(!userData.name || !userData.email){
+      throw new Error("data is undefined")
+     }
+
+     const existingUser = await checkExistingUser(userData.name , userData.name);
+     if (existingUser) {
+        return existingUser
+     }
+
+      const generatedPss = Math.random().toString(36).slice(-8);
+      const hashedPassword = await Encrypt.cryptPassword(generatedPss)
+
+      const newUser = new Users({
+      userName: userData.name,
+      email: userData.email,
+      password: hashedPassword,
+      phone: userData.phone,
+      isGoogleUser:true
+    });
+    
+    return await newUser.save();
+
+
 }

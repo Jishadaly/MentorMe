@@ -26,5 +26,5 @@ module.exports = withMT({
       'sans': ['Helvetica', 'Arial', 'sans-serif'],
     },
   },
-  plugins: [],
+  plugins: [require('tailwindcss-font-inter')],
 });

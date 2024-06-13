@@ -21,6 +21,7 @@ import MentorLogin from '@/pages/mentor/MentorLogin'
 import MentorProtected from './mentorProtected'
 import LandingPage from '@/pages/LandingPage'
 import PageNotFound from '@/pages/notFount'
+import MentorDetails from '@/pages/mentee/MentorDeatails'
 
 
 
@@ -31,7 +32,9 @@ const router = createBrowserRouter(
       {/* <Route path="/userLogin" element={<UserLogin />} /> */}
 
       <Route element={<Protected/>}>
-          <Route path='/menteeHome' element={<MenteeHome/>}/>
+          <Route path='/mentee/home' element={<MenteeHome/>}/>
+      <Route path='/mentee/mentorDetails/:mentorId' element={<MentorDetails/>}/>
+
       </Route>
 
       <Route element={<AdminProtected/>}>
@@ -39,18 +42,20 @@ const router = createBrowserRouter(
       </Route>
 
       <Route element={<MentorProtected/>}>
-      <Route path='/mentorHome' element={<MentorHome/>}/>
+      <Route path='/mentor/home' element={<MentorHome/>}/>
+      
+
       </Route>
 
-      <Route path="/userLogin" element={<UserLogin />} />
-      <Route path="/MentorLogin" element={<MentorLogin />} />
+      <Route path="/mentee/login" element={<UserLogin />} />
+      <Route path="/mentor/login" element={<MentorLogin />} />
 
       
       <Route path="/signup" element={<Signup />}/>
       <Route path='/chooseRole/:userId' element={<RoleSelectorCard/>} />
       <Route path='/mentorAppForm/:userId' element={<MentorApplicationForm/>} />
       <Route path='/menteeAppForm/:userId' element={<MenteeAditionalForm/>} />
-      <Route path='/MentorConfirmationPage' element={<ConfirmationPage/>} />
+      <Route path='/mentor/MentorConfirmationPage' element={<ConfirmationPage/>} />
       <Route path='/admin/login' element={<AdminLogin/>} />
 
 

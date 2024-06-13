@@ -37,5 +37,20 @@ export default {
     } catch (error) {
       res.status(500).json(error)
     }
-  }
+  },
+  getMentor:async(req:Request , res:Response , next:NextFunction)=>{
+    try {
+      const  { mentorId } = req.query
+      console.log(mentorId);
+      
+      if (!mentorId) throw new Error("mentor id id not there")
+      const mentorIdString = mentorId as string;
+      const mentor = await mentorInteractor.getMentor(mentorIdString);
+      res.status(200).json({message:"fetched a mentor succecfully" , mentor});
+      
+    } catch (error) {
+      res.status(500).json(error)
+    }
+  },
+
 }

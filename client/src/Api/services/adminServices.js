@@ -1,5 +1,5 @@
 
-import { authInstanceAxios } from "./auth/user-auth-service"
+import { authInstanceAxios } from "../axiosInstence";
 
 export const getApplicationMentores = async(endPoint) =>{
   try {
@@ -10,9 +10,9 @@ export const getApplicationMentores = async(endPoint) =>{
   }
 }
 
-export const verifyApplication = async(endPoint , userId) =>{
+export const verifyApplication = async(endPoint , userData) =>{
   try {
-    const response = await authInstanceAxios.post(`/${endPoint}`,{userId})
+    const response = await authInstanceAxios.post(`/${endPoint}`,{userData})
       return response;
 
   } catch (error) {
@@ -20,10 +20,10 @@ export const verifyApplication = async(endPoint , userId) =>{
   }
 }
 
-export const rejectApplication = async (endPoint , userId) => {
+export const rejectApplication = async (endPoint , userData) => {
 
   try {
-    const response = await authInstanceAxios.post(`/${endPoint}`,{userId})
+    const response = await authInstanceAxios.post(`/${endPoint}`,{userData})
       return response;
 
 } catch (error) {

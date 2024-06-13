@@ -21,7 +21,7 @@ function UserLogin(){
       .unwrap()
       .then(() => {
         toast.success("User logged in successfully");
-        navigate('/menteeHome');
+        navigate('/mentee/home');
       })
       .catch((err) => {
         console.error(err)
@@ -30,6 +30,7 @@ function UserLogin(){
     );
   };
 
+  
   return (
     <div className="h-screen md:flex">
       <div className="relative overflow-hidden md:flex w-1/2 bg-gradient-to-tr from-blue-800 to-purple-700 justify-around items-center hidden">

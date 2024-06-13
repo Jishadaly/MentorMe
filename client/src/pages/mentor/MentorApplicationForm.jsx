@@ -24,7 +24,7 @@ function MentorApplicationForm() {
     try {
       const response = await mentorApplicationFormApi('user/mentorAppicationForm' , applicationData);
       toast.success(response.data.message);
-      navigate('/MentorConfirmationPage');
+      navigate('/mentor/MentorConfirmationPage');
       
     } catch (error) {
       toast.error(error.response.data.error);

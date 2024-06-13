@@ -1,14 +1,4 @@
-import axios from "axios";
-import {CONFIG_KEYS} from '../../../config.js' 
-
-
-export const authInstanceAxios = axios.create({
-   baseURL: CONFIG_KEYS.API_BASE_URI,
-   headers: {
-     'Content-Type': 'application/json',
-   },
-   withCredentials:true,
- });
+import { authInstanceAxios } from "@/Api/axiosInstence";
 
 export const userRegister = async ( endPoint ,userData  ) => {
     const response = await authInstanceAxios.post(`/${endPoint}`,userData);

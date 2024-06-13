@@ -7,27 +7,34 @@ import { verifyApplication ,rejectApplication } from "@/Api/services/adminServic
 function UserDetails({ user, onBackClick }) {
   console.log(user);
 
-   const handleVerify = async(userId)=>{
-    alert(userId)
+   const handleVerify = async(applicationId , requestedMenterId )=>{
+         const userData ={
+          applicationId ,
+          requestedMenterId
+         }
      try {
-       const response = await verifyApplication('admin/verifyMentorRequest',userId);
+       const response = await verifyApplication('admin/verifyMentorRequest',userData);
        console.log(response);
        toast.success(response.data.message);
        onBackClick()
 
      } catch (error) {
       console.log(error);
-      toast.error(error.error);
+      toast.error(`Error:`,error);
      }
-   }
+  }
 
-   const handleRejection = async (userId) => {
+   const handleRejection = async (applicationId , requestedMenterId) => {
+    const userData ={
+      applicationId ,
+      requestedMenterId
+     }
     if (!window.confirm("Are you sure you want to reject this application?")) {
       return; 
     }
     
     try {
-      const response = await rejectApplication('admin/rejectMentorApplication', userId);
+      const response = await rejectApplication('admin/rejectMentorApplication', userData);
       toast.success(response.data.message);
       onBackClick(); 
     } catch (error) {
@@ -55,8 +62,8 @@ function UserDetails({ user, onBackClick }) {
                 <h1 className="text-xl font-bold">{user.name}</h1>
                 <p className="text-gray-700">{user.jobTitle}</p>
                 <div className="mt-6 flex flex-wrap gap-4 justify-center">
-                  <button onClick={()=>handleRejection(user._id)} className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Reject</button>
-                  <button onClick={()=> handleVerify(user._id)} className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Verify</button>
+                  <button onClick={()=>handleRejection(user._id,user.user )} className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Reject</button>
+                  <button onClick={()=> handleVerify(user._id , user.user)} className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Verify</button>
                 </div>
               </div>
               <hr className="my-6 border-t border-gray-300" />

@@ -48,7 +48,6 @@ export default {
   userLogin: async (req:Request , res:Response , next:NextFunction) =>{
       try {
 
-          console.log(req.body);
           const { email , password } = req.body
           const response = await userInteractor.loginUser(email ,password);
           res.status(200).json({message : "user login success" , response})
@@ -61,7 +60,7 @@ export default {
 
   mentorLogin: async (req:Request , res:Response , next:NextFunction) =>{
    try {
-       console.log("controller",req.body);
+       
        const { email , password } = req.body
        const response = await userInteractor.loginMentor(email ,password);
        console.log(response);
@@ -77,8 +76,7 @@ export default {
   adminLogin:async(req:Request , res:Response , next:NextFunction)=>{
    try {
 
-      console.log(req.body);
-      
+     console.log(req.body);
      const { email , password } = req.body
       if (!email && !password) {
          throw new Error("user credentials not there")
@@ -92,7 +90,18 @@ export default {
       console.log(error);
       res.status(500).json({error:error.message})
    }
-}               
+},
+
+googleAuth:async(req:Request , res:Response , next:NextFunction)=>{
+    try {
+        console.log("body data",req.body);
+        const response = await authInteractor.googleAuth(req.body)
+        res.status(200).json({message:"google authentication success" , response})
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error);
+    }
+},
 
 }
 

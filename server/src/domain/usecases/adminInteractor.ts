@@ -25,17 +25,19 @@ export default {
       }
       
    },
-   verifyMentorRequest:async(userId:string)=>{
+   verifyMentorRequest:async(id:string , userId:string)=>{
+      console.log("applicationid" , id , "userid", userId);
+      
       try {
-         const response  = await updateMentorVerificationVerify(userId);
+         const response  = await updateMentorVerificationVerify(id,userId);
          return response;
       } catch (error:any) {
          throw new Error(error)
       }
    },
-   rejectMentorRequest:async(userId:string)=>{
+   rejectMentorRequest:async(id:string , userId:string)=>{
       try {
-         const response  = await updateMentorVerificationReject(userId);
+         const response  = await updateMentorVerificationReject(id,userId);
          return response;
       } catch (error:any) {
          throw new Error(error)

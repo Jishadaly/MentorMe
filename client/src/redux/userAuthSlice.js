@@ -49,6 +49,31 @@ export const mentorLogin = createAsyncThunk(
   }
 );
 
+
+export const googleAuth = createAsyncThunk(
+  'auth/googleAuth',
+  async({endpoint , userData} , thunkAPI)=> {
+
+    try {
+       const response = await authInstanceAxios.post(`/${endpoint}`, userData);
+
+       const user = response.data.user;
+       const token = response.data.response.token;
+
+      // Save to localStorage
+      localStorage.setItem('token', JSON.stringify(user));
+      localStorage.setItem('token', token);
+
+      return { user, token };
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+
+)
+
+
+
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
@@ -90,6 +115,19 @@ const authSlice = createSlice({
         state.token = action.payload.token;
       })
       .addCase(mentorLogin.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(googleAuth.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(googleAuth.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+      })
+      .addCase(googleAuth.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

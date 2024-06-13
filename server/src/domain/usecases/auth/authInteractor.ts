@@ -5,11 +5,12 @@ import { Request } from "express";
 import { Encrypt } from "../../helper/hashPassword";
 import { generateToken } from "../../helper/jwtHelper";
 import {  findAdmin } from "../../repositories/adminReposetory";
-import { rmSync } from "fs";
+import { checkExistingUser , saveGoogleUser } from "../../repositories/userRepository";
 
 
 
 export default {
+
     registerUser: async (userData:IUser) =>{
         try {
             if (!userData.password) {
@@ -23,6 +24,7 @@ export default {
             console.log(error);
             throw error;
         }
+
     },
 
     verifyUser: async (req:Request , data:{otp:string , email:string}) =>{
@@ -30,31 +32,29 @@ export default {
         const storedOTP = req.session.otp;
         
         if (!storedOTP || storedOTP !== data.otp) {
-            console.log("ivalid otp");
-            throw new Error("Invalid OTP");
+            throw new Error("Invalid OTP")
         }
 
-        const otpGeneratedAt = req.session.otpGeneratedAt;
-        console.log("generated time" ,otpGeneratedAt);  
-
+        const otpGeneratedAt = req.session.otpGeneratedAt;  
         const currentTime = Date.now();
         const otpAge = currentTime - otpGeneratedAt!; 
-
         const expireOTP = 1 * 60 * 1000;
+
         if (otpAge > expireOTP) {
             delete req.session.otp;
             delete req.session.otpGeneratedAt;
             throw new Error('otp expired');
           }
 
-        // Clear OTP from session after successful verification
+        // Clear OTP from session after successful verification  
         delete req.session.otp;
         delete req.session.otpGeneratedAt;
 
         return await verifyUserdb(data.email);
     },
-
+    
     loginUser : async (email:string , password:string )=> {
+
         const existingUser = await getUserbyEMail(email);
         if(!existingUser){
             throw new Error('User not fount');
@@ -77,11 +77,14 @@ export default {
 
         return { token , user }
     },
+
     loginMentor : async (email:string , password:string )=> {
-        const existingUser = await getUserbyEMail(email);
+        const existingUser = await getUserbyEMail(email)
+
         if(!existingUser){
             throw new Error('User not fount');
         }
+
         const isMentor = await checkIsmentor(email);
         console.log("erfbrbfjbjb",isMentor);
         
@@ -98,7 +101,6 @@ export default {
         if(existingUser && existingUser.isBlocked){
             throw new Error('Account is Blocked');
         }
-        
         
         const token = await generateToken(existingUser.id , email)
         const user={ 
@@ -118,7 +120,6 @@ export default {
             if (!admin) {
                throw new Error("user email not match")
             }
-      
             if( cred.password !== admin.password ){
                throw new Error ("user entered password is not matching")
             }
@@ -130,8 +131,32 @@ export default {
             throw error;
         }
 
-     }
+     },
 
+     googleAuth:async(userData:IUser)=>{
 
+         try {
+           
+           const savedUser = await saveGoogleUser(userData );
+            if (savedUser) {
+                
+                const user = {
+                id: savedUser._id,
+                name: savedUser.userName,
+                email: savedUser.email,
+                phone: savedUser.phone,
+
+                }
+                 
+                let token = generateToken(savedUser.id ,savedUser.email);
+                return {user , token};
+            }
+
+         } catch (error:any) {
+            console.error(`Error: ${error.message}`);
+            throw error;
+         }
+
+     },
 
 }

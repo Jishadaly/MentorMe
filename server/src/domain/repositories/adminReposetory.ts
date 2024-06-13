@@ -10,19 +10,25 @@ export const getMentoresForVerification = async() =>{
   return requestedMentors;
 }
 
-export const updateMentorVerificationVerify =async(userId:string)=>{
+export const updateMentorVerificationVerify =async(id:string , userId:string)=>{
    try {
-     await  Users.findByIdAndUpdate(userId , {status:"Approved"});
-     return await MentorApplication.findByIdAndUpdate(userId , {isMentor:true});
+    console.log(id,userId);
+    
+    const userUpdate = await Users.updateOne(  {_id:userId} , { isMentor: true });
+    console.log("update user",userUpdate);
+    
+    return  await MentorApplication.findByIdAndUpdate(id , {status:"Approved"});
    } catch (error:any) {
-    throw new Error(error)
+    throw new Error(error);
    }
 }
 
-export const updateMentorVerificationReject =async(userId:string)=>{
-  try {
 
-     await MentorApplication.findByIdAndUpdate(userId , {status:"Rejected"});
+
+
+export const updateMentorVerificationReject =async(id:string , userId:string)=>{
+  try {
+     return  await MentorApplication.findByIdAndUpdate(id , {status:"Rejected"});
   } catch (error:any) {
    throw new Error(error)
   }
