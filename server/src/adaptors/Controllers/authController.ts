@@ -96,7 +96,7 @@ googleAuth:async(req:Request , res:Response , next:NextFunction)=>{
     try {
         console.log("body data",req.body);
         const response = await authInteractor.googleAuth(req.body)
-        res.status(200).json({message:"google authentication success" , response})
+        res.status(200).json({message:"google authentication success" , response});
     } catch (error) {
       console.log(error);
       res.status(500).json(error);

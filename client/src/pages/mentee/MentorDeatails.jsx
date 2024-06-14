@@ -13,7 +13,6 @@ const MentorDetails = () => {
     const getMentor = async () => {
       try {
         const response = await fetchMentorData('/user/getMentor', mentorId);
-        console.log("reffffffffffffffffffspnse",response.data.mentor);
         setMentor(response.data.mentor);
       } catch (error) {
         console.error(error);
@@ -21,9 +20,6 @@ const MentorDetails = () => {
     }
     getMentor()
   }, [mentorId]);
-
-  
-
   if (!mentor1) {
     // Return a loading state or a placeholder if mentor1 is undefined
     return <div>Loading...</div>;
@@ -117,7 +113,7 @@ const MentorDetails = () => {
             <h3 className="text-xl font-extrabold mb-4 font-inter">Book with {mentor.name.split(' ')[0]}</h3>
             <div className="flex items-center text-green-500 mb-4 ">
               <FiStar size={20} />
-              <span className="ml-1 font-semibold font-inter font-inter">{mentor.rating} ({mentor.sessions}+ sessions)</span>
+              <span className="ml-1 font-semibold font-inter">{mentor.rating} ({mentor.sessions}+ sessions)</span>
             </div>
             <div className="text-green-500 mb-4 ">
               <FiCalendarIcon size={20} />
@@ -132,6 +128,7 @@ const MentorDetails = () => {
                 </button>
               ))}
             </div>
+            
           </div>
         </section>
       </main>

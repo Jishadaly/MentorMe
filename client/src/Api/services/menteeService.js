@@ -1,4 +1,4 @@
-import { authInstanceAxios } from "./auth/user-auth-service";
+import { authInstanceAxios } from "../axiosInstence";
 
 
 export const fetchMentorData =async (endPoint , mentorId)=>{
@@ -9,6 +9,5 @@ export const fetchMentorData =async (endPoint , mentorId)=>{
       }
     });
     return response;
-
- 
+    
 }

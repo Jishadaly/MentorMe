@@ -1,6 +1,6 @@
 // src/features/auth/adminAuthSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { authInstanceAxios } from '@/Api/services/auth/user-auth-service';
+import { authInstanceAxios } from '@/Api/axiosInstence';
 
 export const loginAdmin = createAsyncThunk(
   'adminAuth/adminLogin',
