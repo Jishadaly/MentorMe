@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 import {  useNavigate } from 'react-router-dom';
 import { signInWithPopup } from 'firebase/auth';
 import { auth, provider } from '@/utils/fireBase/config';
-import { googleAuth } from '@/redux/userAuthSlice';
+import { googleAuth } from '@/redux/services/userAuthServices';
 import { useDispatch } from 'react-redux';
 
 
@@ -65,7 +65,7 @@ const Signup = () => {
          .unwrap()
          .then(() => {
           toast.success("User logged in successfully");
-          navigate('/menteeHome');
+          navigate('/mentee/home');
           })
         .catch((err) => {
           console.error(err)
@@ -193,7 +193,7 @@ const Signup = () => {
                   Login with Google
                 </button>
                 <div className="mt-4">
-                  <span  onClick={()=> navigate('/userLogin')} className="text-sm font-sans " >Already have an account? <a href="#" className="text-blue-500">Sign in</a></span>
+                  <span  onClick={()=> navigate('/mentee/login')} className="text-sm font-sans " >Already have an account? <a href="#" className="text-blue-500">Sign in</a></span>
                 </div>
               </Form>
             )}

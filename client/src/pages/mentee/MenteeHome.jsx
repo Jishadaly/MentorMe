@@ -24,15 +24,12 @@ const MenteeHome = () => {
     navigate(`/mentee/mentorDetails/${mentorId}`);
   }
   
-
   return (
     <div className="flex min-h-screen bg-gray-100">
       {/* Header */}
       <Header/>
-
       {/* Sidebar */}
-        <Sidenav/>
-
+      <Sidenav/>
       {/* Main Content */}
       <main className="ml-20 mt-16 p-6 flex-1 overflow-y-auto">
         <section className="max-w-7xl mx-auto">
@@ -69,7 +66,6 @@ const MenteeHome = () => {
     </div>
   ))}
 </div>
-
         </section>
       </main>
     </div>

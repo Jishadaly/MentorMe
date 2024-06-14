@@ -4,8 +4,7 @@ import { validationShema, initialValue } from '@/utils/validations/loginValidati
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginAdmin } from '@/redux/adminAuthSlice';
-
+import { loginAdmin } from '@/redux/services/adminAuthService';
 
 
 function AdminLogin() {

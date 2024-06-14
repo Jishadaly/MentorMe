@@ -4,7 +4,7 @@ import { validationShema , initialValue } from '@/utils/validations/loginValidat
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useDispatch , useSelector } from 'react-redux';
-import { mentorLogin } from '@/redux/userAuthSlice';
+import { mentorLogin } from '@/redux/services/userAuthServices';
 
 
 function MentorLogin(){
@@ -120,7 +120,7 @@ function MentorLogin(){
                 </span>
               </div>
               <div className="mt-4">
-                <span  onClick={() => navigate('/userLogin')} className="text-sm font-sans cursor-pointer">
+                <span  onClick={() => navigate('/mentee/login')} className="text-sm font-sans cursor-pointer">
                    <a className="text-blue-500">login as a Mentee</a>
                 </span>
               </div>

@@ -7,16 +7,22 @@ const MentorHome = () => {
     <div className="flex min-h-screen bg-gray-100">
       {/* Header */}
       <header className="w-full fixed top-0 bg-white p-4 shadow-md flex justify-between items-center z-10">
-        <h1 className="text-2xl font-bold text-indigo-600">Mentor me.</h1>
-        <div className="flex items-center space-x-4">
-          <a href="#" className="text-indigo-500">Sign Out</a>
-          <img
-            src="https://randomuser.me/api/portraits/men/75.jpg"
-            alt="profile"
-            className="w-8 h-8 rounded-full"
-          />
-        </div>
-      </header>
+  <h1 className="text-2xl font-bold text-indigo-600">Mentor me.</h1>
+  <div className="flex items-center space-x-4">
+ 
+    <a href="#" className="text-indigo-500">
+      <i className="fas fa-bell text-xl"></i>
+    </a>
+    
+    <a href="#" className="text-indigo-500">Sign Out</a>
+    
+    <img
+      src="https://randomuser.me/api/portraits/men/75.jpg"
+      alt="profile"
+      className="w-8 h-8 rounded-full"
+    />
+  </div>
+</header>
 
       {/* Sidebar */}
       

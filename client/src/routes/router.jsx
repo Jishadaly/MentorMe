@@ -5,13 +5,12 @@ import {
 } from 'react-router-dom'
 
 import Protected from './protected'
-// import AdminProtected from './adminProtected'
 import UserLogin from '../pages/mentee/userLogin'
 import Signup from '../pages/mentee/Signup'
 import MenteeHome from '../pages/mentee/MenteeHome'
 import MentorApplicationForm from '@/pages/mentor/MentorApplicationForm'
 import MenteeAditionalForm from '@/pages/mentee/menteeAditionalForm'
-import RoleSelectorCard from '@/componets/modal/roleSelectorCard'
+import RoleSelectorCard from '@/pages/others/roleSelectorCard'
 import AdminLogin from '@/pages/admin/AdminLogin'
 import AdminHome from '@/pages/admin/Home'
 import AdminProtected from './adminProtected'
@@ -19,13 +18,15 @@ import ConfirmationPage from '@/pages/mentor/requestLoadingPage'
 import MentorHome from '@/pages/mentor/MentorHome'
 import MentorLogin from '@/pages/mentor/MentorLogin'
 import MentorProtected from './mentorProtected'
-import LandingPage from '@/pages/LandingPage'
-import PageNotFound from '@/pages/notFount'
+import LandingPage from '@/pages/others/LandingPage'
+import PageNotFound from '@/pages/others/notFount'
 import MentorDetails from '@/pages/mentee/MentorDeatails'
+import MentorAvailability from '@/pages/mentor/Availability'
 
 
 
 const router = createBrowserRouter(
+
   createRoutesFromElements(
     <Route path='/'>
       <Route index element={<LandingPage />} />
@@ -43,7 +44,7 @@ const router = createBrowserRouter(
 
       <Route element={<MentorProtected/>}>
       <Route path='/mentor/home' element={<MentorHome/>}/>
-      
+      <Route path='/mentor/availabity' element={<MentorAvailability/>}/>
 
       </Route>
 
