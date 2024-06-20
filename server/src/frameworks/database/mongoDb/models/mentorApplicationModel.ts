@@ -1,6 +1,9 @@
 import mongoose, { Document, Schema } from 'mongoose';
+import { ISlot  } from './slots';
+// import Slots from './slots';
 
-// Define the interface for MentorApplication
+
+// Define the interface for MentorApplication.
 interface IMentorApplication extends Document {
   user: mongoose.Types.ObjectId;
   name: string;
@@ -16,7 +19,10 @@ interface IMentorApplication extends Document {
   motivation: string;
   status: 'Pending' | 'Approved' | 'Rejected';
   createdAt: Date;
+  slots: ISlot[];
+  availabilities: mongoose.Types.ObjectId[];
 }
+
 
 // Define the MentorApplication schema
 const MentorApplicationSchema: Schema = new Schema({
@@ -76,7 +82,15 @@ const MentorApplicationSchema: Schema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now 
-  }
+  },
+  slots: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Slot'
+  }],
+  availabilities: [{ 
+    type: Schema.Types.ObjectId,
+     ref: 'Availability'
+  }],
 });
 
 // Create and export the model

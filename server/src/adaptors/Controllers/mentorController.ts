@@ -43,7 +43,7 @@ export default {
       const  { mentorId } = req.query
       console.log(mentorId);
       
-      if (!mentorId) throw new Error("mentor id id not there")
+      if (!mentorId) throw new Error("mentor id id not there");
       const mentorIdString = mentorId as string;
       const mentor = await mentorInteractor.getMentor(mentorIdString);
       res.status(200).json({message:"fetched a mentor succecfully" , mentor});
@@ -52,5 +52,17 @@ export default {
       res.status(500).json(error)
     }
   },
+  addSlots:async(req:Request, res:Response , next:NextFunction)=>{
+    try {
+      const { mentorId , slots } = req.body
+      console.log("controller",mentorId , slots);
+      
+       const response = await mentorInteractor.addSlotes(mentorId,slots);
+       res.status(200)
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
 
 }

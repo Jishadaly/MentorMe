@@ -1,8 +1,10 @@
 
 import React from 'react';
 import { FiHome, FiCalendar, FiMessageSquare, FiDollarSign, FiUser } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 
 const MentorHome = () => {
+  const navigate = useNavigate();
   return (
     <div className="flex min-h-screen bg-gray-100">
       {/* Header */}
@@ -14,7 +16,7 @@ const MentorHome = () => {
       <i className="fas fa-bell text-xl"></i>
     </a>
     
-    <a href="#" className="text-indigo-500">Sign Out</a>
+    <a href="#" className="text-indigo-500">Sign Out</a>3
     
     <img
       src="https://randomuser.me/api/portraits/men/75.jpg"
@@ -24,7 +26,7 @@ const MentorHome = () => {
   </div>
 </header>
 
-      {/* Sidebar */}
+      {/* Sidebar */} 
       
       <aside className="w-64 fixed top-16 bottom-0 left-0 bg-white shadow-md flex flex-col pt-6 z-10">
         <nav className="flex flex-col space-y-6">
@@ -50,7 +52,7 @@ const MentorHome = () => {
           </a>
           <a href="#" className="flex items-center space-x-3 px-6 py-3">
             <FiUser size={24} />
-            <span>Availability</span>
+            <span  onClick={() => navigate('/mentor/availability')} >Availability</span>
           </a>
         </nav>
       </aside>
@@ -166,6 +168,4 @@ const MentorHome = () => {
     </div>
   );
 };
-
 export default MentorHome;
-

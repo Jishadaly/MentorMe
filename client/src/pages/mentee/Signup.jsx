@@ -12,10 +12,7 @@ import { googleAuth } from '@/redux/services/userAuthServices';
 import { useDispatch } from 'react-redux';
 
 
-
-
 const Signup = () => {
-
 
   const [isModalOpen , setIsModalOpen] = useState(false);
   const [userEmail , setUserEmail] = useState('');
@@ -209,4 +206,3 @@ const Signup = () => {
 }
 
 export default Signup;
-

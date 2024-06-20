@@ -24,43 +24,41 @@ import MentorDetails from '@/pages/mentee/MentorDeatails'
 import MentorAvailability from '@/pages/mentor/Availability'
 
 
-
 const router = createBrowserRouter(
 
   createRoutesFromElements(
     <Route path='/'>
       <Route index element={<LandingPage />} />
-      {/* <Route path="/userLogin" element={<UserLogin />} /> */}
 
       <Route element={<Protected/>}>
-          <Route path='/mentee/home' element={<MenteeHome/>}/>
-      <Route path='/mentee/mentorDetails/:mentorId' element={<MentorDetails/>}/>
-
+        <Route path='/mentee'>
+            <Route path='home' element={<MenteeHome/>}/>
+            <Route path='mentorDetails/:mentorId' element={<MentorDetails/>}/>
+        </Route>
       </Route>
 
       <Route element={<AdminProtected/>}>
-      <Route path='/admin/home' element={<AdminHome/>} />
+        <Route path='/admin'>
+         <Route path='home' element={<AdminHome/>}/>
+        </Route> 
       </Route>
 
-      <Route element={<MentorProtected/>}>
-      <Route path='/mentor/home' element={<MentorHome/>}/>
-      <Route path='/mentor/availabity' element={<MentorAvailability/>}/>
-
+      <Route element={<MentorProtected/>}> 
+        <Route path='/mentor'>
+          <Route index element={<MentorHome />} />
+          <Route path='home' element={<MentorHome/>}/>
+          <Route path='availability' element={<MentorAvailability/>}/>
+        </Route>    
       </Route>
 
       <Route path="/mentee/login" element={<UserLogin />} />
-      <Route path="/mentor/login" element={<MentorLogin />} />
-
-      
-      <Route path="/signup" element={<Signup />}/>
+      <Route path="/mentor/login" element={<MentorLogin />}/>
+      <Route path="/signup" element={<Signup />}/>                      
       <Route path='/chooseRole/:userId' element={<RoleSelectorCard/>} />
       <Route path='/mentorAppForm/:userId' element={<MentorApplicationForm/>} />
-      <Route path='/menteeAppForm/:userId' element={<MenteeAditionalForm/>} />
+      <Route path='/menteeAppForm/:userId' element={<MenteeAditionalForm/>} />    
       <Route path='/mentor/MentorConfirmationPage' element={<ConfirmationPage/>} />
       <Route path='/admin/login' element={<AdminLogin/>} />
-
-
-      
       <Route path="*" element={ <PageNotFound/>}/>
 
     </Route>

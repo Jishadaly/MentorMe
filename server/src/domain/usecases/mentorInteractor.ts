@@ -1,5 +1,7 @@
+import { Date } from "mongoose";
 import { ApplicationForm } from "../entities/mentorApplication";
 import mentorRepository from "../repositories/mentorRepository";
+import { IDateRange } from "../entities/dateRange";
 
 export default {
   mentorApplicationForm: async(formData:ApplicationForm)=>{
@@ -27,10 +29,20 @@ export default {
       console.log("rerspnd usecase",response);
       
       return response
-      return mentorId
    } catch (error:any) {
      throw new Error(error)
    }
+},
+addSlotes:async(mentorId:string,slots:IDateRange[])=>{
+      try {
+      const response = await mentorRepository.addSlotes(mentorId,slots); // Adjusted to handle array of slots
+      return response;
+      } catch (error:any) {
+         console.log(error);
+         throw new Error(error)
+         
+      }
+      
 }
   
 }

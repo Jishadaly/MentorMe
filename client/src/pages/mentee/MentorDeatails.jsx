@@ -1,31 +1,42 @@
 import React, { useEffect, useState } from 'react';
-import { FiStar, FiCalendar as FiCalendarIcon } from 'react-icons/fi';
-import Header from './partials/Header'; // Assuming you have a Header component
-import Sidenav from './partials/Sidenav'; // Assuming you have a Sidenav component
+import { FiStar, FiCalendar as FiCalendarIcon ,FiDollarSign } from 'react-icons/fi';
+import Header from './partials/Header';
+import Sidenav from './partials/Sidenav'; 
 import { useParams } from 'react-router-dom';
 import { fetchMentorData } from '@/Api/services/menteeService';
+import CustomDatePicker from '@/componets/DatePicker';
+
 
 const MentorDetails = () => {
   const {mentorId} = useParams();
   const [mentor1 , setMentor] = useState(null);
+  const [selectedDate , setSelectedDate] = useState(new Date());
   
   useEffect(() => {
     const getMentor = async () => {
       try {
         const response = await fetchMentorData('/user/getMentor', mentorId);
         setMentor(response.data.mentor);
+        console.log(response.data)
       } catch (error) {
-        console.error(error);
+        console.error(error); 
       }
     }
     getMentor()
   }, [mentorId]);
   if (!mentor1) {
-    // Return a loading state or a placeholder if mentor1 is undefined
+    
     return <div>Loading...</div>;
   }
   
-  
+  const filterSlotsByDate = (date) => {
+    return mentor1.availabilities.filter(
+      (slot) => new Date(slot.date).toDateString() === date.toDateString()
+    );
+  };
+
+  const availableSlots = filterSlotsByDate(selectedDate);
+
 
   const mentor = {
     profilePicture: `https://randomuser.me/api/portraits/men/42.jpg`,
@@ -47,16 +58,14 @@ const MentorDetails = () => {
   
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Header */}
+      
       <Header />
-
-      {/* Sidebar */}
       <Sidenav />
 
-      {/* Main Content */}
+      
       <main className="ml-20 mt-16 p-6 flex-1 overflow-y-auto">
         <section className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Mentor Info */}
+          
           <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-md">
             <div className="flex items-center space-x-4 mb-6">
               <img src={mentor.profilePicture} alt="profile" className="w-24 h-24 rounded-full" />
@@ -108,28 +117,40 @@ const MentorDetails = () => {
             </div>
           </div>
 
-          {/* Booking Calendar */}
-          <div className="bg-white p-6 rounded-lg shadow-md h-full sticky top-16">
-            <h3 className="text-xl font-extrabold mb-4 font-inter">Book with {mentor.name.split(' ')[0]}</h3>
-            <div className="flex items-center text-green-500 mb-4 ">
-              <FiStar size={20} />
-              <span className="ml-1 font-semibold font-inter">{mentor.rating} ({mentor.sessions}+ sessions)</span>
+           {/* Booking Calendar */}
+           <div className="bg-black p-6 rounded-lg shadow-md h-auto sticky top-16">
+            <h3 className="text-xl font-extrabold mb-4 text-white font-inter">Book with {mentor1.name.split(' ')[0]}</h3>
+            <div className="text-gray-300 mb-4">
+              <p>Times in GMT+5:30 (current time {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })})</p>
             </div>
-            <div className="text-green-500 mb-4 ">
-              <FiCalendarIcon size={20} />
-              <span className="ml-1 font-semibold font-inter">{mentor.rate} / 30-minute call</span>
+            <div className="flex items-center text-green-500 mb-4">
+              <FiStar size={20} />
+              <span className="ml-1 font-semibold font-inter">{mentor1.rating} ({mentor1.sessions}+ sessions)</span>
+            </div>
+            <div className="text-green-500 mb-4 flex items-center">
+              <FiDollarSign size={20} />
+              <span className="ml-1 font-semibold font-inter">${mentor1.rate} / 30-minute call</span>
+              <a href="#" className="text-blue-500 ml-2 underline">extend to 60min</a>
             </div>
             <div>
-              <h4 className="text-lg font-bold mb-2 font-inter">Available time</h4>
-              {/* Available times */}
-              {mentor.availableTimes.map((time, index) => (
-                <button key={index} className="w-full font-inter px-4 py-2 bg-indigo-500 text-white rounded-full shadow-md mb-2 transition duration-300 ease-in-out hover:bg-indigo-600">
-                  {time}
-                </button>
-              ))}
+              <CustomDatePicker selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
             </div>
-            
+            <div>
+              <h4 className="text-lg font-bold mb-2 text-white font-inter">Available time</h4>
+              <div className="flex space-x-2 overflow-x-auto scrollbar-hide">
+                {availableSlots.length > 0 ? (
+                  availableSlots.map((slot, index) => (
+                    <button key={index} className="flex-shrink-0 font-inter px-4 py-2 bg-indigo-500 text-white rounded-full shadow-md transition duration-300 ease-in-out hover:bg-indigo-600">
+                      {`${new Date(slot.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
+                    </button>
+                  ))
+                ) : (
+                  <p className="text-gray-500 font-inter">No available slots for this date.</p>
+                )}
+              </div>
+            </div>
           </div>
+
         </section>
       </main>
     </div>
