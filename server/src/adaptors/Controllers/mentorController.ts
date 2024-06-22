@@ -55,13 +55,14 @@ export default {
   addSlots:async(req:Request, res:Response , next:NextFunction)=>{
     try {
       const { mentorId , slots } = req.body
-      console.log("controller",mentorId , slots);
+      console.log("controller",req.body);
       
        const response = await mentorInteractor.addSlotes(mentorId,slots);
-       res.status(200)
-    } catch (error) {
+       res.status(200).json({message:"slote added successfully"});
+    } catch (error:any) {
       console.log(error);
       
+      res.status(400).json({ message: error.message });
     }
   }
 

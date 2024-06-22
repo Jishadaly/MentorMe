@@ -1,61 +1,16 @@
 
 import React from 'react';
-import { FiHome, FiCalendar, FiMessageSquare, FiDollarSign, FiUser } from 'react-icons/fi';
-import { useNavigate } from 'react-router-dom';
-
+import Header from './partials/Header';
+import SideNav from './partials/SideNav';
 const MentorHome = () => {
-  const navigate = useNavigate();
   return (
     <div className="flex min-h-screen bg-gray-100">
       {/* Header */}
-      <header className="w-full fixed top-0 bg-white p-4 shadow-md flex justify-between items-center z-10">
-  <h1 className="text-2xl font-bold text-indigo-600">Mentor me.</h1>
-  <div className="flex items-center space-x-4">
- 
-    <a href="#" className="text-indigo-500">
-      <i className="fas fa-bell text-xl"></i>
-    </a>
-    
-    <a href="#" className="text-indigo-500">Sign Out</a>3
-    
-    <img
-      src="https://randomuser.me/api/portraits/men/75.jpg"
-      alt="profile"
-      className="w-8 h-8 rounded-full"
-    />
-  </div>
-</header>
+      <Header/>  
 
       {/* Sidebar */} 
       
-      <aside className="w-64 fixed top-16 bottom-0 left-0 bg-white shadow-md flex flex-col pt-6 z-10">
-        <nav className="flex flex-col space-y-6">
-          <a href="#" className="flex items-center space-x-3 px-6 py-3 text-indigo-500">
-            <FiHome size={24} />
-            <span>Home</span>
-          </a>
-          <a href="#" className="flex items-center space-x-3 px-6 py-3">
-            <FiCalendar size={24} />
-            <span>Sessions</span>
-          </a>
-          <a href="#" className="flex items-center space-x-3 px-6 py-3">
-            <FiMessageSquare size={24} />
-            <span>Bookings</span>
-          </a>
-          <a href="#" className="flex items-center space-x-3 px-6 py-3">
-            <FiDollarSign size={24} />
-            <span>Messages</span>
-          </a>
-          <a href="#" className="flex items-center space-x-3 px-6 py-3">
-            <FiUser size={24} />
-            <span>Payment & Coupons</span>
-          </a>
-          <a href="#" className="flex items-center space-x-3 px-6 py-3">
-            <FiUser size={24} />
-            <span  onClick={() => navigate('/mentor/availability')} >Availability</span>
-          </a>
-        </nav>
-      </aside>
+      <SideNav/>
 
       {/* Main Content */}
       <main className="ml-64 mt-16 p-6 flex-1 overflow-y-auto">

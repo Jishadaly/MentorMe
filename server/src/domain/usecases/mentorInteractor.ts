@@ -33,12 +33,26 @@ export default {
      throw new Error(error)
    }
 },
-addSlotes:async(mentorId:string,slots:IDateRange[])=>{
+addSlotes:async(mentorId:string,slot:IDateRange)=>{
+   
       try {
-      const response = await mentorRepository.addSlotes(mentorId,slots); // Adjusted to handle array of slots
+         const currentDateTime = new Date();
+         
+           const from = new Date(slot.from);
+           const to = new Date(slot.to);
+   
+           // Check if slot is in the past
+           if (from < currentDateTime || to < currentDateTime) {
+             throw new Error("Cannot add slots in the past.");
+           }
+
+           
+         
+           
+      const response = await mentorRepository.addSlotes(mentorId,slot); // Adjusted to handle array of slots
+
       return response;
       } catch (error:any) {
-         console.log(error);
          throw new Error(error)
          
       }

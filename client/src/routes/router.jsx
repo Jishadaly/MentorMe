@@ -25,13 +25,13 @@ import MentorAvailability from '@/pages/mentor/Availability'
 
 
 const router = createBrowserRouter(
-
   createRoutesFromElements(
     <Route path='/'>
       <Route index element={<LandingPage />} />
 
-      <Route element={<Protected/>}>
+      <Route  element={<Protected/>}>
         <Route path='/mentee'>
+        <Route index element={<MenteeHome />} />
             <Route path='home' element={<MenteeHome/>}/>
             <Route path='mentorDetails/:mentorId' element={<MentorDetails/>}/>
         </Route>
@@ -39,11 +39,12 @@ const router = createBrowserRouter(
 
       <Route element={<AdminProtected/>}>
         <Route path='/admin'>
+        <Route index element={<AdminHome />} />
          <Route path='home' element={<AdminHome/>}/>
         </Route> 
       </Route>
 
-      <Route element={<MentorProtected/>}> 
+      <Route  element={<MentorProtected/>}> 
         <Route path='/mentor'>
           <Route index element={<MentorHome />} />
           <Route path='home' element={<MentorHome/>}/>

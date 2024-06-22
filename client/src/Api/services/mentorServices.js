@@ -11,10 +11,11 @@ export const  getMentors = async(endPoint )=>{
 }
 
 export const addSlots = async(endPoint , slots)=>{
-  console.log(endPoint, " '''''' ", slots);
+  console.log("jijijijiji",slots);
+ 
   try {
     const response  = await authInstanceAxios.post(`/${endPoint}`,slots);
-    return response;
+    return response.data;
   } catch (error) {
     console.log(error);
   }

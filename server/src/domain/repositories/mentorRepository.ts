@@ -63,30 +63,31 @@ export default {
     // return mentor
   },
 
-  addSlotes: async (mentorId: string, slots: DateRange[]) => {
+  addSlotes: async (mentorId: string, slot: DateRange) => {
 
     console.log(mentorId);
 
     // const mentorApplicationId = await MentorApplication.findById(mentorId)
     try {
-      const availabilityEntries = slots.map(slot => {
-        const from = new Date(slot.from);
-        const to = new Date(slot.to);
 
-        return {
+      const from = new Date(slot.from)
+      const to = new Date(slot.to)
+
+      const availabilities = {
           mentorId,
           date: from,
           startTime: from.toISOString(),
           endTime: to.toISOString(),
           isBooked: false
         };
-      });
+      
 
-      const createdAvailabilities = await Availability.insertMany(availabilityEntries);
+      const createdAvailabilities = await Availability.create(availabilities);
       await MentorApplication.findOneAndUpdate(
         { user: mentorId },
-        { $push: { availabilities: { $each: createdAvailabilities.map(avail => avail._id) } } }
+        { $push: { availabilities: createdAvailabilities._id } }
       );
+      
       return createdAvailabilities;
 
     } catch (error: any) {

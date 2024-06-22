@@ -118,8 +118,8 @@ const MentorDetails = () => {
           </div>
 
            {/* Booking Calendar */}
-           <div className="bg-black p-6 rounded-lg shadow-md h-auto sticky top-16">
-            <h3 className="text-xl font-extrabold mb-4 text-white font-inter">Book with {mentor1.name.split(' ')[0]}</h3>
+           <div className="bg-gray-900 p-6 rounded-lg shadow-md h-auto sticky top-16">
+            <h3 className="text-xl font-bold mb-4 text-white font-inter">Book with {mentor1.name.split(' ')[0]}</h3>
             <div className="text-gray-300 mb-4">
               <p>Times in GMT+5:30 (current time {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })})</p>
             </div>
@@ -136,7 +136,7 @@ const MentorDetails = () => {
               <CustomDatePicker selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
             </div>
             <div>
-              <h4 className="text-lg font-bold mb-2 text-white font-inter">Available time</h4>
+              <h4 className="text-lg font-semibold mb-2  text-white font-inter">Available time</h4>
               <div className="flex space-x-2 overflow-x-auto scrollbar-hide">
                 {availableSlots.length > 0 ? (
                   availableSlots.map((slot, index) => (
