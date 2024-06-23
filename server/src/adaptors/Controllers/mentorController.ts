@@ -55,7 +55,6 @@ export default {
   addSlots:async(req:Request, res:Response , next:NextFunction)=>{
     try {
       const { mentorId , slots } = req.body
-      console.log("controller",req.body);
       
        const response = await mentorInteractor.addSlotes(mentorId,slots);
        res.status(200).json({message:"slote added successfully"});
@@ -64,6 +63,32 @@ export default {
       
       res.status(400).json({ message: error.message });
     }
+  },
+
+  getApplicationId:async(req:Request , res:Response , next:NextFunction)=>{
+    try {
+      console.log("mentor controller" , req.params);
+      
+      const { mentorId } = req.query
+      const mentorIdString = mentorId as string;
+      const response = await mentorInteractor.getMentorApplication(mentorIdString);
+      
+      res.status(200).json({message:"mentor data fetched successfuly" , response})
+    } catch (error:any) {
+      res.status(400).status(error)
+    }
+  },
+
+  slotBooking:async(req:Request , res:Response , next:NextFunction)=>{
+    try {
+      
+      const {menteeId , mentorId ,slotId }  = req.body
+      // const slot = await mentorInteractor.slotBooking(menteeId , mentorId ,slotId );
+      res.status(200).json(await mentorInteractor.slotBooking(menteeId , mentorId ,slotId ));
+    } catch (error:any) {
+      res.status(400).status(error)
+    }
   }
+  
 
 }

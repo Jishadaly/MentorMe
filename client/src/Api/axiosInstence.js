@@ -54,7 +54,7 @@ authInstanceAxios.interceptors.response.use(
           break;
         case 404:
           // Not Found - Handle resource not found
-          console.error("Resource not found");
+        console.error("Resource not found");
           break;
         default:
           // Handle other errors

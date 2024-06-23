@@ -3,21 +3,28 @@ import { FiStar, FiCalendar as FiCalendarIcon ,FiDollarSign } from 'react-icons/
 import Header from './partials/Header';
 import Sidenav from './partials/Sidenav'; 
 import { useParams } from 'react-router-dom';
-import { fetchMentorData } from '@/Api/services/menteeService';
+import { fetchMentorData  , slotBookingbyMentee} from '@/Api/services/menteeService';
 import CustomDatePicker from '@/componets/DatePicker';
+import { useSelector } from 'react-redux';
+import { toast } from 'sonner';
 
 
 const MentorDetails = () => {
   const {mentorId} = useParams();
   const [mentor1 , setMentor] = useState(null);
   const [selectedDate , setSelectedDate] = useState(new Date());
+  const [slots , setSlots ] = useState([]);
+  const user = useSelector((state) => state.auth.user);
+  console.log("user",user);
   
   useEffect(() => {
     const getMentor = async () => {
       try {
         const response = await fetchMentorData('/user/getMentor', mentorId);
         setMentor(response.data.mentor);
-        console.log(response.data)
+        setSlots(response.data.mentor.availabilities);
+        console.log("mkmkmkmmkm",response.data.mentor.availabilities);
+        
       } catch (error) {
         console.error(error); 
       }
@@ -29,13 +36,27 @@ const MentorDetails = () => {
     return <div>Loading...</div>;
   }
   
+  
+  
   const filterSlotsByDate = (date) => {
-    return mentor1.availabilities.filter(
-      (slot) => new Date(slot.date).toDateString() === date.toDateString()
-    );
+    return slots.filter((slot)=> new Date(slot.date).toDateString() === date.toDateString())
   };
 
   const availableSlots = filterSlotsByDate(selectedDate);
+
+  const handleBooking = async (slotId , index)=>{
+     try {
+        const menteeId = user.id;
+        const bookingDatas = {
+          menteeId , mentorId , slotId
+        }
+        const response = slotBookingbyMentee('/user/slotBooking',bookingDatas);
+        console.log("mkmkmkmk",response);
+        toast.success("Slot booked successfully");
+     } catch (error) {
+      console.log(error);
+     }
+  }
 
 
   const mentor = {
@@ -140,7 +161,7 @@ const MentorDetails = () => {
               <div className="flex space-x-2 overflow-x-auto scrollbar-hide">
                 {availableSlots.length > 0 ? (
                   availableSlots.map((slot, index) => (
-                    <button key={index} className="flex-shrink-0 font-inter px-4 py-2 bg-indigo-500 text-white rounded-full shadow-md transition duration-300 ease-in-out hover:bg-indigo-600">
+                    <button onClick={()=> handleBooking(slot._id , index)} key={index} className="flex-shrink-0 font-inter px-4 py-2 bg-indigo-500 text-white rounded-full shadow-md transition duration-300 ease-in-out hover:bg-indigo-600">
                       {`${new Date(slot.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
                     </button>
                   ))
@@ -158,3 +179,6 @@ const MentorDetails = () => {
 };
 
 export default MentorDetails;
+
+
+

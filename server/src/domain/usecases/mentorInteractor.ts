@@ -9,10 +9,10 @@ export default {
         const savedData = await mentorRepository.saveApplicationForm(formData);
         return savedData;
      } catch (error) {
-      console.log(error);
       throw  error
      }
   },
+
   getMentors:async()=>{
        try {
           const response = await mentorRepository.getMentors();
@@ -21,13 +21,12 @@ export default {
          throw new Error(error)
        }
   },
+
   getMentor:async(mentorId:string)=>{
    console.log(mentorId);
    
    try {
       const response = await mentorRepository.getMentor(mentorId);
-      console.log("rerspnd usecase",response);
-      
       return response
    } catch (error:any) {
      throw new Error(error)
@@ -46,8 +45,7 @@ addSlotes:async(mentorId:string,slot:IDateRange)=>{
              throw new Error("Cannot add slots in the past.");
            }
 
-           
-         
+
            
       const response = await mentorRepository.addSlotes(mentorId,slot); // Adjusted to handle array of slots
 
@@ -57,6 +55,27 @@ addSlotes:async(mentorId:string,slot:IDateRange)=>{
          
       }
       
+},
+getMentorApplication:async(mentorId:string)=>{
+   console.log(mentorId);
+   
+   try {
+      const response = await mentorRepository.getMentorApplication(mentorId);
+      
+      
+      return response
+   } catch (error:any) {
+     throw new Error(error)
+   }
+},
+
+slotBooking:async(menteeId :string , mentorId:string ,slotId:string)=>{
+   try {
+      const response = await mentorRepository.bookAslot(menteeId , mentorId ,slotId);
+      return response
+   } catch (error:any) {
+     throw new Error(error)
+   }
 }
   
 }

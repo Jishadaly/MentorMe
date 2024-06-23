@@ -17,6 +17,9 @@ userRouter.post('/api/user/mentorAppicationForm',mentorController.mentorApplicat
 userRouter.get('/api/user/getMentors',verifyToken,mentorController.getMentors);
 userRouter.get('/api/user/getMentor' , mentorController.getMentor);
 userRouter.post('/api/user/addSlots' , mentorController.addSlots);
+userRouter.get('/api/user/getMentorApplication' , mentorController.getApplicationId)
+userRouter.post('/api/user/slotBooking' , mentorController.slotBooking);
+
 
 
 

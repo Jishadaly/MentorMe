@@ -17,7 +17,7 @@ const MenteeHome = () => {
       setMentor(response.data.mentors)
       console.log(response.data.mentors);
     }
-    getUsers()
+    getUsers();
   },[])
 
   const handleCardClick = (mentorId) =>{

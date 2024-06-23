@@ -7,6 +7,7 @@ export interface IAvailability extends Document {
   startTime: string;
   endTime: string;
   isBooked: boolean;
+  bookedBy:mongoose.Types.ObjectId;
 }
 
 // Mongoose schema for Availability
@@ -15,7 +16,9 @@ const AvailabilitySchema: Schema = new Schema({
   date: { type: Date, required: true },
   startTime: { type: String, required: true },
   endTime: { type: String, required: true },
-  isBooked: { type: Boolean, default: false }
+  isBooked: { type: Boolean, default: false },
+  bookedBy: { type: Schema.Types.ObjectId, ref: 'Users', required: true }
+  
 });
 
 const Availability = mongoose.model<IAvailability>('Availability', AvailabilitySchema);

@@ -37,7 +37,9 @@ export default {
   },
 
   getMentors: async () => {
+
     return await MentorApplication.find({ status: "Approved" });
+
   },
 
   getMentor: async (mentorId: string) => {
@@ -95,6 +97,28 @@ export default {
       throw new Error(error.message);
     }
   },
+
+  getMentorApplication:async (mentorId: string) => {
+    const mentorApplication = await MentorApplication.findOne({user:mentorId}).populate('availabilities');
+
+    if(!mentorApplication) throw new Error("there is no mentor application")
+        const availableSlots = await Availability.find({ mentorId: mentorApplication.user });
+        console.log("Available Slots:", availableSlots)
+
+      return availableSlots;
+  },
+
+  bookAslot:async(menteeId:string , mentorId:string ,slotId:string)=>{
+      try{
+        const bookAslot = await Availability.findByIdAndUpdate(slotId , {mentorId:mentorId , isBooked:true , bookedBy:menteeId})
+        console.log("//////",bookAslot);
+        return bookAslot
+        
+      }catch(error:any){
+        console.error('Error booking slots:', error);
+      throw new Error(error.message);
+      }
+  }
 
 
 }
