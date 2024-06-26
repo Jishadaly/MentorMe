@@ -21,9 +21,20 @@ export const addSlots = async(endPoint , slots)=>{
   }
 }
 
+export const deleteSlot = async(endPoint , slotId)=>{
+  try {
+    const response  = await authInstanceAxios.delete(`/${endPoint}?slotId=${slotId}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+
 export const getMentorApplication = async (endPoint , mentorId)=>{
   try {
-    const response = await authInstanceAxios.get(`${endPoint}`, {
+    const response = await authInstanceAxios.get(`/${endPoint}`, {
       params:{
         mentorId:mentorId
       }

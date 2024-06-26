@@ -52,6 +52,12 @@ export default {
 
         return await verifyUserdb(data.email);
     },
+
+    resendOtp:async(email:string)=>{
+        return await getUserbyEMail(email);
+
+    }
+    ,
     
     loginUser : async (email:string , password:string )=> {
 

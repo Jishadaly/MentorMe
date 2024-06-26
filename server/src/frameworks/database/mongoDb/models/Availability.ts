@@ -17,7 +17,7 @@ const AvailabilitySchema: Schema = new Schema({
   startTime: { type: String, required: true },
   endTime: { type: String, required: true },
   isBooked: { type: Boolean, default: false },
-  bookedBy: { type: Schema.Types.ObjectId, ref: 'Users', required: true }
+  bookedBy: { type: Schema.Types.ObjectId, ref: 'Users' }
   
 });
 

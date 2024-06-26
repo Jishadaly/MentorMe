@@ -1,8 +1,8 @@
-  import React from 'react';
+  import React, { useState } from 'react';
   import {  toast } from 'sonner'
   import { useNavigate } from 'react-router-dom';
 
-  import { verifyOTP } from '@/Api/services/auth/user-auth-service';
+  import { verifyOTP , resendOtp} from '@/Api/services/auth/user-auth-service';
   import {
     Button,
     Dialog,
@@ -18,17 +18,22 @@
       const [otp,setOtp] = React.useState('');
       const [timeLeft, setTimeLeft] = React.useState(60); // Initial time left: 60 seconds
       const navigate = useNavigate();
+      const [showResentOtpBtn , setShowResentOtpBtn ] = useState(false)
     
       React.useEffect(() => {
         if (isOpen) {
           const timer = setTimeout(() => {
             if (timeLeft > 0) {
               setTimeLeft(prevTime => prevTime - 1);
+            }else{
+            setShowResentOtpBtn(true)
             }
           }, 1000);
-    
           
-          return () => clearTimeout(timer);
+          
+          
+          return () => 
+             clearTimeout(timer);
         }
       }, [isOpen, timeLeft]);
 
@@ -40,7 +45,7 @@
 
       const handleVerify = async() =>{
         try {
-          console.log("//",otp)
+          
           const data = { otp , email }
           const response = await verifyOTP('user/verifyOTP', data );
           const userId = response.data.response._id;
@@ -54,6 +59,24 @@
         }
         console.log(error);
         }
+      }
+
+      const handleResendOtp =  ()=>{
+        new Promise((resolve , reject)=>{
+         resendOtp('user/resendOtp' , email)
+          .then( response => {
+            resolve(response)
+          })
+          .catch(error => {
+             reject(error)
+          })
+        })
+        .then(response =>{
+          console.log("resend otp succefully" , response);
+        }).catch((error)=>{
+          console.log(error);
+        })
+
       }
 
     return (
@@ -87,9 +110,10 @@
             <div className="mb-4">
             <Input className="text-center" maxLength={4} placeholder="Enter OTP" value={otp} onChange={handleChange} />
           </div>
-          <Button variant="text" color="indigo" className="w-full">
+          { showResentOtpBtn && <Button onClick={ handleResendOtp} variant="text" color="indigo" className="w-full">
             Resend OTP
-          </Button>
+          </Button>}
+
         </DialogBody>
         <DialogFooter className="space-x-2 px-4 pb-4">
           <Button variant="text" color="gray" onClick={onClose}>

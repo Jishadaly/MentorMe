@@ -44,31 +44,10 @@ export default {
 
   getMentor: async (mentorId: string) => {
     const mentor =  await MentorApplication.findById(mentorId).populate('availabilities');
-    console.log("menrtor details",mentor);
     return mentor;
-
-    // const objectId = new mongoose.Types.ObjectId(mentorId);
-    // const mentor = await MentorApplication.aggregate([
-    //   { $match: { _id: objectId } },
-    //   {
-    //     $lookup: {
-    //       from: 'availabilities',
-    //       localField: '_id',
-    //       foreignField: 'mentorId',
-    //       as: 'availabilities'
-    //     }
-    //   }
-    // ])
-    // console.log("kokokoko",mentor);
-    
-    // if(!mentor) throw new Error("mentor not fond");
-    // return mentor
   },
 
   addSlotes: async (mentorId: string, slot: DateRange) => {
-
-    console.log(mentorId);
-
     // const mentorApplicationId = await MentorApplication.findById(mentorId)
     try {
 
@@ -82,7 +61,6 @@ export default {
           endTime: to.toISOString(),
           isBooked: false
         };
-      
 
       const createdAvailabilities = await Availability.create(availabilities);
       await MentorApplication.findOneAndUpdate(
@@ -98,12 +76,26 @@ export default {
     }
   },
 
+  deleteSlot:async(slotId:string)=>{
+    try {
+      const deletedSlot = await Availability.findByIdAndDelete(slotId);
+    if (!deletedSlot) {
+      throw new Error('Slot not found');
+    }
+    console.log(deletedSlot);
+    
+    return deletedSlot;
+    } catch (error) {
+      throw error
+    }
+  }
+  ,
+
   getMentorApplication:async (mentorId: string) => {
     const mentorApplication = await MentorApplication.findOne({user:mentorId}).populate('availabilities');
 
     if(!mentorApplication) throw new Error("there is no mentor application")
         const availableSlots = await Availability.find({ mentorId: mentorApplication.user });
-        console.log("Available Slots:", availableSlots)
 
       return availableSlots;
   },
@@ -111,7 +103,6 @@ export default {
   bookAslot:async(menteeId:string , mentorId:string ,slotId:string)=>{
       try{
         const bookAslot = await Availability.findByIdAndUpdate(slotId , {mentorId:mentorId , isBooked:true , bookedBy:menteeId})
-        console.log("//////",bookAslot);
         return bookAslot
         
       }catch(error:any){

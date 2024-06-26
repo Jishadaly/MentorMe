@@ -23,7 +23,6 @@ export default {
   },
 
   getMentor:async(mentorId:string)=>{
-   console.log(mentorId);
    
    try {
       const response = await mentorRepository.getMentor(mentorId);
@@ -33,7 +32,7 @@ export default {
    }
 },
 addSlotes:async(mentorId:string,slot:IDateRange)=>{
-   
+
       try {
          const currentDateTime = new Date();
          
@@ -45,8 +44,6 @@ addSlotes:async(mentorId:string,slot:IDateRange)=>{
              throw new Error("Cannot add slots in the past.");
            }
 
-
-           
       const response = await mentorRepository.addSlotes(mentorId,slot); // Adjusted to handle array of slots
 
       return response;
@@ -56,13 +53,19 @@ addSlotes:async(mentorId:string,slot:IDateRange)=>{
       }
       
 },
+
+deleteSlot:async(slotId:string)=>{
+   try {
+      const response = await mentorRepository.deleteSlot(slotId)
+      return response
+   } catch (error) {
+      throw error
+   }
+}
+,
 getMentorApplication:async(mentorId:string)=>{
-   console.log(mentorId);
-   
    try {
       const response = await mentorRepository.getMentorApplication(mentorId);
-      
-      
       return response
    } catch (error:any) {
      throw new Error(error)

@@ -24,8 +24,8 @@ function UserLogin(){
         navigate('/mentee/home');
       })
       .catch((err) => {
-        console.error(err)
-      toast.error(err.error)
+        console.error("ererrer",err)
+        toast.error(err)
       }
     );
   };

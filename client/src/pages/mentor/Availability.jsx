@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import dayjs from 'dayjs';
+import moment from 'moment';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { FaPlus, FaTrash } from 'react-icons/fa';
 import { LocalizationProvider, MobileDateTimePicker } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Button, IconButton, TextField, Snackbar, Alert, Card, CardContent, Typography, Grid, CardActions } from '@mui/material';
-import { addSlots, getMentorApplication ,getMentorAvalableSlots } from '@/Api/services/mentorServices';
+import { addSlots, getMentorApplication ,deleteSlot } from '@/Api/services/mentorServices';
 import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 import SideNav from './partials/SideNav';
@@ -13,26 +13,24 @@ import CustomDatePicker from '@/componets/DatePicker';
 
 const MentorAvailability = () => {
   const user = useSelector((state) => state.auth.user);
-  const [slot, setSlot] = useState({ from: dayjs(), to: dayjs() });
+  const [slot, setSlot] = useState({ from: moment(), to: moment() });
   const [slots, setSlots] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
-  const [mentor, setMentor] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const handleTimeChange = (field, value) => {
-    setSlot({ ...slot, [field]: dayjs(value) });
+    setSlot({ ...slot, [field]: moment(value) });
   };
+
+  
 
   useEffect(() => {
     const fetchMentor = async () => {
       try {
-        const response = await getMentorApplication('/user/getMentorApplication', user.id);
+        const response = await getMentorApplication('user/getMentorApplication', user.id);
         // const response = await getMentorAvalableSlots('/user/getAvailableSlots');
         console.log(response);
-        setMentor(response.data.response);
+        setSlots(response.data.response);
       } catch (error) {
         console.error("Failed to fetch mentor data", error);
       } finally {
@@ -48,36 +46,38 @@ const MentorAvailability = () => {
     try {
       const slotAddingData = { mentorId, slot };
       const response = await addSlots('user/addSlots', slotAddingData);
-      setSlots([...slots, slot]);
-      toast.success(response.message);
-    } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
-        toast.error(error.response.data.message);
+      console.log("slote after added one " , response);
+      const newSlot = response.addedSlots; // single object
+      setSlots((prevSlots) => [...prevSlots, newSlot]);
+        toast.success(response.message);
       }
-    }
+     catch (error) {
+      toast.error("Can't add this slot");
+     }
   };
 
-  const removeSlot = (index) => {
-    setSlots(slots.filter((_, i) => i !== index));
-  };
-
-  const handleCloseSnackbar = () => {
-    setOpenSnackbar(false);
-  };
+ 
 
 
   const filterSlotsByDate = (date) => {
-    if (!mentor || !mentor.availabilities) return [];
-    return mentor.availabilities.filter(
+    console.log(date);
+    console.log("..l.l",slots);
+    if (!slots) return [];
+    return slots.filter(
       (slot) => new Date(slot.date).toDateString() === date.toDateString()
     );
   };
+  const availableSlots =  filterSlotsByDate(selectedDate);
 
-  const availableSlots = filterSlotsByDate(selectedDate);
 
-  const handleRemoveSlot = async (slotId)=>{
+  const handleRemoveSlot = async (slotId , index)=>{
      try {
-       console.log(slotId);
+       const  response = await deleteSlot('user/deleteSlot',slotId);
+       console.log(response.deletedSlot);
+       const deletedSlotId = response.deletedSlot._id
+       setSlots((prevSlots) => prevSlots.filter((slot) => slot._id !== deletedSlotId));
+       toast.success(response.message);
+       console.log(index);
      } catch (error) {
       console.log(error);
      }
@@ -87,49 +87,22 @@ const MentorAvailability = () => {
     return <div>Loading...</div>;
   }
 
+
   return (
     <div className="flex min-h-screen bg-gray-100">
       <Header />
       <SideNav />
       <div className="flex-1 mt-16 md:ml-64 p-4 flex">
         <div className="w-80 p-6 bg-white rounded-lg shadow-md fixed top-16">
-          <h3 className="text-xl font-bold mb-4 text-center">Select a Date</h3>
+          <h3 className="text-xl font-bold mb-4 text-center font-inter">Select a Date</h3>
           <CustomDatePicker selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
-          <h4 className="text-lg font-semibold mb-2 text-center">Available Slots</h4>
-          <div className="mt-4 h-96 overflow-y-auto">
-           
-            {availableSlots.length > 0 ? (
-              availableSlots.map((slot, index) => (
-                <Card key={index} className="mb-2">
-                  <CardContent className="flex items-center justify-between">
-                    <div>
-                      <Typography variant="body2" color="text.secondary">
-                        From: {dayjs(slot.from).format('HH:mm')}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        To: {dayjs(slot.to).format('HH:mm')}
-                      </Typography>
-                    </div>
-                    <CardActions>
-                      <IconButton onClick={() => handleRemoveSlot(slot._id)} className="bg-red-500 text-white p-2 rounded-full">
-                        <FaTrash />
-                      </IconButton>
-                    </CardActions>
-                  </CardContent>
-                </Card>
-              ))
-            ) : (
-              <Typography variant="body2" color="text.secondary" className="text-center">
-                No available slots for this date.
-              </Typography>
-            )}
-          </div>
+          <h4 className="text-lg font-semibold mb-2 text-center font-inter">Available Slots</h4>
         </div>
         <div className="ml-80 flex-1 overflow-y-auto p-6">
           <div className="max-w-3xl w-full p-6 bg-white rounded-lg shadow-md">
-            <h2 className="text-3xl font-bold mb-6 text-center">Session Availability</h2>
+            <h2 className="text-3xl font-extrabold mb-6 text-center font-inter">Session Availability</h2>
             <div className="flex flex-col items-center space-y-4 mb-6">
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <LocalizationProvider dateAdapter={AdapterMoment}>
                 <MobileDateTimePicker
                   label="From"
                   value={slot.from}
@@ -147,8 +120,9 @@ const MentorAvailability = () => {
                 <FaPlus className="mr-2" /> Add Slot
               </Button>
             </div>
-            <Grid container spacing={2}>
-              {slots.map((slot, index) => (
+
+            { availableSlots ? <Grid container spacing={2}>
+              {availableSlots.map((slot, index) => (
                 <Grid item xs={12} key={index}>
                   <Card>
                     <CardContent className="flex items-center justify-between">
@@ -157,14 +131,14 @@ const MentorAvailability = () => {
                           Slot {index + 1}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                          From: {slot.from.format('YYYY-MM-DD HH:mm')}
+                          From : { moment(slot.startTime).format('MMMM Do YYYY, h:mm:ss a') }
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                          To: {slot.to.format('YYYY-MM-DD HH:mm')}
+                        To: {moment(slot.endTime).format('MMMM Do YYYY, h:mm:ss a')}
                         </Typography>
                       </div>
                       <CardActions>
-                        <IconButton onClick={()=>handleRemoveSlot(slot._id)} className="bg-red-500 text-white p-2 rounded-full">
+                        <IconButton onClick={()=>handleRemoveSlot(slot._id , index)} className="bg-red-500 text-white p-2 rounded-full">
                           <FaTrash />
                         </IconButton>
                       </CardActions>
@@ -172,12 +146,7 @@ const MentorAvailability = () => {
                   </Card>
                 </Grid>
               ))}
-            </Grid>
-            <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
-              <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
-                {snackbarMessage}
-              </Alert>
-            </Snackbar>
+            </Grid> : <p>no available slots.</p>  }
           </div>
         </div>
       </div>

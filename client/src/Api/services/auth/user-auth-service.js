@@ -16,4 +16,13 @@ export const mentorApplicationFormApi = async(endPoint , data)=>{
    console.log(data);
    const response = await authInstanceAxios.post(`/${endPoint}`,data);
    return response
+};
+
+
+
+export const resendOtp = async(endPoint , email)=>{
+ 
+  const response  = await authInstanceAxios.get(`${endPoint}?email=${email}`,);
+     return response
+  
 }

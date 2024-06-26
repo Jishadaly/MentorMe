@@ -3,19 +3,23 @@ import { FiStar, FiCalendar as FiCalendarIcon ,FiDollarSign } from 'react-icons/
 import Header from './partials/Header';
 import Sidenav from './partials/Sidenav'; 
 import { useParams } from 'react-router-dom';
-import { fetchMentorData  , slotBookingbyMentee} from '@/Api/services/menteeService';
+import { fetchMentorData  , slotBookingbyMentee , createCheckoutSession} from '@/Api/services/menteeService';
 import CustomDatePicker from '@/componets/DatePicker';
 import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
+import { loadStripe } from '@stripe/stripe-js';
+
+
 
 
 const MentorDetails = () => {
   const {mentorId} = useParams();
   const [mentor1 , setMentor] = useState(null);
   const [selectedDate , setSelectedDate] = useState(new Date());
-  const [slots , setSlots ] = useState([]);
+  const [slots , setSlots          ] = useState([]);
   const user = useSelector((state) => state.auth.user);
-  console.log("user",user);
+  const amount = 2000;
+
   
   useEffect(() => {
     const getMentor = async () => {
@@ -23,7 +27,7 @@ const MentorDetails = () => {
         const response = await fetchMentorData('/user/getMentor', mentorId);
         setMentor(response.data.mentor);
         setSlots(response.data.mentor.availabilities);
-        console.log("mkmkmkmmkm",response.data.mentor.availabilities);
+        console.log(response.data.mentor.availabilities);
         
       } catch (error) {
         console.error(error); 
@@ -35,9 +39,7 @@ const MentorDetails = () => {
     
     return <div>Loading...</div>;
   }
-  
-  
-  
+
   const filterSlotsByDate = (date) => {
     return slots.filter((slot)=> new Date(slot.date).toDateString() === date.toDateString())
   };
@@ -53,9 +55,33 @@ const MentorDetails = () => {
         const response = slotBookingbyMentee('/user/slotBooking',bookingDatas);
         console.log("mkmkmkmk",response);
         toast.success("Slot booked successfully");
+        let amount = 500;
+        const strip = await stripePromise;
+        const session = await createCheckoutSession('/user/create-checkout-session' ,amount , menteeId , mentorId , slotId )
+        .then((res) => res.json());
+        
+        await strip.redirectToCheckout({sessionId:session.id});
      } catch (error) {
       console.log(error);
      }
+  }
+
+  const makePayment = async(slotId , index)=>{
+   
+    const menteeId = user.id;
+    try {
+      const strip =  loadStripe(import.meta.env.VITE_STRIP_PUBLISHED_KEY);
+      const session = await createCheckoutSession('/user/create-checkout-session' ,{amount: amount,
+      menteeId: menteeId,
+      mentorId: mentorId,
+      slotId: slotId} )
+        .then((res) => res.json()).catch((error)=> console.log(error))
+
+        await strip.redirectToCheckout({sessionId:session.id});
+
+    } catch (error) {
+      console.log(error);
+    }
   }
 
 
@@ -161,7 +187,7 @@ const MentorDetails = () => {
               <div className="flex space-x-2 overflow-x-auto scrollbar-hide">
                 {availableSlots.length > 0 ? (
                   availableSlots.map((slot, index) => (
-                    <button onClick={()=> handleBooking(slot._id , index)} key={index} className="flex-shrink-0 font-inter px-4 py-2 bg-indigo-500 text-white rounded-full shadow-md transition duration-300 ease-in-out hover:bg-indigo-600">
+                    <button onClick={()=> makePayment(slot._id , index)} key={index} className="flex-shrink-0 font-inter px-4 py-2 bg-indigo-500 text-white rounded-full shadow-md transition duration-300 ease-in-out hover:bg-indigo-600">
                       {`${new Date(slot.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
                     </button>
                   ))
@@ -171,7 +197,6 @@ const MentorDetails = () => {
               </div>
             </div>
           </div>
-
         </section>
       </main>
     </div>

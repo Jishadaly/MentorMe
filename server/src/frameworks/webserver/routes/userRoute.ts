@@ -8,6 +8,7 @@ const userRouter = express.Router();
 // User?
 userRouter.post('/api/user/signup',authController.userRegistration);
 userRouter.post('/api/user/verifyOTP' , authController.verifyOTP);
+userRouter.get('/api/user/resendOtp' , authController.resendOtp);
 userRouter.post('/api/user/login',authController.userLogin);
 userRouter.post('/api/user/googleLogin' , authController.googleAuth);
 
@@ -19,8 +20,10 @@ userRouter.get('/api/user/getMentor' , mentorController.getMentor);
 userRouter.post('/api/user/addSlots' , mentorController.addSlots);
 userRouter.get('/api/user/getMentorApplication' , mentorController.getApplicationId)
 userRouter.post('/api/user/slotBooking' , mentorController.slotBooking);
-
-
+userRouter.post('/api/user/create-checkout-session' , mentorController.createCheckoutSession)
+userRouter.post('/api/user/create-checkout-session' , mentorController.createCheckoutSession)
+userRouter.delete('/api/user/deleteSlot' , mentorController.deleteSlot)
+userRouter.get('/api/user/deleteSlot' , mentorController.deleteSlot)
 
 
 export default userRouter;  
