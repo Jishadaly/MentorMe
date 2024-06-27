@@ -27,7 +27,8 @@ export const slotBookingbyMentee = async(endPoint , datas)=>{
   export const createCheckoutSession = async (endPoint , datas)=>{
     console.log(endPoint , datas);
     try {
-      return await authInstanceAxios.post(`${endPoint}`,datas);
+      const response = await authInstanceAxios.post(`/${endPoint}`,datas);
+      return response.data
     } catch (error) {
       console.log(error);
     }

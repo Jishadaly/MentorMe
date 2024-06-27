@@ -86,9 +86,6 @@ export default {
   },
 
   slotBooking:async(req:Request , res:Response , next:NextFunction)=>{
-
-    
-    
     try {
 
       const {menteeId , mentorId ,slotId }  = req.body
@@ -99,36 +96,69 @@ export default {
     }
   },
 
+  // createCheckoutSession:async(req:Request , res:Response , next:NextFunction)=>{
+          
+  //         try {
+  //           const { price } = req.body;
+  //           const paymentIntent = await stripe.paymentIntents.create({
+  //             price, // amount is expected to be in the smallest currency unit (e.g., cents)
+  //               currency: 'usd',
+  //              automatic_payment_methods : {
+  //                enabled : true 
+  //              }
+  //           });
+ 
+  //           res.status(200).send({
+  //               clientSecret: paymentIntent.client_secret, 
+  //           });
+  //       } catch (error:any) {
+  //           res.status(400).send({ error: error.message });
+  //       }
+
+
+  // },
+
   createCheckoutSession:async(req:Request , res:Response , next:NextFunction)=>{
-           const { mentorId, menteeId, slotId , amount } = req.body;
-     try {
-      
-      const lineItems = {
-         price_data:{
-          currency:'usd',
-          mentor_data:{
-            id:mentorId
-          },
-          amount: Math.round(amount * 100)
-         }
-      }
+          
 
+          const {price} = req.body;
+          
+    try {
       const session = await stripe.checkout.sessions.create({
-        payment_method_types:["card"],
-        line_items:lineItems,
-        mode:"payment",
-        success_url:"http://localhost:5173/mentee/home",
-        cancel_url:"http://localhost:5173/mentee/home",
-      })
+        payment_method_types: ['card'],
+        line_items: [
+          {
+            price_data: {
+              currency: 'inr',
+              product_data: {
+                name: '1 Hour slot', // Replace with your product name
+                description: '1-hour consultation slot', // Optional description
+                images: ['https://picsum.photos/200/300'], // Optional product image
+              },
+              unit_amount: price * 100, // Price in paisa (100 paisa = 1 INR)
+            },
+            quantity: 1,
+          },
+        ],
+        mode: 'payment',
+        success_url: `${process.env.CLIENT_URL}/mentee/home?session_id={CHECKOUT_SESSION_ID}`, // Replace with your client URL
+        cancel_url: `${process.env.CLIENT_URL}/mentee/home`,
+        
+        locale: 'en', // Language/locale for Checkout page
+        customer_email: 'customer@example.com', // Pre-fill customer email if known
+      });
 
-      res.json({id:session.id});
-     } catch (error:any) {
+
+      res.json({ url : session.url })
+  } catch (error:any) {
       console.log(error);
       
-      res.status(400).status(error);
-      
-     }
-  },
+      res.status(500).send({ error: error.message });
+  }
+
+
+},
+
   deleteSlot:async(req:Request , res:Response, next: NextFunction)=>{
         const { slotId } = req.query; 
     try {

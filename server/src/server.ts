@@ -6,8 +6,9 @@ import adminRouter from './frameworks/webserver/routes/adminRoute';
 const app:Application = express();
 const port = 3000;
 
-
+app.use(express.json());
 configureExpress(app)
+
 app.use(userRouter)
 app.use(adminRouter)
 

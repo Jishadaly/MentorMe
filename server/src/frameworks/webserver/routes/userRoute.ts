@@ -21,9 +21,9 @@ userRouter.post('/api/user/addSlots' , mentorController.addSlots);
 userRouter.get('/api/user/getMentorApplication' , mentorController.getApplicationId)
 userRouter.post('/api/user/slotBooking' , mentorController.slotBooking);
 userRouter.post('/api/user/create-checkout-session' , mentorController.createCheckoutSession)
-userRouter.post('/api/user/create-checkout-session' , mentorController.createCheckoutSession)
+// userRouter.post('/api/user/create-checkout-session' , mentorController.createCheckoutSession)
 userRouter.delete('/api/user/deleteSlot' , mentorController.deleteSlot)
-userRouter.get('/api/user/deleteSlot' , mentorController.deleteSlot)
+// userRouter.get('/api/user/deleteSlot' , mentorController.deleteSlot)
 
 
 export default userRouter;  

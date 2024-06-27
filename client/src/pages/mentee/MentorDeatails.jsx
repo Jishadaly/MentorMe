@@ -8,6 +8,7 @@ import CustomDatePicker from '@/componets/DatePicker';
 import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 import { loadStripe } from '@stripe/stripe-js';
+import BookingConfirmModal from '@/componets/modal/BookingConfrimModal';
 
 
 
@@ -19,6 +20,7 @@ const MentorDetails = () => {
   const [slots , setSlots          ] = useState([]);
   const user = useSelector((state) => state.auth.user);
   const amount = 2000;
+  const [isModalvisible , setIsmodalVisble] = useState(false);
 
   
   useEffect(() => {
@@ -46,44 +48,51 @@ const MentorDetails = () => {
 
   const availableSlots = filterSlotsByDate(selectedDate);
 
-  const handleBooking = async (slotId , index)=>{
-     try {
-        const menteeId = user.id;
-        const bookingDatas = {
-          menteeId , mentorId , slotId
-        }
-        const response = slotBookingbyMentee('/user/slotBooking',bookingDatas);
-        console.log("mkmkmkmk",response);
-        toast.success("Slot booked successfully");
-        let amount = 500;
-        const strip = await stripePromise;
-        const session = await createCheckoutSession('/user/create-checkout-session' ,amount , menteeId , mentorId , slotId )
-        .then((res) => res.json());
+  // const handleBooking = async (slotId , index)=>{
+  //    try {
+  //       const menteeId = user.id;
+  //       const bookingDatas = {
+  //         menteeId , mentorId , slotId
+  //       }
+  //       const response = slotBookingbyMentee('/user/slotBooking',bookingDatas);
+  //       console.log("mkmkmkmk",response);
+  //       toast.success("Slot booked successfully");
+  //       let amount = 500;
+  //       const strip = await stripePromise;
+  //       const session = await createCheckoutSession('/user/create-checkout-session' ,amount , menteeId , mentorId , slotId )
+  //       .then((res) => res.json());
         
-        await strip.redirectToCheckout({sessionId:session.id});
-     } catch (error) {
-      console.log(error);
-     }
-  }
+  //       await strip.redirectToCheckout({sessionId:session.id});
+  //    } catch (error) {
+  //     console.log(error);
+  //    }
+  // }
 
-  const makePayment = async(slotId , index)=>{
+  // const makePayment = async(slotId , index)=>{
    
-    const menteeId = user.id;
-    try {
-      const strip =  loadStripe(import.meta.env.VITE_STRIP_PUBLISHED_KEY);
-      const session = await createCheckoutSession('/user/create-checkout-session' ,{amount: amount,
-      menteeId: menteeId,
-      mentorId: mentorId,
-      slotId: slotId} )
-        .then((res) => res.json()).catch((error)=> console.log(error))
+  //   const menteeId = user.id;
+  //   try {
+  //     const strip =  loadStripe(import.meta.env.VITE_STRIP_PUBLISHED_KEY);
+  //     const session = await createCheckoutSession('/user/create-checkout-session' ,{amount: amount,
+  //     menteeId: menteeId,
+  //     mentorId: mentorId,
+  //     slotId: slotId} )
+  //       .then((res) => res.json()).catch((error)=> console.log(error))
 
-        await strip.redirectToCheckout({sessionId:session.id});
+  //       await strip.redirectToCheckout({sessionId:session.id});
 
-    } catch (error) {
-      console.log(error);
-    }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  const handleButtonClick = ()=>{
+    setIsmodalVisble(true);
   }
 
+  const handleModalClose = ()=>{
+     setIsmodalVisble(false)
+  }
 
   const mentor = {
     profilePicture: `https://randomuser.me/api/portraits/men/42.jpg`,
@@ -108,7 +117,6 @@ const MentorDetails = () => {
       
       <Header />
       <Sidenav />
-
       
       <main className="ml-20 mt-16 p-6 flex-1 overflow-y-auto">
         <section className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -187,18 +195,21 @@ const MentorDetails = () => {
               <div className="flex space-x-2 overflow-x-auto scrollbar-hide">
                 {availableSlots.length > 0 ? (
                   availableSlots.map((slot, index) => (
-                    <button onClick={()=> makePayment(slot._id , index)} key={index} className="flex-shrink-0 font-inter px-4 py-2 bg-indigo-500 text-white rounded-full shadow-md transition duration-300 ease-in-out hover:bg-indigo-600">
+                    <button onClick={handleButtonClick } key={index} className="flex-shrink-0 font-inter px-4 py-2 bg-indigo-500 text-white rounded-full shadow-md transition duration-300 ease-in-out hover:bg-indigo-600">
                       {`${new Date(slot.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
                     </button>
                   ))
                 ) : (
                   <p className="text-gray-500 font-inter">No available slots for this date.</p>
                 )}
+
+               
               </div>
             </div>
           </div>
         </section>
       </main>
+      { isModalvisible && <BookingConfirmModal onClose = {handleModalClose} /> }
     </div>
   );
 };

@@ -24,6 +24,8 @@ import MentorDetails from '@/pages/mentee/MentorDeatails'
 import MentorAvailability from '@/pages/mentor/Availability'
 
 
+
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/'>
@@ -34,6 +36,7 @@ const router = createBrowserRouter(
         <Route index element={<MenteeHome />} />
             <Route path='home' element={<MenteeHome/>}/>
             <Route path='mentorDetails/:mentorId' element={<MentorDetails/>}/>
+            
         </Route>
       </Route>
 

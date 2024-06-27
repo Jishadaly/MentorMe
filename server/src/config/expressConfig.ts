@@ -24,6 +24,7 @@ declare module 'express-session' {
 
 export function configureExpress(app: Application): void {
    app.use(bodyParser.json());
+   
    app.use(bodyParser.urlencoded({ extended: true }))
    app.use(cors(corsOption));
    app.use(session({
