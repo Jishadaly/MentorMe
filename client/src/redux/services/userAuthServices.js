@@ -1,5 +1,6 @@
 import { authInstanceAxios } from '@/Api/axiosInstence';
 import {  createAsyncThunk } from '@reduxjs/toolkit';
+import Cookies from 'js-cookie';
 
 export const loginUser = createAsyncThunk(
   'auth/userLogin',
@@ -13,6 +14,7 @@ export const loginUser = createAsyncThunk(
       // Save to localStorage
       localStorage.setItem('user', JSON.stringify(user));
       localStorage.setItem('token', token);
+      Cookies.set('userToken',token)
 
       return { user, token };
     } catch (error) {
@@ -34,8 +36,8 @@ export const mentorLogin = createAsyncThunk(
 
       // Save to localStorage
       localStorage.setItem('mentor', JSON.stringify(user));
-      localStorage.setItem('Mentortoken', token);
-console.log("mentor",response);
+      Cookies.set('mentorToken',token)
+      console.log("mentor",response);
 
       return { user, token };
 
@@ -59,7 +61,7 @@ export const googleAuth = createAsyncThunk(
 
       // Save to localStorage
       localStorage.setItem('token', JSON.stringify(user));
-      localStorage.setItem('token', token);
+      Cookies.set('userToken',token)
 
       return { user, token };
     } catch (error) {

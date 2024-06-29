@@ -2,6 +2,7 @@ import { Users, Iuser } from '../../frameworks/database/mongoDb/models/user';
 import { IUser } from '../entities/types/user/user';
 import { generatePassword } from '../utils/generatePassword';
 import { Encrypt } from '../helper/hashPassword';
+import Availability from '../../frameworks/database/mongoDb/models/Availability';
 
 
 export const checkExistingUser = async (email: string, userName: string) => {
@@ -85,4 +86,14 @@ export const saveGoogleUser =async(userData:IUser)=>{
     return await newUser.save();
 
 
+}
+
+export const getBookdslotdb=async(userId:string)=>{
+  const slots = await Availability.find({ bookedBy: userId }).populate('mentorId');
+
+   console.log("slotes",slots);
+   
+   if(!slots) throw new Error("there is no booked slotes")
+
+    return slots
 }

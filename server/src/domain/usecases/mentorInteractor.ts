@@ -2,6 +2,7 @@ import { Date } from "mongoose";
 import { ApplicationForm } from "../entities/mentorApplication";
 import mentorRepository from "../repositories/mentorRepository";
 import { IDateRange } from "../entities/dateRange";
+import { getBookdslotdb, sameUser } from "../repositories/userRepository";
 
 export default {
   mentorApplicationForm: async(formData:ApplicationForm)=>{
@@ -31,8 +32,8 @@ export default {
      throw new Error(error)
    }
 },
-addSlotes:async(mentorId:string,slot:IDateRange)=>{
 
+addSlotes:async(mentorId:string,slot:IDateRange)=>{
       try {
          const currentDateTime = new Date();
          
@@ -51,7 +52,6 @@ addSlotes:async(mentorId:string,slot:IDateRange)=>{
          throw new Error(error)
          
       }
-      
 },
 
 deleteSlot:async(slotId:string)=>{
@@ -61,8 +61,8 @@ deleteSlot:async(slotId:string)=>{
    } catch (error) {
       throw error
    }
-}
-,
+},
+
 getMentorApplication:async(mentorId:string)=>{
    try {
       const response = await mentorRepository.getMentorApplication(mentorId);
@@ -79,6 +79,53 @@ slotBooking:async(menteeId :string , mentorId:string ,slotId:string)=>{
    } catch (error:any) {
      throw new Error(error)
    }
+},
+
+createPaymentIntent:async(mentee:string , mentor:string , slotId:string , price:number , stripe:any )=>{
+
+
+   const user  = await sameUser(mentee);
+   try {
+      const session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items: [
+          {
+            price_data: {
+              currency: 'inr',
+              product_data: {
+                name: '1 Hour slot', 
+                description: '1-hour consultation slot', 
+              },
+              unit_amount: price * 100,
+            },
+            quantity: 1,
+          },
+        ],
+
+        mode: 'payment',
+        success_url: `${process.env.CLIENT_URL}/mentee/calles`, 
+        cancel_url: `${process.env.CLIENT_URL}/mentee/home`,
+        locale: 'en', 
+        customer_email: user?.email,
+        metadata: {
+          mentee:mentee,
+          mentor:mentor,
+          slotId:slotId
+        },
+      });
+
+      console.log("Checkout session created with metadata:", session.metadata);
+
+      return session
+      
+   } catch (error:any) {
+      console.log({error});
+      throw new Error(error)
+   }
+},
+getBookedSlotes:async(userId:string)=>{
+   const slotes = await  getBookdslotdb(userId)
+   return slotes;
 }
   
 }

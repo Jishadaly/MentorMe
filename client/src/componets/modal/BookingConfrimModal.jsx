@@ -3,11 +3,12 @@ import { createCheckoutSession } from "@/Api/services/menteeService";
 import { toast } from "sonner";
 
 
-function BookingConfirmModal({ onClose }) {
-
+function BookingConfirmModal({ onClose , mentor , mentee , slotId , price}) {
+    
     const handleAccept = async ()=>{
         try {
-            const data = await createCheckoutSession('user/create-checkout-session', { price: 2000 });
+            const data = await createCheckoutSession('user/create-checkout-session',
+               { mentee , mentor , slotId , price });
             if (data.url) {
               window.location.href = data.url; // Redirect to the Stripe Checkout page
             } else {

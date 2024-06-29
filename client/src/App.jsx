@@ -1,10 +1,9 @@
   import React from 'react'
-  import { BrowserRouter as Router ,Routes , Route , RouterProvider  } from 'react-router-dom'
+  import { RouterProvider } from 'react-router-dom'
   import { Toaster,  } from 'sonner'
   import router from './routes/router'
   import { Provider } from 'react-redux'
   import { store , persister } from './redux/store'
-
   import { PersistGate } from 'redux-persist/integration/react'
   import { Elements } from '@stripe/react-stripe-js'
   import { loadStripe } from '@stripe/stripe-js'
@@ -12,18 +11,16 @@
 
 
   function App() {
-    
+
     return (
-      <Provider store={store}>
-        <PersistGate loading={null}  persistor={persister}>
+     <Provider store={store}>
+      <PersistGate loading={null}  persistor={persister}>
         <Elements stripe={strip}>
-      {/* <div> */}
-        <Toaster position="top-center" richColors/>
-        <RouterProvider router={router} />
-      {/* </div> */}
-      </Elements>
+           <Toaster position="top-center" richColors/>
+           <RouterProvider router={router} />
+        </Elements>
       </PersistGate>
-      </Provider>
+    </Provider>
     )
   }
 

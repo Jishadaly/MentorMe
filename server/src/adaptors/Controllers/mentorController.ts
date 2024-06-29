@@ -1,6 +1,5 @@
 import { Request,Response,NextFunction,  } from "express";
 import mentorInteractor from "../../domain/usecases/mentorInteractor";
-
 const stripe = require('stripe')(process.env.STRIP_SECRET_KEY);
 
 export default {
@@ -95,32 +94,11 @@ export default {
 
   createCheckoutSession:async(req:Request , res:Response , next:NextFunction)=>{
           
-     const {price} = req.body; 
+     const  { mentee , mentor , slotId , price } = req.body; 
+     console.log(mentee , mentor , slotId , price);
+
     try {
-      const session = await stripe.checkout.sessions.create({
-        payment_method_types: ['card'],
-        line_items: [
-          {
-            price_data: {
-              currency: 'inr',
-              product_data: {
-                name: '1 Hour slot', 
-                description: '1-hour consultation slot', 
-              },
-              unit_amount: price * 100, 
-            },
-            quantity: 1,
-          },
-        ],
-
-        mode: 'payment',
-        success_url: `${process.env.CLIENT_URL}/mentee/calles`, 
-        cancel_url: `${process.env.CLIENT_URL}/mentee/home`,
-        locale: 'en', 
-        customer_email: 'customer@example.com',
-
-      });
-
+      const session = await mentorInteractor.createPaymentIntent(mentee , mentor , slotId , price , stripe)
       res.json({ url : session.url });
 
   } catch (error:any) {
@@ -147,25 +125,40 @@ export default {
   },
 
   webhook:async(req:Request , res:Response , next:NextFunction)=>{
-    const sig = req.headers['stripe-signature'];
-    let event;
+    // const sig = req.headers['stripe-signature'];
+    // let event;
 
-      try {
-         event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
-      } catch (err:any) {
-        return res.status(400).send(`Webhook Error: ${err.message}`);
-      }
-
-   
+    //   try {
+    //      event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+    //      console.log("11111",{event});
+         
+    //   } catch (err:any) {
+    //     console.log({err});
+    //     // return res.status(400).send(`Webhook Error: ${err.message}`);
+    //   }
+    //   console.log("22222",{event,type:event?.type});
+     const event = req.body
   switch (event.type) {
-    case 'payment_intent.succeeded':
-      const paymentIntentSucceeded = event.data.object;
-      console.log("payment success");
+      case 'checkout.session.completed':
+        const metaData = event?.data?.object?.metadata;
+        const { slotId , mentee , mentor } = metaData;
+        const bookedSlot = await mentorInteractor.slotBooking( slotId , mentee , mentor)
+        console.log("payment session complete with booked id ",bookedSlot);
       break;
     default:
       return res.status(400).end();
   }
-  // Return a 200 response to acknowledge receipt of the event
-   res.json({received: true});
+   res.status(200).json({received: true});
+ },
+
+ getBookedSlotes:async(req:Request , res:Response , next:NextFunction)=>{
+   try { 
+     const  {userId} = req.body
+     console.log(userId);
+     const slotes = await mentorInteractor.getBookedSlotes(userId)
+     res.status(200).json({slotes})
+   } catch (error) {
+    res.status(500).json({error:error}) 
+   }
  }
 }

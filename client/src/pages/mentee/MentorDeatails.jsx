@@ -3,11 +3,10 @@ import { FiStar, FiCalendar as FiCalendarIcon ,FiDollarSign } from 'react-icons/
 import Header from './partials/Header';
 import Sidenav from './partials/Sidenav'; 
 import { useParams } from 'react-router-dom';
-import { fetchMentorData  , slotBookingbyMentee , createCheckoutSession} from '@/Api/services/menteeService';
+import { fetchMentorData } from '@/Api/services/menteeService';
 import CustomDatePicker from '@/componets/DatePicker';
 import { useSelector } from 'react-redux';
-import { toast } from 'sonner';
-import { loadStripe } from '@stripe/stripe-js';
+
 import BookingConfirmModal from '@/componets/modal/BookingConfrimModal';
 
 
@@ -18,8 +17,9 @@ const MentorDetails = () => {
   const [mentor1 , setMentor] = useState(null);
   const [selectedDate , setSelectedDate] = useState(new Date());
   const [slots , setSlots          ] = useState([]);
+  const [clickedSLot , setClickedSlot] = useState(null);
   const user = useSelector((state) => state.auth.user);
-  const amount = 2000;
+
   const [isModalvisible , setIsmodalVisble] = useState(false);
 
   
@@ -29,7 +29,7 @@ const MentorDetails = () => {
         const response = await fetchMentorData('/user/getMentor', mentorId);
         setMentor(response.data.mentor);
         setSlots(response.data.mentor.availabilities);
-        console.log(response.data.mentor.availabilities);
+        console.log(response.data.mentor);
         
       } catch (error) {
         console.error(error); 
@@ -86,9 +86,13 @@ const MentorDetails = () => {
   //   }
   // }
 
-  const handleButtonClick = ()=>{
+  const handleButtonClick = (slotId)=>{
+    
+    setClickedSlot(slotId)
     setIsmodalVisble(true);
   }
+
+  console.log(clickedSLot,"clikckckckc");
 
   const handleModalClose = ()=>{
      setIsmodalVisble(false)
@@ -195,7 +199,7 @@ const MentorDetails = () => {
               <div className="flex space-x-2 overflow-x-auto scrollbar-hide">
                 {availableSlots.length > 0 ? (
                   availableSlots.map((slot, index) => (
-                    <button onClick={handleButtonClick } key={index} className="flex-shrink-0 font-inter px-4 py-2 bg-indigo-500 text-white rounded-full shadow-md transition duration-300 ease-in-out hover:bg-indigo-600">
+                    <button onClick={()=>handleButtonClick(slot._id) } key={index} className="flex-shrink-0 font-inter px-4 py-2 bg-indigo-500 text-white rounded-full shadow-md transition duration-300 ease-in-out hover:bg-indigo-600">
                       {`${new Date(slot.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
                     </button>
                   ))
@@ -209,7 +213,7 @@ const MentorDetails = () => {
           </div>
         </section>
       </main>
-      { isModalvisible && <BookingConfirmModal onClose = {handleModalClose}  /> }
+      { isModalvisible && <BookingConfirmModal onClose = {handleModalClose} mentor={mentor1.user}  mentee={user.id}  slotId={clickedSLot} price={2000} /> }
     </div>
   );
 };

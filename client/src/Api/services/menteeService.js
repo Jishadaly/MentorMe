@@ -34,3 +34,13 @@ export const slotBookingbyMentee = async(endPoint , datas)=>{
     }
   }
 
+
+  export const fetchBookedSlotes = async (endPoint ,datas) =>{
+    console.log(endPoint);
+    try {
+      const response = await authInstanceAxios.get(`/${endPoint}?userId=${datas}`);
+      return response.data
+    } catch (error) {
+      console.log(error);
+    }
+  }
