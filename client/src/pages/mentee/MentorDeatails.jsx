@@ -39,7 +39,7 @@ const MentorDetails = () => {
   }, [mentorId]);
   if (!mentor1) {
     
-    return <div>Loading...</div>;
+    return console.log("mentor is comming");
   }
 
   const filterSlotsByDate = (date) => {
@@ -209,7 +209,7 @@ const MentorDetails = () => {
           </div>
         </section>
       </main>
-      { isModalvisible && <BookingConfirmModal onClose = {handleModalClose} /> }
+      { isModalvisible && <BookingConfirmModal onClose = {handleModalClose}  /> }
     </div>
   );
 };

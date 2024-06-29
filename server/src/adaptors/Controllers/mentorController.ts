@@ -1,10 +1,7 @@
-import { Request,Response,NextFunction } from "express";
+import { Request,Response,NextFunction,  } from "express";
 import mentorInteractor from "../../domain/usecases/mentorInteractor";
 
-
 const stripe = require('stripe')(process.env.STRIP_SECRET_KEY);
-
-
 
 export default {
    
@@ -48,7 +45,7 @@ export default {
   getMentor:async(req:Request , res:Response , next:NextFunction)=>{
     try {
       const  { mentorId } = req.query
-      console.log(mentorId);
+      
       
       if (!mentorId) throw new Error("mentor id id not there");
       const mentorIdString = mentorId as string;
@@ -96,33 +93,9 @@ export default {
     }
   },
 
-  // createCheckoutSession:async(req:Request , res:Response , next:NextFunction)=>{
-          
-  //         try {
-  //           const { price } = req.body;
-  //           const paymentIntent = await stripe.paymentIntents.create({
-  //             price, // amount is expected to be in the smallest currency unit (e.g., cents)
-  //               currency: 'usd',
-  //              automatic_payment_methods : {
-  //                enabled : true 
-  //              }
-  //           });
- 
-  //           res.status(200).send({
-  //               clientSecret: paymentIntent.client_secret, 
-  //           });
-  //       } catch (error:any) {
-  //           res.status(400).send({ error: error.message });
-  //       }
-
-
-  // },
-
   createCheckoutSession:async(req:Request , res:Response , next:NextFunction)=>{
           
-
-          const {price} = req.body;
-          
+     const {price} = req.body; 
     try {
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
@@ -131,25 +104,25 @@ export default {
             price_data: {
               currency: 'inr',
               product_data: {
-                name: '1 Hour slot', // Replace with your product name
-                description: '1-hour consultation slot', // Optional description
-                images: ['https://picsum.photos/200/300'], // Optional product image
+                name: '1 Hour slot', 
+                description: '1-hour consultation slot', 
               },
-              unit_amount: price * 100, // Price in paisa (100 paisa = 1 INR)
+              unit_amount: price * 100, 
             },
             quantity: 1,
           },
         ],
+
         mode: 'payment',
-        success_url: `${process.env.CLIENT_URL}/mentee/home?session_id={CHECKOUT_SESSION_ID}`, // Replace with your client URL
+        success_url: `${process.env.CLIENT_URL}/mentee/calles`, 
         cancel_url: `${process.env.CLIENT_URL}/mentee/home`,
-        
-        locale: 'en', // Language/locale for Checkout page
-        customer_email: 'customer@example.com', // Pre-fill customer email if known
+        locale: 'en', 
+        customer_email: 'customer@example.com',
+
       });
 
+      res.json({ url : session.url });
 
-      res.json({ url : session.url })
   } catch (error:any) {
       console.log(error);
       
@@ -171,7 +144,28 @@ export default {
      } catch (error:any) {
       res.status(400).json(error)
      }
-  }
-  
+  },
 
+  webhook:async(req:Request , res:Response , next:NextFunction)=>{
+    const sig = req.headers['stripe-signature'];
+    let event;
+
+      try {
+         event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+      } catch (err:any) {
+        return res.status(400).send(`Webhook Error: ${err.message}`);
+      }
+
+   
+  switch (event.type) {
+    case 'payment_intent.succeeded':
+      const paymentIntentSucceeded = event.data.object;
+      console.log("payment success");
+      break;
+    default:
+      return res.status(400).end();
+  }
+  // Return a 200 response to acknowledge receipt of the event
+   res.json({received: true});
+ }
 }

@@ -2,6 +2,7 @@ import express from 'express';
 import authController from '../../../adaptors/Controllers/authController';
 import mentorController from '../../../adaptors/Controllers/mentorController';
 import verifyToken from '../../middlewares/jwt/authMiddleware';
+import bodyParser from 'body-parser';
 
 const userRouter = express.Router();
 
@@ -23,7 +24,7 @@ userRouter.post('/api/user/slotBooking' , mentorController.slotBooking);
 userRouter.post('/api/user/create-checkout-session' , mentorController.createCheckoutSession)
 // userRouter.post('/api/user/create-checkout-session' , mentorController.createCheckoutSession)
 userRouter.delete('/api/user/deleteSlot' , mentorController.deleteSlot)
-// userRouter.get('/api/user/deleteSlot' , mentorController.deleteSlot)
+userRouter.post('/hdhdh', bodyParser.raw({ type: 'application/json' }), mentorController.webhook);
 
 
 export default userRouter;  

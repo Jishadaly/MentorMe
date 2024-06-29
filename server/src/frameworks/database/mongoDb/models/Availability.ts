@@ -18,6 +18,12 @@ const AvailabilitySchema: Schema = new Schema({
   endTime: { type: String, required: true },
   isBooked: { type: Boolean, default: false },
   bookedBy: { type: Schema.Types.ObjectId, ref: 'Users' }
+},
+  {
+  timestamps: {
+    createdAt: 'created_at', 
+    updatedAt: 'updated_at' 
+  }
   
 });
 

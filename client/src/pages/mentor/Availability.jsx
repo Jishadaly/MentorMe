@@ -131,10 +131,10 @@ const MentorAvailability = () => {
                           Slot {index + 1}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                          From : { moment(slot.startTime).format('MMMM Do YYYY, h:mm:ss a') }
+                          From : { moment(slot.startTime).format('MMMM Do YYYY, h:mm a') }
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                        To: {moment(slot.endTime).format('MMMM Do YYYY, h:mm:ss a')}
+                        To: {moment(slot.endTime).format('MMMM Do YYYY, h:mm a')}
                         </Typography>
                       </div>
                       <CardActions>

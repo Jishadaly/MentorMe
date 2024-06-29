@@ -22,8 +22,7 @@ import LandingPage from '@/pages/others/LandingPage'
 import PageNotFound from '@/pages/others/notFount'
 import MentorDetails from '@/pages/mentee/MentorDeatails'
 import MentorAvailability from '@/pages/mentor/Availability'
-
-
+import CallesPage from '@/pages/mentee/Calles'
 
 
 const router = createBrowserRouter(
@@ -36,7 +35,7 @@ const router = createBrowserRouter(
         <Route index element={<MenteeHome />} />
             <Route path='home' element={<MenteeHome/>}/>
             <Route path='mentorDetails/:mentorId' element={<MentorDetails/>}/>
-            
+            <Route path='calles' element={<CallesPage/>}/>
         </Route>
       </Route>
 
