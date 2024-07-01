@@ -198,7 +198,8 @@ const MentorDetails = () => {
               <h4 className="text-lg font-semibold mb-2  text-white font-inter">Available time</h4>
               <div className="flex space-x-2 overflow-x-auto scrollbar-hide">
                 {availableSlots.length > 0 ? (
-                  availableSlots.map((slot, index) => (
+                  availableSlots.filter(slot=> !slot.isBooked)
+                  .map((slot, index) => (
                     <button onClick={()=>handleButtonClick(slot._id) } key={index} className="flex-shrink-0 font-inter px-4 py-2 bg-indigo-500 text-white rounded-full shadow-md transition duration-300 ease-in-out hover:bg-indigo-600">
                       {`${new Date(slot.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
                     </button>

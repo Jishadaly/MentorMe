@@ -1,4 +1,4 @@
-import {  getMentoresForVerification ,updateMentorVerificationVerify , updateMentorVerificationReject} from "../repositories/adminReposetory"
+import {  getMentoresForVerification, updateBlockStatus ,updateMentorVerificationVerify , updateMentorVerificationReject, getAllUsers ,getAllMentors} from "../repositories/adminReposetory"
 import { findAdmin } from "../repositories/adminReposetory";
 
 
@@ -43,6 +43,29 @@ export default {
          throw new Error(error)
       }
    },
+   getAllUsers:async()=>{
+      try {
+         const response  = await getAllUsers();
+         return response;
+      } catch (error:any) {
+         throw new Error(error)
+      }
+   },
+   getAllMentors:async()=>{
+      try {
+         const response  = await getAllMentors();
+         return response;
+      } catch (error:any) {
+         throw new Error(error)
+      }
+   },
 
-   
+   updateBlockStatus:async(userId : string,isBlocked:boolean)=>{
+      try {
+         const response  = await updateBlockStatus(userId  , isBlocked);
+         return response;
+      } catch (error:any) {
+         throw new Error(error)
+      }
+   }
 }

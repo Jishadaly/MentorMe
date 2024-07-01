@@ -5,6 +5,7 @@ import Sidenav from "./widgets/layout/sidenav";
 import Header from "./partials/Header";
 import Dashboard from "./Dashboard";
 import VerificationRequests from "./VerificationRequests";
+import Users from "./Users";
 
 export function AdminHome() {
   
@@ -17,7 +18,9 @@ export function AdminHome() {
       case "verificationRequests":
         return <VerificationRequests />;
       // Add more cases as needed for other components
-
+      case "users":
+        return <Users/>;
+      // Add more cases as needed for other components
       default:
         return <Dashboard />;
     }

@@ -112,7 +112,7 @@ export default {
         const user={ 
             id:existingUser.id,
             name:existingUser.userName,
-            email:existingUser,
+            email:existingUser.email,
             phone:existingUser.phone
         }
 

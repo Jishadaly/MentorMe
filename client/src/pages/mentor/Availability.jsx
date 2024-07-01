@@ -44,15 +44,17 @@ const MentorAvailability = () => {
   const addSlot = async () => {
     const mentorId = user.id;
     try {
+
       const slotAddingData = { mentorId, slot };
       const response = await addSlots('user/addSlots', slotAddingData);
-      console.log("slote after added one " , response);
-      const newSlot = response.addedSlots; // single object
+      const newSlot = response.addedSlots; 
       setSlots((prevSlots) => [...prevSlots, newSlot]);
         toast.success(response.message);
       }
+
      catch (error) {
-      toast.error("Can't add this slot");
+      console.log("////////",error.response.data);
+      toast.info(error.response.data)
      }
   };
 
@@ -79,7 +81,9 @@ const MentorAvailability = () => {
        toast.success(response.message);
        console.log(index);
      } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
+      toast.info(error.response.data);
+
      }
   }
 
@@ -93,12 +97,12 @@ const MentorAvailability = () => {
       <Header />
       <SideNav />
       <div className="flex-1 mt-16 md:ml-64 p-4 flex">
-        <div className="w-80 p-6 bg-white rounded-lg shadow-md fixed top-16">
+        <div className="w-80 p-6 fixed top-16">
           <h3 className="text-xl font-bold mb-4 text-center font-inter">Select a Date</h3>
-          <CustomDatePicker selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
-          <h4 className="text-lg font-semibold mb-2 text-center font-inter">Available Slots</h4>
+          <CustomDatePicker className="w-80 p-6 rounded-lg  shadow-md fixed top-16" selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+          
         </div>
-        <div className="ml-80 flex-1 overflow-y-auto p-6">
+        <div className="ml-80 flex   overflow-y-auto p-6">
           <div className="max-w-3xl w-full p-6 bg-white rounded-lg shadow-md">
             <h2 className="text-3xl font-extrabold mb-6 text-center font-inter">Session Availability</h2>
             <div className="flex flex-col items-center space-y-4 mb-6">

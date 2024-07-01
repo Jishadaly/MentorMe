@@ -3,6 +3,7 @@ import { IUser } from '../entities/types/user/user';
 import { generatePassword } from '../utils/generatePassword';
 import { Encrypt } from '../helper/hashPassword';
 import Availability from '../../frameworks/database/mongoDb/models/Availability';
+import MentorApplication from '../../frameworks/database/mongoDb/models/mentorApplicationModel';
 
 
 export const checkExistingUser = async (email: string, userName: string) => {
@@ -89,11 +90,15 @@ export const saveGoogleUser =async(userData:IUser)=>{
 }
 
 export const getBookdslotdb=async(userId:string)=>{
-  const slots = await Availability.find({ bookedBy: userId }).populate('mentorId');
-
+  
+  const slots = await Availability.find({ bookedBy: userId , isBooked:true})
+      .populate('mentorId') // Adjust fields to populate as needed, e.g., 'name'
+      .exec();
    console.log("slotes",slots);
-   
-   if(!slots) throw new Error("there is no booked slotes")
+
+   if(!slots){
+   throw new Error("there is no booked slotes")
+  }
 
     return slots
 }

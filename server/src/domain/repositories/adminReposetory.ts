@@ -34,3 +34,47 @@ export const updateMentorVerificationReject =async(id:string , userId:string)=>{
   }
 }
 
+export const getAllUsers = async()=>{
+  try {
+     const data = await Users.find({verified:true , isMentor:false});
+     console.log(data);
+     
+     return data
+  } catch (error) {
+   throw error
+  }
+} 
+
+export const getAllMentors = async()=>{
+  try {
+    const data = await Users.find({verified:true,isMentor:true});
+     console.log(data);
+     return data;
+  } catch (error) {
+    throw error
+  }
+}
+
+
+export const updateBlockStatus = async (userId : string,isBlocked:boolean) => {
+  try {
+    // Find the user by ID and update the isBlocked status
+    const updatedUser = await Users.findByIdAndUpdate(
+      userId,
+      { isBlocked: isBlocked },
+      { new: true } // Return the updated document
+    );
+
+    console.log("updated status",updatedUser);
+    
+
+    if (!updatedUser) {
+      throw new Error('User not found');
+    }
+
+    return updatedUser;
+  } catch (error) {
+    console.error('Error updating block status:', error);
+    throw error;
+  }
+};

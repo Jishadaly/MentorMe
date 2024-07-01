@@ -7,6 +7,7 @@ import { getBookdslotdb, sameUser } from "../repositories/userRepository";
 export default {
   mentorApplicationForm: async(formData:ApplicationForm)=>{
      try {
+         
         const savedData = await mentorRepository.saveApplicationForm(formData);
         return savedData;
      } catch (error) {
@@ -35,8 +36,13 @@ export default {
 
 addSlotes:async(mentorId:string,slot:IDateRange)=>{
       try {
-         const currentDateTime = new Date();
-         
+         const duplicateSlot = await mentorRepository.findExistingSlot(mentorId, slot);
+
+         if (duplicateSlot) {
+           throw new Error("A slot already exists within the given time period.");
+         }
+          
+           const currentDateTime = new Date();
            const from = new Date(slot.from);
            const to = new Date(slot.to);
    
@@ -56,6 +62,10 @@ addSlotes:async(mentorId:string,slot:IDateRange)=>{
 
 deleteSlot:async(slotId:string)=>{
    try {
+      const isbooked = await mentorRepository.slotIdbooked(slotId);
+      if (isbooked) {
+         throw new Error("slot already booked ");
+      }
       const response = await mentorRepository.deleteSlot(slotId)
       return response
    } catch (error) {
@@ -74,6 +84,8 @@ getMentorApplication:async(mentorId:string)=>{
 
 slotBooking:async(menteeId :string , mentorId:string ,slotId:string)=>{
    try {
+      console.log("11111",menteeId , mentorId,slotId);
+      
       const response = await mentorRepository.bookAslot(menteeId , mentorId ,slotId);
       return response
    } catch (error:any) {

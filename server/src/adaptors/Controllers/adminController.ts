@@ -41,5 +41,40 @@ export default {
     } catch (error) {
       res.status(500).json({error: error})
     }
-  }
+  },
+
+  getAllUsers:async(req:Request ,res:Response , next:NextFunction)=>{
+    try {
+      const users = await adminInteractor.getAllUsers()
+      res.status(200).json({message: "mentor data fetched  successfully",users})
+    } catch (error) {
+      res.status(500).json({error: error})
+    }
+  },
+
+  getAllMentors:async(req:Request ,res:Response , next:NextFunction)=>{
+    try {
+      const Mentors = await adminInteractor.getAllMentors()
+      res.status(200).json({message: "mentor data fetched  successfully",Mentors})
+    } catch (error) {
+      res.status(500).json({error: error})
+    }
+  },
+
+  updateBlockStatus:async(req:Request ,res:Response , next:NextFunction)=>{
+    try {
+      console.log(req.query);
+      const { userId  , isBlocked } = req.query;
+      const id = userId as string;
+      const blocked = isBlocked as any;
+      console.log(blocked);
+      
+      const response = await adminInteractor.updateBlockStatus(id,blocked)
+      // const Mentors = await adminInteractor.updateBlockStatus();
+      res.status(200).json({message: "user blocked  successfully"});
+    } catch (error) {
+      res.status(500).json({error: error})
+    }
+  },
+
 }

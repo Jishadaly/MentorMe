@@ -95,6 +95,7 @@ const userSchema = new Schema<Iuser>({
     default:false
   },
   isMentor: {
+    required:true,
     type:Boolean,
     default:false
   },

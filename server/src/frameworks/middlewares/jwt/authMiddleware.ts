@@ -11,7 +11,10 @@ const secretKey = process.env.JWT_SECRET;
 if (!secretKey) {
   throw new Error('JWT secret key is not defined');
 }
+
+
   const verifyToken = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    
   const authHeader = req.headers['authorization'];
   if (!authHeader) {
     return res.status(401).json({ error: 'Access denied, no token provided' });

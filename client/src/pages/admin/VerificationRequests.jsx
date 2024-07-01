@@ -3,12 +3,12 @@ import { HiOutlineEye } from "react-icons/hi";
 import UserDetails from "./UserDetails"; // Import UserDetails component
 import { getApplicationMentores } from "@/Api/services/adminServices";
 
-// const users = [
-//   { id: 1, name: "John Doe", email: "john@example.com", jobTitle: "Software Engineer", company: "Tech Co" },
-//   { id: 2, name: "Jane Smith", email: "jane@example.com", jobTitle: "Product Manager", company: "Product Co" },
-//   { id: 3, name: "Sam Johnson", email: "sam@example.com", jobTitle: "Designer", company: "Design Co" },
-//   // Add more users as needed
-// ];
+const users = [
+  { id: 1, name: "John Doe", email: "john@example.com", jobTitle: "Software Engineer", company: "Tech Co" },
+  { id: 2, name: "Jane Smith", email: "jane@example.com", jobTitle: "Product Manager", company: "Product Co" },
+  { id: 3, name: "Sam Johnson", email: "sam@example.com", jobTitle: "Designer", company: "Design Co" },
+];
+
 
 function VerificationRequests() {
   const [selectedUser, setSelectedUser] = useState(null);
@@ -24,7 +24,7 @@ function VerificationRequests() {
   },[])
 
   console.log("users",users);
-
+  
   const handleUserClick = (user) => {
     setSelectedUser(user);
   };

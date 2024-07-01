@@ -3,6 +3,7 @@ import { Sidebar } from "flowbite-react";
 import { HiChartPie, HiUser, HiClipboardCheck, HiDocumentReport, HiLogout } from "react-icons/hi";
 
 export function Sidenav({setCurrentView}) {
+  
   return (
     <div className="h-screen w-64 flex flex-col">
       <Sidebar aria-label="Default sidebar example" className="flex flex-col flex-grow">
@@ -11,7 +12,7 @@ export function Sidenav({setCurrentView}) {
             <Sidebar.Item href="#" icon={HiChartPie} onClick = {()=>setCurrentView('dashboard') }>
               Dashboard
             </Sidebar.Item>
-            <Sidebar.Item href="#" icon={HiUser}>
+            <Sidebar.Item href="#" icon={HiUser} onClick={() => setCurrentView("users")} >
               Users
             </Sidebar.Item>
             <Sidebar.Item href="#" icon={HiClipboardCheck} onClick={() => setCurrentView("verificationRequests")} >

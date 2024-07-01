@@ -13,21 +13,17 @@ export const  getMentors = async(endPoint )=>{
 export const addSlots = async(endPoint , slots)=>{
   console.log("jijijijiji",slots);
  
-  try {
+  
     const response  = await authInstanceAxios.post(`/${endPoint}`,slots);
     return response.data;
-  } catch (error) {
-    console.log(error);
-  }
+  
 }
 
 export const deleteSlot = async(endPoint , slotId)=>{
-  try {
+  
     const response  = await authInstanceAxios.delete(`/${endPoint}?slotId=${slotId}`);
     return response.data;
-  } catch (error) {
-    console.log(error);
-  }
+ 
 }
 
 

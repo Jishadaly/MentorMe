@@ -13,6 +13,7 @@ const CustomDatePicker = ({ selectedDate, setSelectedDate }) => {
         calendarClassName="bg-white rounded-lg shadow-md "  // Remove width-full class
         wrapperClassName="w-full"  // Ensure the wrapper takes full width
         minDate={today}
+          
       />
     </div>
   );

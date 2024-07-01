@@ -63,8 +63,8 @@ export default {
        const addedSlots = await mentorInteractor.addSlotes(mentorId,slot);
        res.status(200).json({message:"slote added successfully",addedSlots});
     } catch (error:any) {
-      console.log(error);
-      res.status(500).json(error);
+      console.log("errrrrrerrer",error);
+      res.status(400).json(error.message)
     }
   },
 
@@ -120,11 +120,13 @@ export default {
         
         res.status(200).json({message:"slot deleted succefully", deletedSlot})
      } catch (error:any) {
-      res.status(400).json(error)
+      res.status(400).json(error.message)
      }
   },
 
   webhook:async(req:Request , res:Response , next:NextFunction)=>{
+    console.log("arraived");
+    
     // const sig = req.headers['stripe-signature'];
     // let event;
 
@@ -142,7 +144,9 @@ export default {
       case 'checkout.session.completed':
         const metaData = event?.data?.object?.metadata;
         const { slotId , mentee , mentor } = metaData;
-        const bookedSlot = await mentorInteractor.slotBooking( slotId , mentee , mentor)
+        console.log(metaData);
+        
+        const bookedSlot = await mentorInteractor.slotBooking( mentee , mentor , slotId)
         console.log("payment session complete with booked id ",bookedSlot);
       break;
     default:
@@ -153,7 +157,7 @@ export default {
 
  getBookedSlotes:async(req:Request , res:Response , next:NextFunction)=>{
    try { 
-     const  {userId} = req.body
+     const  userId : any  = req.query.userId
      console.log(userId);
      const slotes = await mentorInteractor.getBookedSlotes(userId)
      res.status(200).json({slotes})

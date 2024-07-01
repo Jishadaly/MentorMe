@@ -10,7 +10,7 @@ function SideNav({ isOpen }) {
         <nav className="flex flex-col space-y-6">
           <a href="#" className="flex items-center space-x-3 px-6 py-3 text-indigo-500">
             <FiHome size={24} />
-            <span>Home</span>
+            <span onClick={()=> navigate('/mentor')}>Home</span>
           </a>
           <a href="#" className="flex items-center space-x-3 px-6 py-3">
             <FiCalendar size={24} />

@@ -47,8 +47,71 @@ export default {
     return mentor;
   },
 
+  findExistingSlot: async (mentorId: string, slot: DateRange) => {
+    try {
+      const from = new Date(slot.from);
+      const to = new Date(slot.to);
+  
+      // Check if the starting time is less than the ending time and the duration is one hour
+      if (from >= to) {
+        throw new Error('The start time must be less than the end time.');
+      }
+  
+      const duration = (to.getTime() - from.getTime()) / (1000 * 60 * 60); // duration in hours
+      if (duration !== 1) {
+        throw new Error('The slot duration must be exactly one hour.');
+      }
+  
+      // Check if there is any slot that overlaps with the given time range
+      const existingSlot = await Availability.findOne({
+        mentorId: mentorId,
+        $or: [
+          // Case where the new slot exactly matches an existing slot
+          {
+            startTime: from.toISOString(),
+            endTime: to.toISOString()
+          },
+          // Case where the new slot's start time falls within an existing slot
+          {
+            $and: [
+              { startTime: { $lte: from.toISOString() } },
+              { endTime: { $gt: from.toISOString() } }
+            ]
+          },
+          // Case where the new slot's end time falls within an existing slot
+          {
+            $and: [
+              { startTime: { $lt: to.toISOString() } },
+              { endTime: { $gte: to.toISOString() } }
+            ]
+          },
+          // Case where the new slot entirely falls within an existing slot
+          {
+            $and: [
+              { startTime: { $gte: from.toISOString() } },
+              { startTime: { $lt: to.toISOString() } }
+            ]
+          },
+          // Case where an existing slot entirely falls within the new slot
+          {
+            $and: [
+              { endTime: { $gt: from.toISOString() } },
+              { endTime: { $lte: to.toISOString() } }
+            ]
+          }
+        ]
+      });
+  
+      return existingSlot;
+    } catch (error:any) {
+      console.error('Error finding existing slot:', error);
+      throw new Error(error.message);
+    }
+  },
+  
+
   addSlotes: async (mentorId: string, slot: DateRange) => {
-    // const mentorApplicationId = await MentorApplication.findById(mentorId)
+    
     try {
 
       const from = new Date(slot.from)
@@ -76,8 +139,21 @@ export default {
     }
   },
 
+  slotIdbooked:async(slotId:string)=>{
+    try {
+       const isbooked = await  Availability.findOne({_id:slotId,isBooked:true})
+      console.log(isbooked);
+      
+       return isbooked
+    } catch (error) {
+      console.log(error);
+      throw error
+    }
+  },
+
   deleteSlot:async(slotId:string)=>{
     try {
+
       const deletedSlot = await Availability.findByIdAndDelete(slotId);
     if (!deletedSlot) {
       throw new Error('Slot not found');
@@ -102,7 +178,12 @@ export default {
 
   bookAslot:async(menteeId:string , mentorId:string ,slotId:string)=>{
       try{
-        const bookAslot = await Availability.findByIdAndUpdate(slotId , {mentorId:mentorId , isBooked:true , bookedBy:menteeId})
+        console.log("222222 ",mentorId , menteeId , slotId);
+        
+        const mentorApplicationId = await MentorApplication.findOne({user:mentorId})
+        console.log("MENTORAPPILACTION ID",mentorApplicationId);
+        
+        const bookAslot = await Availability.findByIdAndUpdate(slotId , { mentorId:mentorApplicationId?._id , isBooked:true , bookedBy:menteeId}, { new: true })
         return bookAslot
         
       }catch(error:any){
@@ -113,4 +194,5 @@ export default {
 
 
 }
+
 

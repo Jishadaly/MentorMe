@@ -28,7 +28,7 @@ interface IMentorApplication extends Document {
 const MentorApplicationSchema: Schema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Users',
     required: true
   },
   name: {
