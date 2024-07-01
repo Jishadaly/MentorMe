@@ -14,7 +14,7 @@ export const loginAdmin = createAsyncThunk(
 
       // Save to localStorage
       localStorage.setItem('admin', JSON.stringify(admin));
-      localStorage.setItem('token', token);
+      localStorage.setItem('Admintoken', token);
 
       return { admin, token };
     } catch (error) {

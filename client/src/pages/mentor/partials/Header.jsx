@@ -1,9 +1,21 @@
+import { logout } from '@/redux/slice/userAuthSlice';
 import React from 'react';
 import { FiMenu, FiX } from 'react-icons/fi';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+
 
 function Header({ toggleMenu, isOpen }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
+  const handleLogout = ()=>{
+    dispatch(logout());
+    navigate('/mentor/login');
+    persistor.purge(); // Purge the persisted state
+    localStorage.clear(); // Clear local storage
+
+ }
   
   return (
     <div>
@@ -21,7 +33,7 @@ function Header({ toggleMenu, isOpen }) {
           <a href="#" className="text-indigo-500">
             <i className="fas fa-bell text-xl"></i>
           </a>
-          <a href="#" className="text-indigo-500">Sign Out</a>
+          <a onClick={handleLogout} href="#" className="text-indigo-500">Sign Out</a>
           <img
             src="https://randomuser.me/api/portraits/men/75.jpg"
             alt="profile"

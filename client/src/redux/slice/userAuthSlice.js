@@ -1,6 +1,7 @@
 // src/features/auth/authSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 import { loginUser  ,mentorLogin , googleAuth } from '../services/userAuthServices';
+import Cookies from 'js-cookie';
 
 
 
@@ -14,10 +15,13 @@ const authSlice = createSlice({
   },
   reducers: {
     logout: (state) => {
+      console.log("l;;;;gout",state);
+
       state.user = null;
       state.token = null;
       localStorage.removeItem('user');
       localStorage.removeItem('token');
+      Cookies.remove('token')
     },
   },
   extraReducers: (builder) => {

@@ -39,11 +39,11 @@ const router = createBrowserRouter(
         </Route>
       </Route>
 
-      <Route element={<AdminProtected/>}>
+      <Route element={<AdminProtected/> }>
         <Route path='/admin'>
         <Route index element={<AdminHome />} />
          <Route path='home' element={<AdminHome/>}/>
-        </Route> 
+        </Route>                                                          
       </Route>
 
       <Route  element={<MentorProtected/>}> 

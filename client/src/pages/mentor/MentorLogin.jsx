@@ -24,7 +24,7 @@ function MentorLogin(){
         navigate('/mentor/home');
       })
       .catch((err) => {
-        console.error(err)
+        console.error("/////",err)
       toast.error(err.error)
       }
     );

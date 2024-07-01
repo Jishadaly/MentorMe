@@ -59,10 +59,12 @@ function Users() {
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
-                                <th scope="col" className="px-6 py-3">User Name</th>
+                                <th scope="col" className="px-6 py-3"> Name</th>
                                 <th scope="col" className="px-6 py-3">Email</th>
                                 <th scope="col" className="px-6 py-3">Phone</th>
                                 <th scope="col" className="px-6 py-3">Blocked</th>
+                                <th scope="col" className="px-6 py-3">Action</th>
+
                                 <th scope="col" className="px-6 py-3"><span className="sr-only">Action</span></th>
                             </tr>
                         </thead>
@@ -93,10 +95,12 @@ function Users() {
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
-                                <th scope="col" className="px-6 py-3">Mentor Name</th>
+                                <th scope="col" className="px-6 py-3"> Name</th>
                                 <th scope="col" className="px-6 py-3">Email</th>
                                 <th scope="col" className="px-6 py-3">Phone</th>
                                 <th scope="col" className="px-6 py-3">Blocked</th>
+                                <th scope="col" className="px-6 py-3"><span>Action</span></th>
+
                                 <th scope="col" className="px-6 py-3"><span className="sr-only">Action</span></th>
                             </tr>
                         </thead>

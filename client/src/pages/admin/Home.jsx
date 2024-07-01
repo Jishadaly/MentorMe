@@ -7,6 +7,8 @@ import Dashboard from "./Dashboard";
 import VerificationRequests from "./VerificationRequests";
 import Users from "./Users";
 
+
+
 export function AdminHome() {
   
   const [currentView , setCurrentView] = useState("dashboard");
@@ -19,7 +21,7 @@ export function AdminHome() {
         return <VerificationRequests />;
       // Add more cases as needed for other components
       case "users":
-        return <Users/>;
+        return <Users />;
       // Add more cases as needed for other components
       default:
         return <Dashboard />;

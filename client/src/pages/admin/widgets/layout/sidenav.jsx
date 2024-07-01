@@ -5,7 +5,7 @@ import { HiChartPie, HiUser, HiClipboardCheck, HiDocumentReport, HiLogout } from
 export function Sidenav({setCurrentView}) {
   
   return (
-    <div className="h-screen w-64 flex flex-col">
+    <div className=" w-64 flex flex-col">
       <Sidebar aria-label="Default sidebar example" className="flex flex-col flex-grow">
         <Sidebar.Items className="flex-grow">
           <Sidebar.ItemGroup>

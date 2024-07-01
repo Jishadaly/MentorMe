@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 
 
 const Protected = () => {
-  const token = Cookies.get("userToken");
+  const token = Cookies.get("token");
 
   return token ? <Outlet /> : <Navigate to="/mentee/login" />;
 };

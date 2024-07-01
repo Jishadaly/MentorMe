@@ -1,8 +1,17 @@
-import React from 'react';
+import ProfileMenu from '@/componets/ProfileMenu';
+import React, { useState } from 'react';
 import { FiHome, FiCompass, FiBook, FiMessageSquare, FiCalendar, FiVideo, FiMoreHorizontal, FiUser } from 'react-icons/fi'; // React icons for navigation
 import { Link } from 'react-router-dom';
 
+
 function Sidenav() {
+
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+
+  const toggleProfileMenu = () => {
+    setIsProfileMenuOpen(!isProfileMenuOpen);
+  };
+
   return (
     <aside className="w-20 fixed top-16 bottom-0 left-0 bg-white shadow-md flex flex-col justify-between items-center pt-6 z-10">
       <nav className="flex flex-col items-center space-y-6">
@@ -15,7 +24,8 @@ function Sidenav() {
         <a href="#" className="text-indigo-500"><FiMoreHorizontal size={24} /></a>
       </nav>
       <div className="mb-6">
-        <a href="#" className="text-indigo-500"><FiUser size={24} /></a>
+      <a href="#" className="text-indigo-500" onClick={toggleProfileMenu}><FiUser size={24} /></a>
+      <ProfileMenu isOpen={isProfileMenuOpen} />
       </div>
     </aside>
   );

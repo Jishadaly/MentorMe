@@ -25,7 +25,7 @@ function UserLogin(){
       })
       .catch((err) => {
         console.error("ererrer",err)
-        toast.error(err)
+        toast.error(err.error)
       }
     );
   };

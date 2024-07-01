@@ -64,8 +64,7 @@ export default {
        
        const { email , password } = req.body
        const response = await userInteractor.loginMentor(email ,password);
-       
-       
+      
        res.status(200).json({message : "Mentro login success" , response})
    } catch (error:any) {
       console.log(error.message);
