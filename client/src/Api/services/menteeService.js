@@ -1,8 +1,7 @@
   import { authInstanceAxios } from "../axiosInstence";
 
 
-export const fetchMentorData =async (endPoint , mentorId)=>{
-  
+export const fetchMentorData =async (endPoint , mentorId)=>{  
      try {
       const response = await authInstanceAxios.get(`${endPoint}`, {
         params:{
@@ -13,8 +12,8 @@ export const fetchMentorData =async (endPoint , mentorId)=>{
      } catch (error) {
       console.log(error);
      }
-    
 }
+
 export const slotBookingbyMentee = async(endPoint , datas)=>{
   console.log(endPoint , datas);
   try {
@@ -40,6 +39,16 @@ export const slotBookingbyMentee = async(endPoint , datas)=>{
     try {
       const response = await authInstanceAxios.get(`/${endPoint}?userId=${datas}`);
       return response.data
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
+  export const getMentee =async (endPoint , datas)=>{
+    try {
+      const respnse = await authInstanceAxios.get(`/${endPoint}?userId=${datas}`)
+      return respnse.data
     } catch (error) {
       console.log(error);
     }

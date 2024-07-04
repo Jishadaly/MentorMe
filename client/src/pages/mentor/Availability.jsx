@@ -4,7 +4,7 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { FaPlus, FaTrash } from 'react-icons/fa';
 import { LocalizationProvider, MobileDateTimePicker } from '@mui/x-date-pickers';
 import { Button, IconButton, TextField, Snackbar, Alert, Card, CardContent, Typography, Grid, CardActions } from '@mui/material';
-import { addSlots, getMentorApplication ,deleteSlot } from '@/Api/services/mentorServices';
+import { addSlots, getMentorApplication, deleteSlot } from '@/Api/services/mentorServices';
 import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
 import SideNav from './partials/SideNav';
@@ -22,7 +22,7 @@ const MentorAvailability = () => {
     setSlot({ ...slot, [field]: moment(value) });
   };
 
-  
+
 
   useEffect(() => {
     const fetchMentor = async () => {
@@ -47,49 +47,57 @@ const MentorAvailability = () => {
 
       const slotAddingData = { mentorId, slot };
       const response = await addSlots('user/addSlots', slotAddingData);
-      const newSlot = response.addedSlots; 
-      setSlots((prevSlots) => [...prevSlots, newSlot]);
-        toast.success(response.message);
-      }
+      const newSlot = response.addedSlots;
 
-     catch (error) {
-      console.log("////////",error.response.data);
-      toast.info(error.response.data)
-     }
+      const formattedDate = moment(newSlot.date).format('dddd, MMMM Do [at] h:mma');
+      const formattedStartTime = moment(newSlot.startTime, 'HH:mm').format('h:mma');
+      const formattedEndTime = moment(newSlot.endTime, 'HH:mm').format('h:mma');
+
+      setSlots((prevSlots) => [...prevSlots, newSlot]);
+      // toast.success(response.message);
+      toast.message(response.message, {
+        description: `${formattedDate} - ${formattedStartTime}`,
+      })
+    }
+
+    catch (error) {
+      console.log("////////", error.response.data);
+      toast.warning(error.response.data)
+    }
   };
 
- 
+
 
 
   const filterSlotsByDate = (date) => {
     console.log(date);
-    console.log("..l.l",slots);
+    console.log("..l.l", slots);
     if (!slots) return [];
     return slots.filter(
       (slot) => new Date(slot.date).toDateString() === date.toDateString()
     );
   };
-  const availableSlots =  filterSlotsByDate(selectedDate);
+  const availableSlots = filterSlotsByDate(selectedDate);
 
 
-  const handleRemoveSlot = async (slotId , index)=>{
-     try {
-       const  response = await deleteSlot('user/deleteSlot',slotId);
-       console.log(response.deletedSlot);
-       const deletedSlotId = response.deletedSlot._id
-       setSlots((prevSlots) => prevSlots.filter((slot) => slot._id !== deletedSlotId));
-       toast.success(response.message);
-       console.log(index);
-     } catch (error) {
+  const handleRemoveSlot = async (slotId, index) => {
+    try {
+      const response = await deleteSlot('user/deleteSlot', slotId);
+      console.log(response.deletedSlot);
+      const deletedSlotId = response.deletedSlot._id
+      setSlots((prevSlots) => prevSlots.filter((slot) => slot._id !== deletedSlotId));
+      toast.error(response.message);
+      console.log(index);
+    } catch (error) {
       console.log(error.response.data);
       toast.info(error.response.data);
 
-     }
+    }
   }
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
 
 
   return (
@@ -100,7 +108,7 @@ const MentorAvailability = () => {
         <div className="w-80 p-6 fixed top-16">
           <h3 className="text-xl font-bold mb-4 text-center font-inter">Select a Date</h3>
           <CustomDatePicker className="w-80 p-6 rounded-lg  shadow-md fixed top-16" selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
-          
+
         </div>
         <div className="ml-80 flex   overflow-y-auto p-6">
           <div className="max-w-3xl w-full p-6 bg-white rounded-lg shadow-md">
@@ -125,24 +133,24 @@ const MentorAvailability = () => {
               </Button>
             </div>
 
-            { availableSlots ? <Grid container spacing={2}>
-              {availableSlots.map((slot, index) => (
+            {availableSlots ? <Grid container spacing={2}>
+              {availableSlots.filter((slot)=> !slot.isBooked).map((slot, index) => (
                 <Grid item xs={12} key={index}>
                   <Card>
                     <CardContent className="flex items-center justify-between">
                       <div>
-                        <Typography variant="h6" component="div">
+                        <Typography variant="h6" component="div" >
                           Slot {index + 1}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                          From : { moment(slot.startTime).format('MMMM Do YYYY, h:mm a') }
+                          From : {moment(slot.startTime).format('MMMM Do YYYY, h:mm a')}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                        To: {moment(slot.endTime).format('MMMM Do YYYY, h:mm a')}
+                          To: {moment(slot.endTime).format('MMMM Do YYYY, h:mm a')}
                         </Typography>
                       </div>
                       <CardActions>
-                        <IconButton onClick={()=>handleRemoveSlot(slot._id , index)} className="bg-red-500 text-white p-2 rounded-full">
+                        <IconButton onClick={() => handleRemoveSlot(slot._id, index)} className="bg-red-500 text-white p-2 rounded-full">
                           <FaTrash />
                         </IconButton>
                       </CardActions>
@@ -150,7 +158,7 @@ const MentorAvailability = () => {
                   </Card>
                 </Grid>
               ))}
-            </Grid> : <p>no available slots.</p>  }
+            </Grid> : <p>no available slots.</p>}
           </div>
         </div>
       </div>

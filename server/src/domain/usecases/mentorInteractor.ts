@@ -7,7 +7,6 @@ import { getBookdslotdb, sameUser } from "../repositories/userRepository";
 export default {
   mentorApplicationForm: async(formData:ApplicationForm)=>{
      try {
-         
         const savedData = await mentorRepository.saveApplicationForm(formData);
         return savedData;
      } catch (error) {
@@ -30,7 +29,7 @@ export default {
       const response = await mentorRepository.getMentor(mentorId);
       return response
    } catch (error:any) {
-     throw new Error(error)
+     throw new Error(error);
    }
 },
 
@@ -55,7 +54,7 @@ addSlotes:async(mentorId:string,slot:IDateRange)=>{
 
       return response;
       } catch (error:any) {
-         throw new Error(error)
+         throw error
          
       }
 },

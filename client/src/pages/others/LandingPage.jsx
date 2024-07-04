@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { InfiniteMovingCardsDemo } from '@/componets/animations/InfiniteMovingCards';
 
 const LandingPage = () => {
   const navigate = useNavigate()
@@ -58,7 +59,7 @@ const LandingPage = () => {
           Key Features
         </h2>
         <div className="flex items-center flex-wrap mb-20">
-          <div className="w-full md:w-1/2 lg:w-1/3 px-4 mb-8">
+          {/* <div className="w-full md:w-1/2 lg:w-1/3 px-4 mb-8">
             <div className="bg-white rounded-lg shadow-xl p-6">
               <h3 className="text-xl font-bold mb-2 text-gray-800">Personalized Mentorship</h3>
               <p className="text-gray-700">
@@ -81,7 +82,8 @@ const LandingPage = () => {
                 Engage with a supportive community of learners and mentors.
               </p>
             </div>
-          </div>
+          </div> */}
+          <InfiniteMovingCardsDemo/>
         </div>
       </section>
       {/* Mentor Profiles */}

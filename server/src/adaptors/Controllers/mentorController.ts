@@ -44,8 +44,6 @@ export default {
   getMentor:async(req:Request , res:Response , next:NextFunction)=>{
     try {
       const  { mentorId } = req.query
-      
-      
       if (!mentorId) throw new Error("mentor id id not there");
       const mentorIdString = mentorId as string;
       const mentor = await mentorInteractor.getMentor(mentorIdString);
@@ -125,7 +123,7 @@ export default {
   },
 
   webhook:async(req:Request , res:Response , next:NextFunction)=>{
-    console.log("arraived");
+    
     
     // const sig = req.headers['stripe-signature'];
     // let event;
@@ -139,6 +137,7 @@ export default {
     //     // return res.status(400).send(`Webhook Error: ${err.message}`);
     //   }
     //   console.log("22222",{event,type:event?.type});
+
      const event = req.body
   switch (event.type) {
       case 'checkout.session.completed':
@@ -162,7 +161,7 @@ export default {
      const slotes = await mentorInteractor.getBookedSlotes(userId)
      res.status(200).json({slotes})
    } catch (error) {
-    res.status(500).json({error:error}) 
+    res.status(500).json({error:error})
    }
  }
 }

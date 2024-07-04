@@ -1,6 +1,8 @@
 
 import axios from "axios";
 import { CONFIG_KEYS } from "@/config";
+import Cookies from 'js-cookie';
+
 
 
 export const authInstanceAxios = axios.create({
@@ -14,7 +16,8 @@ export const authInstanceAxios = axios.create({
 // Add a request interceptor to include the token
 authInstanceAxios.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
+    // const token = localStorage.getItem('token');
+    const token = Cookies.get('token')
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
@@ -44,7 +47,8 @@ authInstanceAxios.interceptors.response.use(
           
           console.error("Unauthorized access - redirecting to login");
           localStorage.removeItem('token');
-          window.location.href = '/login'; 
+          Cookies.remove('token');
+          window.location.href = '/'; 
           break;
         case 403:
           

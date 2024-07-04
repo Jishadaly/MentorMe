@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { fetchAllUsers, fetchAllMentors, updateBlockStatus } from '@/Api/services/adminServices';
+import { fetchMentorData } from '@/Api/services/menteeService';
 
 function Users() {
     const [users, setUsers] = useState([]);
@@ -18,7 +19,7 @@ function Users() {
     }, []);
 
     const toggleBlockStatus = async (id, isBlocked, isMentor) => {
-        try {
+      
             // Make API call to update the blocked status
             const response = await updateBlockStatus('admin/updateBlockStatus', id, !isBlocked);
 
@@ -32,10 +33,12 @@ function Users() {
                         user._id === id ? { ...user, isBlocked: !isBlocked } : user));
                 }
             }
-        } catch (error) {
-            console.error('Error updating block status:', error);
-        }
     };
+
+    const handleAdditionalAction = async (mentorId)=>{
+         console.log(mentorId)
+        const mentorData = await fetchMentorData 
+    }
 
     return (
         <div>
@@ -101,6 +104,7 @@ function Users() {
                                 <th scope="col" className="px-6 py-3">Blocked</th>
                                 <th scope="col" className="px-6 py-3"><span>Action</span></th>
 
+
                                 <th scope="col" className="px-6 py-3"><span className="sr-only">Action</span></th>
                             </tr>
                         </thead>
@@ -117,11 +121,19 @@ function Users() {
                                     <td className="px-6 py-4 text-right">
                                         <button
                                             onClick={() => toggleBlockStatus(mentor._id, mentor.isBlocked, true)}
-                                            className="font-medium text-indigo-600 dark:text-blue-500 hover:underline"
-                                        >
+                                            className="font-medium text-indigo-600 dark:text-blue-500 hover:underline pr-4">
+
                                             {mentor.isBlocked ? 'Unblock' : 'Block'}
                                         </button>
+                                        <button
+                                            onClick={() => handleAdditionalAction(mentor._id)} // Replace with your actual function
+                                            className="font-medium text-gray-600 dark:text-gray-300 hover:underline"
+                                        >
+                                             view
+                                        </button>
+
                                     </td>
+
                                 </tr>
                             ))}
                         </tbody>

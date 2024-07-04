@@ -2,7 +2,7 @@ import express from 'express';
 import authController from '../../../adaptors/Controllers/authController';
 import mentorController from '../../../adaptors/Controllers/mentorController';
 import verifyToken from '../../middlewares/jwt/authMiddleware';
-// import bodyParser from 'body-parser';
+import menteeController from '../../../adaptors/Controllers/menteeController';
 
 const userRouter = express.Router();
 
@@ -16,17 +16,15 @@ userRouter.post('/api/user/googleLogin' , authController.googleAuth);
 //mentor?
 userRouter.post('/api/user/mentorLogin',authController.mentorLogin);
 userRouter.post('/api/user/mentorAppicationForm',mentorController.mentorApplicationFormSub);
-userRouter.get('/api/user/getMentors',verifyToken,mentorController.getMentors);
-userRouter.get('/api/user/getMentor' , mentorController.getMentor);
-userRouter.post('/api/user/addSlots' , mentorController.addSlots);
-userRouter.get('/api/user/getMentorApplication' , mentorController.getApplicationId)
-userRouter.post('/api/user/slotBooking' , mentorController.slotBooking);
-userRouter.post('/api/user/create-checkout-session' , mentorController.createCheckoutSession)
-// userRouter.post('/api/user/create-checkout-session' , mentorController.createCheckoutSession)
-userRouter.delete('/api/user/deleteSlot' , mentorController.deleteSlot)
+userRouter.get('/api/user/getMentors', verifyToken, mentorController.getMentors);
+userRouter.get('/api/user/getMentor' ,verifyToken, mentorController.getMentor);
+userRouter.post('/api/user/addSlots' ,verifyToken, mentorController.addSlots);
+userRouter.get('/api/user/getMentorApplication', verifyToken, mentorController.getApplicationId)
+userRouter.post('/api/user/slotBooking' ,verifyToken, mentorController.slotBooking);
+userRouter.post('/api/user/create-checkout-session' ,verifyToken, mentorController.createCheckoutSession)
+userRouter.delete('/api/user/deleteSlot' , verifyToken,mentorController.deleteSlot)
 userRouter.post('/webhooks', mentorController.webhook);
-userRouter.get('/api/user/getBookedSlotes',mentorController.getBookedSlotes)
-
-
+userRouter.get('/api/user/getBookedSlotes',verifyToken,mentorController.getBookedSlotes);
+userRouter.get('/api/user/getMentee' , verifyToken , menteeController.getMentee)
 
 export default userRouter;  

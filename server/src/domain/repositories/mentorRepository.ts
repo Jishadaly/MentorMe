@@ -1,15 +1,18 @@
 import { ApplicationForm } from "../entities/mentorApplication";
 import MentorApplication from "../../frameworks/database/mongoDb/models/mentorApplicationModel";
-import { sameUser } from "./userRepository";
-import { Users } from "../../frameworks/database/mongoDb/models/user";
-import mentorController from "../../adaptors/Controllers/mentorController";
-import mongoose from "mongoose";
+// import { sameUser } from "./userRepository";
+// import { Users } from "../../frameworks/database/mongoDb/models/user";
+// import mentorController from "../../adaptors/Controllers/mentorController";
+// import mongoose from "mongoose";
 import Availability from "../../frameworks/database/mongoDb/models/Availability";
+import { Users } from "../../frameworks/database/mongoDb/models/user";
+
 
 interface DateRange {
   from: Date | string;
   to: Date | string;
 }
+
 
 export default {
   saveApplicationForm: async (formData: ApplicationForm) => {
@@ -28,7 +31,8 @@ export default {
         ...formData
       });
 
-      await newForm.save();
+     const savedForm =  await newForm.save();
+     
       return newForm;
 
     } catch (error: any) {
@@ -37,12 +41,14 @@ export default {
   },
 
   getMentors: async () => {
+    const mentors = await Users.find({ isMentor: true }).populate('mentorAdditional');
+    console.log(mentors);
+    
+    return  mentors
 
-    return await MentorApplication.find({ status: "Approved" });
+},
 
-  },
-
-  getMentor: async (mentorId: string) => {
+getMentor: async (mentorId: string) => {
     const mentor =  await MentorApplication.findById(mentorId).populate('availabilities');
     return mentor;
   },
@@ -109,11 +115,9 @@ export default {
     }
   },
   
-
   addSlotes: async (mentorId: string, slot: DateRange) => {
     
     try {
-
       const from = new Date(slot.from)
       const to = new Date(slot.to)
 
@@ -141,16 +145,14 @@ export default {
 
   slotIdbooked:async(slotId:string)=>{
     try {
-       const isbooked = await  Availability.findOne({_id:slotId,isBooked:true})
-      console.log(isbooked);
-      
+       const isbooked = await  Availability.findOne({_id:slotId,isBooked:true});
        return isbooked
     } catch (error) {
       console.log(error);
       throw error
     }
   },
-
+  
   deleteSlot:async(slotId:string)=>{
     try {
 
@@ -175,13 +177,13 @@ export default {
 
       return availableSlots;
   },
-
+  
   bookAslot:async(menteeId:string , mentorId:string ,slotId:string)=>{
       try{
         console.log("222222 ",mentorId , menteeId , slotId);
         
         const mentorApplicationId = await MentorApplication.findOne({user:mentorId})
-        console.log("MENTORAPPILACTION ID",mentorApplicationId);
+        console.log(mentorApplicationId);
         
         const bookAslot = await Availability.findByIdAndUpdate(slotId , { mentorId:mentorApplicationId?._id , isBooked:true , bookedBy:menteeId}, { new: true })
         return bookAslot
@@ -190,9 +192,6 @@ export default {
         console.error('Error booking slots:', error);
       throw new Error(error.message);
       }
-  }
-
+  },
 
 }
-
-

@@ -14,7 +14,10 @@ export const updateMentorVerificationVerify =async(id:string , userId:string)=>{
    try {
     console.log(id,userId);
     
+    
     const userUpdate = await Users.updateOne(  {_id:userId} , { isMentor: true });
+    const saveFormInUser = await Users.findByIdAndUpdate(userId , {mentorAdditional:id});
+
     console.log("update user",userUpdate);
     
     return  await MentorApplication.findByIdAndUpdate(id , {status:"Approved"});
@@ -28,7 +31,9 @@ export const updateMentorVerificationVerify =async(id:string , userId:string)=>{
 
 export const updateMentorVerificationReject =async(id:string , userId:string)=>{
   try {
-     return  await MentorApplication.findByIdAndUpdate(id , {status:"Rejected"});
+      const mentorapp =  await MentorApplication.findByIdAndUpdate(id , {status:"Rejected"});
+     
+     return mentorapp;
   } catch (error:any) {
    throw new Error(error)
   }

@@ -9,15 +9,14 @@ function ProfileMenu({ isOpen }) {
   const handleLogout = ()=>{
      dispatch(logout());
      navigate('/mentee/login');
-     persistor.purge(); // Purge the persisted state
-     localStorage.clear(); // Clear local storage
-
+     persistor.purge();
+     localStorage.clear(); 
   }
 
   return (
     isOpen && (
       <div className="absolute bottom-20 left-0 w-48 bg-white shadow-lg rounded-md p-2">
-        <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</Link>
+        <Link to="/mentee/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</Link>
         <a onClick={handleLogout} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
       </div>
     )

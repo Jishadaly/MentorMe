@@ -52,6 +52,10 @@ export const getUserbyEMail = async (email:string)=> {
     return await Users.findOne({email:email})
 }
 
+export const getUserbyId = async (id:string)=> {
+  return await Users.findById(id)
+}
+
 export const sameUser = async(user:string)=>{
    return await Users.findById(user)
 }

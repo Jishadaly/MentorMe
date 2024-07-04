@@ -25,6 +25,7 @@ export interface Iuser extends Document {
      availablity:string;
      mentorVerification:Boolean;
      linkedinURL:string;
+     mentorAdditional:mongoose.Types.ObjectId;
 } 
 
 
@@ -99,6 +100,10 @@ const userSchema = new Schema<Iuser>({
     type:Boolean,
     default:false
   },
+  mentorAdditional: {
+    type: Schema.Types.ObjectId,
+    ref: 'MentorApplication',
+  }
 });
 
 export const Users = mongoose.model<Iuser>('Users' , userSchema );

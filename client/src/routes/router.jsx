@@ -23,6 +23,7 @@ import PageNotFound from '@/pages/others/notFount'
 import MentorDetails from '@/pages/mentee/MentorDeatails'
 import MentorAvailability from '@/pages/mentor/Availability'
 import CallesPage from '@/pages/mentee/Calles'
+import MenteeProfile from '@/pages/mentee/MenteeProfile'
 
 
 const router = createBrowserRouter(
@@ -36,6 +37,7 @@ const router = createBrowserRouter(
             <Route path='home' element={<MenteeHome/>}/>
             <Route path='mentorDetails/:mentorId' element={<MentorDetails/>}/>
             <Route path='calles' element={<CallesPage/>}/>
+            <Route path='profile' element={<MenteeProfile/>}/>
         </Route>
       </Route>
 

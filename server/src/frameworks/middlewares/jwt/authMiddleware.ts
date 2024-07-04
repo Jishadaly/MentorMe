@@ -29,6 +29,8 @@ if (!secretKey) {
   try {
     const decoded = jwt.verify(token, secretKey) as jwt.JwtPayload;
     req.userId = decoded.userId; // Assuming your JWT payload has a userId field
+    console.log("token verified succesfully");
+    
     next();
   } catch (error) {
     res.status(401).json({ error: 'Invalid token' });

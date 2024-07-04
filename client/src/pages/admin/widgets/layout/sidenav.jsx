@@ -1,8 +1,20 @@
 import React from "react";
 import { Sidebar } from "flowbite-react";
 import { HiChartPie, HiUser, HiClipboardCheck, HiDocumentReport, HiLogout } from "react-icons/hi";
+import { useDispatch } from "react-redux";
+import { logout } from "@/redux/slice/adminAuthSlice";
+import { useNavigate } from "react-router-dom";
 
 export function Sidenav({setCurrentView}) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const handleLogout = ()=>{
+     dispatch(logout())
+     navigate('/admin/login')
+     persistor.purge(); // Purge the persisted state
+    localStorage.clear(); // Clear local storage
+    
+  }
   
   return (
     <div className=" w-64 flex flex-col">
@@ -23,14 +35,12 @@ export function Sidenav({setCurrentView}) {
             </Sidebar.Item>
           </Sidebar.ItemGroup>
         </Sidebar.Items>
-        <Sidebar.Items className="mt-auto">
-          <Sidebar.ItemGroup>
-            <Sidebar.Item href="#" icon={HiLogout}>
-              Logout
-            </Sidebar.Item>
-          </Sidebar.ItemGroup>
+        <Sidebar.Items className="mb-20">
+         
         </Sidebar.Items>
       </Sidebar>
+
+      <button className="bg-black text-white w-full" onClick={handleLogout}> Logout</button>
     </div>
   );
 }

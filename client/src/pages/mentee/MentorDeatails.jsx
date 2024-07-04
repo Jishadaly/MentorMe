@@ -6,7 +6,6 @@ import { useParams } from 'react-router-dom';
 import { fetchMentorData } from '@/Api/services/menteeService';
 import CustomDatePicker from '@/componets/DatePicker';
 import { useSelector } from 'react-redux';
-
 import BookingConfirmModal from '@/componets/modal/BookingConfrimModal';
 
 
@@ -47,44 +46,6 @@ const MentorDetails = () => {
   };
 
   const availableSlots = filterSlotsByDate(selectedDate);
-
-  // const handleBooking = async (slotId , index)=>{
-  //    try {
-  //       const menteeId = user.id;
-  //       const bookingDatas = {
-  //         menteeId , mentorId , slotId
-  //       }
-  //       const response = slotBookingbyMentee('/user/slotBooking',bookingDatas);
-  //       console.log("mkmkmkmk",response);
-  //       toast.success("Slot booked successfully");
-  //       let amount = 500;
-  //       const strip = await stripePromise;
-  //       const session = await createCheckoutSession('/user/create-checkout-session' ,amount , menteeId , mentorId , slotId )
-  //       .then((res) => res.json());
-        
-  //       await strip.redirectToCheckout({sessionId:session.id});
-  //    } catch (error) {
-  //     console.log(error);
-  //    }
-  // }
-
-  // const makePayment = async(slotId , index)=>{
-   
-  //   const menteeId = user.id;
-  //   try {
-  //     const strip =  loadStripe(import.meta.env.VITE_STRIP_PUBLISHED_KEY);
-  //     const session = await createCheckoutSession('/user/create-checkout-session' ,{amount: amount,
-  //     menteeId: menteeId,
-  //     mentorId: mentorId,
-  //     slotId: slotId} )
-  //       .then((res) => res.json()).catch((error)=> console.log(error))
-
-  //       await strip.redirectToCheckout({sessionId:session.id});
-
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
 
   const handleButtonClick = (slotId)=>{
     
@@ -188,8 +149,8 @@ const MentorDetails = () => {
             </div>
             <div className="text-green-500 mb-4 flex items-center">
               <FiDollarSign size={20} />
-              <span className="ml-1 font-semibold font-inter">${mentor1.rate} / 30-minute call</span>
-              <a href="#" className="text-blue-500 ml-2 underline">extend to 60min</a>
+              <span className="ml-1 font-semibold font-inter">${mentor1.rate}2000 / 60-minute call</span>
+              {/* <a href="#" className="text-blue-500 ml-2 underline">extend to 60min</a> */}
             </div>
             <div>
               <CustomDatePicker selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
@@ -200,7 +161,7 @@ const MentorDetails = () => {
                 {availableSlots.length > 0 ? (
                   availableSlots.filter(slot=> !slot.isBooked)
                   .map((slot, index) => (
-                    <button onClick={()=>handleButtonClick(slot._id) } key={index} className="flex-shrink-0 font-inter px-4 py-2 bg-indigo-500 text-white rounded-full shadow-md transition duration-300 ease-in-out hover:bg-indigo-600">
+                    <button onClick={()=>handleButtonClick(slot) } key={index} className="flex-shrink-0 font-inter px-4 py-2 bg-indigo-500 text-white rounded-full shadow-md transition duration-300 ease-in-out hover:bg-indigo-600">
                       {`${new Date(slot.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
                     </button>
                   ))
@@ -214,7 +175,7 @@ const MentorDetails = () => {
           </div>
         </section>
       </main>
-      { isModalvisible && <BookingConfirmModal onClose = {handleModalClose} mentor={mentor1.user}  mentee={user.id}  slotId={clickedSLot} price={2000} /> }
+      { isModalvisible && <BookingConfirmModal onClose = {handleModalClose} mentorData={mentor1}  mentee={user.id}  slot={clickedSLot} price={2000} /> }
     </div>
   );
 };
