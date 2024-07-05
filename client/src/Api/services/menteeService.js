@@ -53,3 +53,11 @@ export const slotBookingbyMentee = async(endPoint , datas)=>{
       console.log(error);
     }
   }
+
+  export const updateName =async (endPoint , datas)=>{
+   
+      console.log(datas,"/'/'/'/");
+      const respnse = await authInstanceAxios.post(`/${endPoint}`,datas);
+      return respnse.data
+    
+  }

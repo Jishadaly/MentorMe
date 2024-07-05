@@ -18,4 +18,23 @@ export default {
       }
       
   },
+  editProfile:async (req:Request , res:Response ,  next: NextFunction)=>{
+    console.log(req.body);
+
+    const { userId , fieldName , newValue} = req.body;
+    const menteeId = userId as string;
+    const updatingFeild = fieldName as string;
+    const newVal = newValue as string;
+    
+    
+    try {
+      const updated = await menteeInteractor.editMenteeProfile(menteeId , updatingFeild , newVal );
+      console.log(updated);
+      
+      res.status(200).json(updated);
+    } catch (error:any) {
+      res.status(400).json(error.message);
+    }
+    
+},
 }

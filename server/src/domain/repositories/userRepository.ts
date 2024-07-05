@@ -106,3 +106,24 @@ export const getBookdslotdb=async(userId:string)=>{
 
     return slots
 }
+
+export const updateUserName = async (userId:string, newField:string)=>{
+ try {
+  console.log("herer");
+  const existingUser = await checkExistingUser("emal" , newField);
+  if (existingUser) {
+    throw Error("User name is already exist");
+  }
+  const updated = await Users.findByIdAndUpdate(userId , {userName:newField} , { new: true, fields: { userName: 1 } })
+  return updated
+ } catch (error) {
+  throw error
+ }
+}
+
+export const updateUserPhone = async (userId:string, newField:string)=>{
+  console.log("herer");
+  
+  const updated = await Users.findByIdAndUpdate(userId , {phone:newField} , { new: true, fields: { phone: 1 } })
+  return updated
+}
