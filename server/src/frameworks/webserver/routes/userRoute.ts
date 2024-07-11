@@ -4,6 +4,7 @@ import mentorController from '../../../adaptors/Controllers/mentorController';
 import verifyToken from '../../middlewares/jwt/authMiddleware';
 import menteeController from '../../../adaptors/Controllers/menteeController';
 import blogController from '../../../adaptors/Controllers/blogController';
+import checkRole from '../../middlewares/jwt/checkRole';
 
 const userRouter = express.Router();
 
@@ -17,7 +18,7 @@ userRouter.post('/api/user/mentorLogin',authController.mentorLogin);
 userRouter.post('/api/user/mentorAppicationForm',mentorController.mentorApplicationFormSub);
 
 //mentor?
-userRouter.get('/api/user/getMentors', verifyToken, mentorController.getMentors);
+
 userRouter.get('/api/user/getMentor' ,verifyToken, mentorController.getMentor);
 userRouter.post('/api/user/addSlots' ,verifyToken, mentorController.addSlots);
 userRouter.get('/api/user/getMentorApplication', verifyToken, mentorController.getApplicationId)
@@ -30,10 +31,12 @@ userRouter.post('/webhooks', mentorController.webhook);
 userRouter.get('/api/user/getBookedSlotes',verifyToken,mentorController.getBookedSlotes);
 
 //mentee ?
+userRouter.get('/api/user/getMentors', verifyToken,checkRole('any'), mentorController.getMentors);
 userRouter.get('/api/user/getMentee' , verifyToken , menteeController.getMentee);
 userRouter.post('/api/user/editProfile',verifyToken,menteeController.editProfile);
 
 //slot ?
+
 
 //blogs
 userRouter.post('/api/user/addBlog',verifyToken,blogController.addBlog);

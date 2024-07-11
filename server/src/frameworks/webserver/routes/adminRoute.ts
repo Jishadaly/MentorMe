@@ -12,4 +12,5 @@ adminRouter.get('/api/admin/getAllUsers',adminController.getAllUsers)
 adminRouter.get('/api/admin/getAllMentors',adminController.getAllMentors)
 adminRouter.patch('/api/admin/updateBlockStatus',adminController.updateBlockStatus)
 
+
 export default adminRouter;

@@ -42,8 +42,6 @@ export default {
 
   getMentors: async () => {
     const mentors = await Users.find({ isMentor: true }).populate('mentorAdditional');
-    console.log(mentors);
-    
     return  mentors
 
 },
