@@ -21,7 +21,7 @@ export default {
        const blogs = await Blog.find().populate({
         path:'mentor',
         select:'_id userName'
-       })
+       }).sort({ createdAt: -1 });
        return blogs
     } catch (error:any) {
       throw Error(error)
@@ -47,6 +47,7 @@ export default {
        path:'mentor',
        select:'_id userName'
       })
+      .sort({ updatedAt: -1 });
       console.log(blog);
       
       return blog
