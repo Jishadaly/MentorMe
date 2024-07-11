@@ -3,11 +3,9 @@ import authController from '../../../adaptors/Controllers/authController';
 import mentorController from '../../../adaptors/Controllers/mentorController';
 import verifyToken from '../../middlewares/jwt/authMiddleware';
 import menteeController from '../../../adaptors/Controllers/menteeController';
-<<<<<<< HEAD
-=======
+
 import blogController from '../../../adaptors/Controllers/blogController';
 import checkRole from '../../middlewares/jwt/checkRole';
->>>>>>> 6b1760b (role based authentication done)
 
 const userRouter = express.Router();
 
@@ -38,9 +36,6 @@ userRouter.get('/api/user/getMentors', verifyToken,checkRole('any'), mentorContr
 userRouter.get('/api/user/getMentee' , verifyToken , menteeController.getMentee);
 userRouter.post('/api/user/editProfile',verifyToken,menteeController.editProfile);
 
-<<<<<<< HEAD
-export default userRouter;  
-=======
 //slot ?
 
 
@@ -58,5 +53,3 @@ userRouter.delete('/api/user/deleteBlog' , verifyToken , blogController.deleteBl
 
 
 export default userRouter;  
-
->>>>>>> 6b1760b (role based authentication done)

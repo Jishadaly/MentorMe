@@ -36,10 +36,6 @@ if (!secretKey) {
     console.log("token verified succesfully");
     
     next();
-<<<<<<< HEAD
-=======
-
->>>>>>> 6b1760b (role based authentication done)
   } catch (error) {
     res.status(401).json({ error: 'Invalid token' });
   }
