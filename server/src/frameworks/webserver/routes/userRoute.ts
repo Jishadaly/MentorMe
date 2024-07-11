@@ -4,7 +4,7 @@ import mentorController from '../../../adaptors/Controllers/mentorController';
 import verifyToken from '../../middlewares/jwt/authMiddleware';
 import menteeController from '../../../adaptors/Controllers/menteeController';
 
-// import blogController from '../../../adaptors/Controllers/blogController';
+import blogController from '../../../adaptors/Controllers/blogController';
 import checkRole from '../../middlewares/jwt/checkRole';
 
 const userRouter = express.Router();
@@ -40,12 +40,12 @@ userRouter.post('/api/user/editProfile',verifyToken,menteeController.editProfile
 
 
 //blogs
-// userRouter.post('/api/user/addBlog',verifyToken,blogController.addBlog);
-// userRouter.get('/api/user/getAllblogs' , verifyToken , blogController.getAllBlogs);
-// userRouter.get('/api/user/getBlog' , verifyToken , blogController.getBlog);
-// userRouter.get('/api/user/getmentorBlog' , verifyToken , blogController.getMentorBlog);
-// userRouter.post('/api/user/updateBlog' , verifyToken , blogController.updateBlog);
-// userRouter.delete('/api/user/deleteBlog' , verifyToken , blogController.deleteBlog);
+userRouter.post('/api/user/addBlog',verifyToken,blogController.addBlog);
+userRouter.get('/api/user/getAllblogs' , verifyToken , blogController.getAllBlogs);
+userRouter.get('/api/user/getBlog' , verifyToken , blogController.getBlog);
+userRouter.get('/api/user/getmentorBlog' , verifyToken , blogController.getMentorBlog);
+userRouter.post('/api/user/updateBlog' , verifyToken , blogController.updateBlog);
+userRouter.delete('/api/user/deleteBlog' , verifyToken , blogController.deleteBlog);
 
 
 
