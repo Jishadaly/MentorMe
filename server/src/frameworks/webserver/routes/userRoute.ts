@@ -46,9 +46,5 @@ userRouter.get('/api/user/getmentorBlog' , verifyToken , blogController.getMento
 userRouter.post('/api/user/updateBlog' , verifyToken , blogController.updateBlog);
 userRouter.delete('/api/user/deleteBlog' , verifyToken , blogController.deleteBlog);
 
-
-
-
-
 export default userRouter;  
 
