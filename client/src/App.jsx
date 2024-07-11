@@ -16,7 +16,7 @@
      <Provider store={store}>
       <PersistGate loading={null}  persistor={persister}>
         <Elements stripe={strip}>
-           <Toaster position="top-center" richColors/>
+           <Toaster position="top-center"  />
            <RouterProvider router={router} />
         </Elements>
       </PersistGate>

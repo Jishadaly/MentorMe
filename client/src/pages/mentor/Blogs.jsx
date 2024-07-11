@@ -48,7 +48,8 @@ function Blogs() {
           </div>
         </section>
 
-        { blogs ? (  <section className="mb-8">
+        { blogs && blogs.length > 0 &&  ( 
+          <section className="mb-8">
           <h2 className="text-2xl  font-semibold mb-4 font-inter">Published Blogs</h2>
           {blogs.map((blog) => (
             <div key={blog._id} onClick={()=> handlClick(blog._id) }  className="mb-4 p-4 bg-white rounded-md shadow-md flex cursor-pointer">
@@ -62,7 +63,7 @@ function Blogs() {
               </div>
             </div>
           ))}
-        </section> ) : ''}
+        </section> ) }
 
         {/* <section>
           <h2 className="text-2xl font-semibold mb-4 f">Other Mentor Blogs</h2>
