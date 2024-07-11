@@ -4,8 +4,11 @@ import Header from './partials/Header';
 import EditNameCard from '@/componets/editMenteeProfile/EditNameCard';
 import Email from '@/componets/editMenteeProfile/Email';
 import { getMentee } from '@/Api/services/menteeService';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Phone from '@/componets/editMenteeProfile/Phone';
+import ReserPassword from '@/componets/editMenteeProfile/ResetPassord';
+import { logout } from '@/redux/slice/userAuthSlice';
+import { useNavigate } from 'react-router-dom';
 
 const MenteeProfile = () => {
   const [mentee, setMentee] = useState(null);
@@ -13,6 +16,16 @@ const MenteeProfile = () => {
   const [activeField, setActiveField] = useState('name');
 
   const user = useSelector((state) => state.auth.user);
+
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const handleLogout = ()=>{
+     dispatch(logout());
+     navigate('/mentee/login');
+     persistor.purge();
+     localStorage.clear(); 
+  }
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -45,11 +58,6 @@ const MenteeProfile = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Header */}
-      <Header />
-      {/* Sidebar */}
-      <Sidenav />
-      {/* Main Content */}
       <main className="ml-20 mt-16 p-6 flex-1 overflow-y-auto">
         <section className="max-w-7xl mx-auto items-center">
           <div className="flex flex-col justify-center flex-start p-5 ">
@@ -77,21 +85,21 @@ const MenteeProfile = () => {
                     <span className="w-8 text-center">📱</span>
                     <span>Mobile number: {mentee.phone}</span>
                   </div>
-                  <div className="flex items-center py-2 cursor-pointer">
+                  {/* <div className="flex items-center py-2 cursor-pointer">
                     <span className="w-8 text-center">🔔</span>
                     <span>Notifications</span>
-                  </div>
-                  <div className="flex items-center py-2 cursor-pointer">
+                  </div> */}
+                  <div className="flex items-center py-2 cursor-pointer"onClick={() => handleActiveField('password')}>
                     <span className="w-8 text-center">🔑</span>
                     <span>Password</span>
                   </div>
-                  <div className="flex items-center py-2 cursor-pointer">
+                  {/* <div className="flex items-center py-2 cursor-pointer">
                     <span className="w-8 text-center">⚠️</span>
                     <span>Danger zone</span>
-                  </div>
+                  </div> */}
                   <div className="flex items-center py-2 cursor-pointer">
                     <span className="w-8 text-center">🚪</span>
-                    <span>Log out</span>
+                    <span onClick={handleLogout}>Log out</span>
                   </div>
                 </div>
               </div>
@@ -100,8 +108,7 @@ const MenteeProfile = () => {
                 {activeField === 'name' && <EditNameCard name={mentee.userName} menteeId = {mentee._id} onUpdate ={handleFieldUpdate} />}
                 {activeField === 'email' && <Email email={mentee.email} />}
                 {activeField === 'phone' && <Phone phoneNo={mentee.phone} menteeId = {mentee._id}  onUpdate={handleFieldUpdate} />}
-
-                {/* Add more conditional renders for other fields if needed */}
+                {activeField === 'password' && <ReserPassword  menteeId = {mentee._id}  />}
               </div>
             </div>
           </div>

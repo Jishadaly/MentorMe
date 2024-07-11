@@ -102,8 +102,6 @@ const MentorAvailability = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      <Header />
-      <SideNav />
       <div className="flex-1 mt-16 md:ml-64 p-4 flex">
         <div className="w-80 p-6 fixed top-16">
           <h3 className="text-xl font-bold mb-4 text-center font-inter">Select a Date</h3>

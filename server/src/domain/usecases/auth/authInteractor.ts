@@ -1,6 +1,6 @@
 
 import { IUser } from "../../entities/types/user/user";
-import { createUser , verifyUserdb , getUserbyEMail ,checkIsmentor} from "../../repositories/userRepository";
+import { createUser , verifyUserdb , getUserbyEMail ,checkIsmentor, updateUserPass} from "../../repositories/userRepository";
 import { Request } from "express";
 import { Encrypt } from "../../helper/hashPassword";
 import { generateToken } from "../../helper/jwtHelper";
@@ -91,8 +91,7 @@ export default {
             throw new Error('User not fount');
         }
 
-        const isMentor = await checkIsmentor(email);
-        console.log("erfbrbfjbjb",isMentor);
+        const isMentor = await checkIsmentor(email)
         
         if ( isMentor?.isMentor === false) {
             console.log("no mentor");
@@ -164,5 +163,17 @@ export default {
          }
 
      },
+     resetPassword:async(userId:string , newPass:string)=>{
+        try {
+          console.log("////////",userId , newPass);
+          const hashedPassword = await Encrypt.cryptPassword(newPass);
+          console.log(hashedPassword);
 
+          const pass  = updateUserPass(userId , hashedPassword);
+          return pass
+          
+        } catch (error) {
+          throw error
+        }
+      }
 }

@@ -5,13 +5,6 @@ import SideNav from './partials/SideNav';
 const MentorHome = () => {
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Header */}
-      <Header/>  
-
-      {/* Sidebar */} 
-      
-      <SideNav/>
-
       {/* Main Content */}
       <main className="ml-64 mt-16 p-6 flex-1 overflow-y-auto">
         <section className="max-w-7xl mx-auto">

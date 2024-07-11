@@ -24,6 +24,13 @@ import MentorDetails from '@/pages/mentee/MentorDeatails'
 import MentorAvailability from '@/pages/mentor/Availability'
 import CallesPage from '@/pages/mentee/Calles'
 import MenteeProfile from '@/pages/mentee/MenteeProfile'
+import CreateBlogs from '@/pages/mentor/CreateBlogs'
+import MenteeLayout from '@/pages/layouts/MenteeLayout'
+import MentorLayout from '@/pages/layouts/MentorLayout'
+import BlogList from '@/pages/mentee/BlogList'
+import BlogView from '@/pages/mentee/BlogView'
+import Blogs from '@/pages/mentor/Blogs'
+import EditBlog from '@/pages/mentor/EditBlog'
 
 
 const router = createBrowserRouter(
@@ -31,28 +38,35 @@ const router = createBrowserRouter(
     <Route path='/'>
       <Route index element={<LandingPage />} />
 
-      <Route  element={<Protected/>}>
-        <Route path='/mentee'>
+      <Route  element={<Protected/> }>
+        <Route path='/mentee' element={<MenteeLayout/>}>
         <Route index element={<MenteeHome />} />
             <Route path='home' element={<MenteeHome/>}/>
             <Route path='mentorDetails/:mentorId' element={<MentorDetails/>}/>
             <Route path='calles' element={<CallesPage/>}/>
             <Route path='profile' element={<MenteeProfile/>}/>
+            <Route path='blogs' element={<BlogList/>}/>
+            <Route path='blogView/:blogId' element={<BlogView/>}/>
+
         </Route>
       </Route>
 
       <Route element={<AdminProtected/> }>
         <Route path='/admin'>
-        <Route index element={<AdminHome />} />
+        <Route index element={<AdminHome/>} />
          <Route path='home' element={<AdminHome/>}/>
         </Route>                                                          
       </Route>
 
       <Route  element={<MentorProtected/>}> 
-        <Route path='/mentor'>
+        <Route path='/mentor' element={<MentorLayout/>}>
           <Route index element={<MentorHome />} />
           <Route path='home' element={<MentorHome/>}/>
           <Route path='availability' element={<MentorAvailability/>}/>
+          <Route path='Createblogs' element={<CreateBlogs/>} />
+          <Route path='blogs' element={<Blogs/>} />
+          <Route path='editBlog/:blogId' element={<EditBlog/>}/>
+
         </Route>    
       </Route>
 

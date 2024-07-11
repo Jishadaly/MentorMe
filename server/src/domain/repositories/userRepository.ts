@@ -60,9 +60,7 @@ export const sameUser = async(user:string)=>{
    return await Users.findById(user)
 }
 
-export const checkIsmentor = async(email:string)=>{
-  console.log("checkcehdckcheck");
-  
+export const checkIsmentor = async(email:string)=>{ 
   return await Users.findOne({email:email} , {isMentor:true})
 }
 
@@ -126,4 +124,11 @@ export const updateUserPhone = async (userId:string, newField:string)=>{
   
   const updated = await Users.findByIdAndUpdate(userId , {phone:newField} , { new: true, fields: { phone: 1 } })
   return updated
+}
+
+
+export const updateUserPass = async (userId:string, newField:string)=>{
+  
+  const updated = await Users.findByIdAndUpdate(userId , { password:newField });
+  return "updated";
 }

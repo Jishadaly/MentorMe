@@ -32,6 +32,7 @@ if (!secretKey) {
     console.log("token verified succesfully");
     
     next();
+    
   } catch (error) {
     res.status(401).json({ error: 'Invalid token' });
   }

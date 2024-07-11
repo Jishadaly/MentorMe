@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiHome, FiCalendar, FiMessageSquare, FiDollarSign, FiUser } from 'react-icons/fi';
+import { FiHome, FiCalendar, FiMessageSquare, FiDollarSign, FiUser , FiFileText , FiUploadCloud , FiList} from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 
 function SideNav({ isOpen }) {
@@ -17,7 +17,7 @@ function SideNav({ isOpen }) {
             <span>Sessions</span>
           </a>
           <a href="#" className="flex items-center space-x-3 px-6 py-3">
-            <FiMessageSquare size={24} />
+            <FiList size={24} />
             <span>Bookings</span>
           </a>
           <a href="#" className="flex items-center space-x-3 px-6 py-3">
@@ -29,8 +29,12 @@ function SideNav({ isOpen }) {
             <span>Payment & Coupons</span>
           </a>
           <a href="#" className="flex items-center space-x-3 px-6 py-3" onClick={() => navigate('/mentor/availability')}>
-            <FiUser size={24} />
+            <FiUploadCloud size={24} />
             <span>Availability</span>
+          </a>  
+          <a href="#" className="flex items-center space-x-3 px-6 py-3" onClick={() => navigate('/mentor/blogs')} >
+            <FiFileText size={24} />
+            <span>Blogs</span>
           </a>
         </nav>
       </aside>

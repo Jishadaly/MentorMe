@@ -9,16 +9,14 @@ import { useSelector } from 'react-redux';
 import BookingConfirmModal from '@/componets/modal/BookingConfrimModal';
 
 
-
-
 const MentorDetails = () => {
+
   const {mentorId} = useParams();
   const [mentor1 , setMentor] = useState(null);
   const [selectedDate , setSelectedDate] = useState(new Date());
   const [slots , setSlots          ] = useState([]);
   const [clickedSLot , setClickedSlot] = useState(null);
   const user = useSelector((state) => state.auth.user);
-
   const [isModalvisible , setIsmodalVisble] = useState(false);
 
   
@@ -48,12 +46,9 @@ const MentorDetails = () => {
   const availableSlots = filterSlotsByDate(selectedDate);
 
   const handleButtonClick = (slotId)=>{
-    
     setClickedSlot(slotId)
     setIsmodalVisble(true);
   }
-
-  console.log(clickedSLot,"clikckckckc");
 
   const handleModalClose = ()=>{
      setIsmodalVisble(false)
@@ -80,8 +75,7 @@ const MentorDetails = () => {
   return (
     <div className="flex min-h-screen bg-gray-100">
       
-      <Header />
-      <Sidenav />
+    
       
       <main className="ml-20 mt-16 p-6 flex-1 overflow-y-auto">
         <section className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
