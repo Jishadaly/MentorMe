@@ -2,10 +2,8 @@ import express, { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
+import { AuthenticatedRequest } from '../../../domain/entities/types/AuthenticatedRequest';
 
-interface AuthenticatedRequest extends Request {
-  userId?: string;
-}
 const secretKey = process.env.JWT_SECRET;
 
 if (!secretKey) {
@@ -28,10 +26,20 @@ if (!secretKey) {
   const token = tokenParts[1];
   try {
     const decoded = jwt.verify(token, secretKey) as jwt.JwtPayload;
+    console.log("decodeed",decoded);
+    
     req.userId = decoded.userId; // Assuming your JWT payload has a userId field
+    req.userRole = decoded.userRole
+
+    console.log("auth middleware",req.userRole);
+    
     console.log("token verified succesfully");
     
     next();
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6b1760b (role based authentication done)
   } catch (error) {
     res.status(401).json({ error: 'Invalid token' });
   }

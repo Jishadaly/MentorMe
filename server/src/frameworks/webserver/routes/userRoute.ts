@@ -3,6 +3,11 @@ import authController from '../../../adaptors/Controllers/authController';
 import mentorController from '../../../adaptors/Controllers/mentorController';
 import verifyToken from '../../middlewares/jwt/authMiddleware';
 import menteeController from '../../../adaptors/Controllers/menteeController';
+<<<<<<< HEAD
+=======
+import blogController from '../../../adaptors/Controllers/blogController';
+import checkRole from '../../middlewares/jwt/checkRole';
+>>>>>>> 6b1760b (role based authentication done)
 
 const userRouter = express.Router();
 
@@ -16,7 +21,7 @@ userRouter.post('/api/user/mentorLogin',authController.mentorLogin);
 userRouter.post('/api/user/mentorAppicationForm',mentorController.mentorApplicationFormSub);
 
 //mentor?
-userRouter.get('/api/user/getMentors', verifyToken, mentorController.getMentors);
+
 userRouter.get('/api/user/getMentor' ,verifyToken, mentorController.getMentor);
 userRouter.post('/api/user/addSlots' ,verifyToken, mentorController.addSlots);
 userRouter.get('/api/user/getMentorApplication', verifyToken, mentorController.getApplicationId)
@@ -29,7 +34,29 @@ userRouter.post('/webhooks', mentorController.webhook);
 userRouter.get('/api/user/getBookedSlotes',verifyToken,mentorController.getBookedSlotes);
 
 //mentee ?
+userRouter.get('/api/user/getMentors', verifyToken,checkRole('any'), mentorController.getMentors);
 userRouter.get('/api/user/getMentee' , verifyToken , menteeController.getMentee);
 userRouter.post('/api/user/editProfile',verifyToken,menteeController.editProfile);
 
+<<<<<<< HEAD
 export default userRouter;  
+=======
+//slot ?
+
+
+//blogs
+userRouter.post('/api/user/addBlog',verifyToken,blogController.addBlog);
+userRouter.get('/api/user/getAllblogs' , verifyToken , blogController.getAllBlogs);
+userRouter.get('/api/user/getBlog' , verifyToken , blogController.getBlog);
+userRouter.get('/api/user/getmentorBlog' , verifyToken , blogController.getMentorBlog);
+userRouter.post('/api/user/updateBlog' , verifyToken , blogController.updateBlog);
+userRouter.delete('/api/user/deleteBlog' , verifyToken , blogController.deleteBlog);
+
+
+
+
+
+
+export default userRouter;  
+
+>>>>>>> 6b1760b (role based authentication done)

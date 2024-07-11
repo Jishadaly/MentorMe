@@ -72,8 +72,8 @@ export default {
         if(existingUser && existingUser.isBlocked){
             throw new Error('Account is Blocked');
         }
-        
-        const token = await generateToken(existingUser.id , email)
+        const role = 'mentee'
+        const token = await generateToken(existingUser.id , email , role)
         const user={ 
             id:existingUser.id,
             name:existingUser.userName,
@@ -84,7 +84,7 @@ export default {
         return { token , user }
     },
 
-    loginMentor : async (email:string , password:string )=> {
+loginMentor : async (email:string , password:string )=> {
         const existingUser = await getUserbyEMail(email)
 
         if(!existingUser){
@@ -105,10 +105,10 @@ export default {
             throw new Error("Invalid password");
         }
         if(existingUser && existingUser.isBlocked){
-            throw new Error('Account is Blocked');
+            throw new Error('Account is Blocked')
         }
-        
-        const token = await generateToken(existingUser.id , email)
+        const role = 'mentor'
+        const token = await generateToken(existingUser.id , email , role)
         const user={ 
             id:existingUser.id,
             name:existingUser.userName,
@@ -129,7 +129,8 @@ export default {
             if( cred.password !== admin.password ){
                throw new Error ("user entered password is not matching")
             }
-            const token = await generateToken(admin.id , cred.email)
+            const role = 'admin'
+            const token = await generateToken(admin.id , cred.email , role);
             return {admin , token}
 
         } catch (error:any ){
@@ -153,8 +154,8 @@ export default {
                 phone: savedUser.phone,
 
                 }
-                 
-                let token = generateToken(savedUser.id ,savedUser.email);
+                const role = 'mentee';
+                let token = generateToken(savedUser.id ,savedUser.email , role);
                 return {user , token};
             }
 
