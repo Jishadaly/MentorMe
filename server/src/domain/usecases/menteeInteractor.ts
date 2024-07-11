@@ -1,4 +1,5 @@
 import { getUserbyId , updateUserName ,updateUserPhone } from "../repositories/userRepository"
+import authInteractor from "./auth/authInteractor";
 
 export default {
   getMentee:async(userId:string)=>{
@@ -18,17 +19,19 @@ export default {
       let response;
       switch(field){
         case "name" :
-          console.log("nameeee");
           response = await updateUserName(userId , newVal);
           break;
           case "phone" :
           response = await updateUserPhone(userId , newVal);
-            
           break;
-      }
+
+          case "password" :
+          response = await authInteractor.resetPassword(userId , newVal)
+          break;
+      };
 
      if (!response) {
-      throw Error("no respnse")
+      throw Error("no response")
      }
 
      return response;
@@ -37,4 +40,5 @@ export default {
      throw error
     }
   },
+  
 }

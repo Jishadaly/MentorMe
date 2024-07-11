@@ -13,6 +13,9 @@
   "dependencies": {
     "@coreui/coreui": "^5.0.2",
     "@coreui/react": "^5.1.0",
+    "@editorjs/editorjs": "^2.29.1",
+    "@editorjs/header": "^2.8.5",
+    "@editorjs/list": "^1.9.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@heroicons/react": "^2.1.3",

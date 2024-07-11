@@ -30,7 +30,6 @@ export default {
     try {
       const updated = await menteeInteractor.editMenteeProfile(menteeId , updatingFeild , newVal );
       console.log(updated);
-      
       res.status(200).json(updated);
     } catch (error:any) {
       res.status(400).json(error.message);

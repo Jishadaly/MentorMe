@@ -9,16 +9,7 @@ import { CSpinner } from '@coreui/react';
 
 function Phone({ phoneNo, menteeId, onUpdate }) {
   const initialPhoneValue = { phone: phoneNo };
-  // const [phone, setPhone] = useState('');
   
-  
-
-
-
-  // useEffect(() => {
-  //   // setPhone(phoneNo);
-  // }, [phoneNo]);
-
   const handleSave = (values , {setSubmitting}) => {
     
 

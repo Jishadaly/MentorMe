@@ -6,6 +6,7 @@ import moment from "moment";
 
 function BookingConfirmModal({ onClose , mentorData , mentee , slot , price}) {
      console.log("11111111",mentorData);
+     
     const handleAccept = async ()=>{
       
       const slotId = slot._id;

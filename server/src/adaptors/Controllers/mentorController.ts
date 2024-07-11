@@ -92,7 +92,7 @@ export default {
 
   createCheckoutSession:async(req:Request , res:Response , next:NextFunction)=>{
           
-     const  { mentee , mentor , slotId , price } = req.body; 
+     const  { mentee , mentor , slotId , price } = req.body;
      console.log(mentee , mentor , slotId , price);
 
     try {
@@ -138,13 +138,11 @@ export default {
     //   }
     //   console.log("22222",{event,type:event?.type});
 
-     const event = req.body
+     const event = req.body;
   switch (event.type) {
       case 'checkout.session.completed':
         const metaData = event?.data?.object?.metadata;
         const { slotId , mentee , mentor } = metaData;
-        console.log(metaData);
-        
         const bookedSlot = await mentorInteractor.slotBooking( mentee , mentor , slotId)
         console.log("payment session complete with booked id ",bookedSlot);
       break;

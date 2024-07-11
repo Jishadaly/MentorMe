@@ -94,7 +94,6 @@ slotBooking:async(menteeId :string , mentorId:string ,slotId:string)=>{
 
 createPaymentIntent:async(mentee:string , mentor:string , slotId:string , price:number , stripe:any )=>{
 
-
    const user  = await sameUser(mentee);
    try {
       const session = await stripe.checkout.sessions.create({
@@ -114,7 +113,7 @@ createPaymentIntent:async(mentee:string , mentor:string , slotId:string , price:
         ],
 
         mode: 'payment',
-        success_url: `${process.env.CLIENT_URL}/mentee/calles`, 
+        success_url: `${process.env.CLIENT_URL}/mentee/calles`,
         cancel_url: `${process.env.CLIENT_URL}/mentee/home`,
         locale: 'en', 
         customer_email: user?.email,
