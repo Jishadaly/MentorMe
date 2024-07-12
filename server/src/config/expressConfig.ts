@@ -3,6 +3,7 @@ import { connectToDb } from "./dbConfig";
 import session from 'express-session';
 // import bodyParser from 'body-parser';
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 const corsOption = {
    origin: 'http://localhost:5173', // Replace with your client's origin
@@ -24,6 +25,7 @@ declare module 'express-session' {
 
 export function configureExpress(app: Application): void {
    app.use(bodyParser.json());
+   app.use(cookieParser());
    app.use(bodyParser.urlencoded({ extended: true }))
    app.use(cors(corsOption));
    app.use(session({

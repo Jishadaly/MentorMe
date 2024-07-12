@@ -6,7 +6,7 @@ function Header() {
   return (
       
       <header className="w-full fixed top-0 bg-white p-4 shadow-md flex justify-between items-center z-10">
-        <h1 className="text-2xl font-extrabold text-black-600 font-inter">Mentor me.</h1>
+        <h1 className="text-2xl font-extrabold text-black-600 font-inter">mentor me.</h1>
         <div className="flex items-center space-x-4">
           <div className="flex items-center bg-gray-200 rounded-full shadow-md">
             <input 

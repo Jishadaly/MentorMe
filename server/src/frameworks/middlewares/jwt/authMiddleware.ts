@@ -11,7 +11,7 @@ if (!secretKey) {
 }
 
 
-  const verifyToken = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  const protect = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     
   const authHeader = req.headers['authorization'];
   if (!authHeader) {
@@ -28,7 +28,7 @@ if (!secretKey) {
     const decoded = jwt.verify(token, secretKey) as jwt.JwtPayload;
     console.log("decodeed",decoded);
     
-    req.userId = decoded.userId; // Assuming your JWT payload has a userId field
+    req.userId = decoded.userId; 
     req.userRole = decoded.userRole
 
     console.log("auth middleware",req.userRole);
@@ -38,8 +38,12 @@ if (!secretKey) {
     next();
 
   } catch (error) {
-    res.status(401).json({ error: 'Invalid token' });
+    if (error instanceof jwt.TokenExpiredError) {
+      res.status(401).json({ message: "token expired" });
+  } else {
+      res.status(401).json({ message: "Not authorized Invalid token" });
+  }
   }
 };
 
-export default verifyToken;
+export default protect;

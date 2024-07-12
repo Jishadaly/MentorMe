@@ -5,10 +5,17 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const SECRET_KEY =  process.env.JWT_SECRET;
+
 export const generateToken = (user:string ,email:string , role:string ) => {
-    return jwt.sign({userId : user, email :email , userRole:role }, SECRET_KEY, {
+   const  accessToken =  jwt.sign({userId : user, email :email , userRole:role }, SECRET_KEY, {
+        expiresIn: '1m'
+    });
+
+    const  refreshToken =  jwt.sign({userId : user, email :email , userRole:role }, SECRET_KEY, {
         expiresIn: '1h'
     });
+
+    return { accessToken , refreshToken };
 };
 
 export const verifyToken = (token:string) => {

@@ -8,8 +8,10 @@ export const loginUser = createAsyncThunk(
     try {
       console.log(endpoint, userData);
       const response = await authInstanceAxios.post(`/${endpoint}`, userData);
+      console.log(response);
       const user = response.data.response.user;
-      const token = response.data.response.token;
+      const token = response.data.response.accessToken;
+      console.log(token);
 
       // Save to localStorage
       localStorage.setItem('user', JSON.stringify(user));
@@ -18,6 +20,7 @@ export const loginUser = createAsyncThunk(
 
       return { user, token };
     } catch (error) {
+      console.log("////",error);
       return thunkAPI.rejectWithValue(error.response.data);
     }
   }

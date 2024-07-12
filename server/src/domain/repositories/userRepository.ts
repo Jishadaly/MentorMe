@@ -132,3 +132,5 @@ export const updateUserPass = async (userId:string, newField:string)=>{
   const updated = await Users.findByIdAndUpdate(userId , { password:newField });
   return "updated";
 }
+
+// export const isBlocked = await Users.findOne(user,{})

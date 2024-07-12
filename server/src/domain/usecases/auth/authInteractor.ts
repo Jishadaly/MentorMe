@@ -73,15 +73,16 @@ export default {
             throw new Error('Account is Blocked');
         }
         const role = 'mentee'
-        const token = await generateToken(existingUser.id , email , role)
+        const token =  generateToken(existingUser.id , email , role)
         const user={ 
             id:existingUser.id,
             name:existingUser.userName,
             email:existingUser.email,
             phone:existingUser.phone
-        }
-
-        return { token , user }
+    }
+        const accessToken = token.accessToken;
+        const refreshToken = token.refreshToken;
+        return { accessToken,refreshToken , user }
     },
 
 loginMentor : async (email:string , password:string )=> {
