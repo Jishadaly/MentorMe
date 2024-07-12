@@ -27,17 +27,17 @@ interface Content {
 export default {
 
   addBlog:async( title: string, summary: string, image: any, content: Content , mentorId:string)=>{  
-    // Extracting blocks data
+    
     const blocks: IBlock[] = content.blocks;
 
-    // Process blocks and store them in an array
+    
     const blocksArray: IBlock[] = [];
     blocks.forEach((block: IBlock) => {
       console.log('Block: ', block);
       blocksArray.push(block);
     });
 
-    // Save the data (example)
+    
     const blogData = {
       title,
       summary,
@@ -84,17 +84,17 @@ export default {
      }
   },
   updateBlog:async( title: string, summary: string, image: any, content: Content , mentorId:string , blogId:string)=>{  
-    // Extracting blocks data
+    
     const blocks: IBlock[] = content.blocks;
 
-    // Process blocks and store them in an array
+    
     const blocksArray: IBlock[] = [];
     blocks.forEach((block: IBlock) => {
       console.log('Block: ', block);
       blocksArray.push(block);
     });
 
-    // Save the data (example)
+  
     const blogData = {
       title,
       summary,

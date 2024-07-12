@@ -6,4 +6,4 @@ const MentorProtected = () => {
   return Mentortoken ? <Outlet /> : <Navigate to="/mentor/login" />
 }                                                                  
 
-export default MentorProtected;
+export default MentorProtected

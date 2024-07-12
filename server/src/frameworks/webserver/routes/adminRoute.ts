@@ -4,13 +4,13 @@ import authController from '../../../adaptors/Controllers/authController';
 
 const adminRouter = express.Router();
 
-adminRouter.post('/api/admin/login', authController.adminLogin)
-adminRouter.get('/api/admin/getVerificationMentors',adminController.getVerificationMentors);
-adminRouter.post('/api/admin/verifyMentorRequest',adminController.verifyRequest)
-adminRouter.post('/api/admin/rejectMentorApplication',adminController.rejectRequest)
-adminRouter.get('/api/admin/getAllUsers',adminController.getAllUsers)
-adminRouter.get('/api/admin/getAllMentors',adminController.getAllMentors)
-adminRouter.patch('/api/admin/updateBlockStatus',adminController.updateBlockStatus)
+adminRouter.post('/login', authController.adminLogin)
+adminRouter.get('/getVerificationMentors',adminController.getVerificationMentors);
+adminRouter.post('/verifyMentorRequest',adminController.verifyRequest)
+adminRouter.post('/rejectMentorApplication',adminController.rejectRequest)
+adminRouter.get('/getAllUsers',adminController.getAllUsers)
+adminRouter.get('/getAllMentors',adminController.getAllMentors)
+adminRouter.patch('/updateBlockStatus',adminController.updateBlockStatus)
 
 
 export default adminRouter;

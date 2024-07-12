@@ -11,44 +11,42 @@ import checkRole from '../../middlewares/jwt/checkRole';
 const userRouter = express.Router();
 
 // auth?
-userRouter.post('/api/user/signup',authController.userRegistration);
-userRouter.post('/api/user/verifyOTP' , authController.verifyOTP);
-userRouter.get('/api/user/resendOtp' , authController.resendOtp);
-userRouter.post('/api/user/login',authController.userLogin);
-userRouter.post('/api/user/googleLogin' , authController.googleAuth);
-userRouter.post('/api/user/mentorLogin',authController.mentorLogin);
-userRouter.post('/api/user/mentorAppicationForm',mentorController.mentorApplicationFormSub);
-userRouter.post('/api/user/refreshToken',authController.refreshToken)
+userRouter.post('/signup',authController.userRegistration);
+userRouter.post('/verifyOTP' , authController.verifyOTP);
+userRouter.get('/resendOtp' , authController.resendOtp);
+userRouter.post('/login',authController.userLogin);
+userRouter.post('/googleLogin' , authController.googleAuth);
+userRouter.post('/mentorLogin',authController.mentorLogin);
+userRouter.post('/mentorAppicationForm',mentorController.mentorApplicationFormSub);
+userRouter.post('/refreshToken',authController.refreshToken)
 
 //mentor?
+userRouter.get('/getMentor' ,protect, mentorController.getMentor);
+userRouter.get('/getMentorApplication', protect, mentorController.getApplicationId);
 
-userRouter.get('/api/user/getMentor' ,protect, mentorController.getMentor);
-userRouter.post('/api/user/addSlots' ,protect, mentorController.addSlots);
-userRouter.get('/api/user/getMentorApplication', protect, mentorController.getApplicationId)
-userRouter.delete('/api/user/deleteSlot' , protect,mentorController.deleteSlot)
-
-//booking?
-userRouter.post('/api/user/slotBooking' ,protect, mentorController.slotBooking);
-userRouter.post('/api/user/create-checkout-session' ,protect, mentorController.createCheckoutSession)
-userRouter.post('/webhooks', mentorController.webhook);
-userRouter.get('/api/user/getBookedSlotes',protect,mentorController.getBookedSlotes);
 
 //mentee ?
-userRouter.get('/api/user/getMentors', protect,checkRole('any'), mentorController.getMentors);
-userRouter.get('/api/user/getMentee' , protect , menteeController.getMentee);
-userRouter.post('/api/user/editProfile',protect,menteeController.editProfile);
+userRouter.get('/getMentors', protect,checkRole('any'), mentorController.getMentors);
+userRouter.get('/getMentee' , protect , menteeController.getMentee);
+userRouter.post('/editProfile',protect,menteeController.editProfile);   
+
 
 //slot ?
+userRouter.post('/addSlots' ,protect, mentorController.addSlots);
+userRouter.delete('/deleteSlot' , protect,mentorController.deleteSlot)
+userRouter.post('/slotBooking' ,protect, mentorController.slotBooking);
+userRouter.post('/create-checkout-session' ,protect, mentorController.createCheckoutSession)
+userRouter.post('/webhooks', mentorController.webhook);
+userRouter.get('/getBookedSlotes',protect,mentorController.getBookedSlotes);
 
 
 //blogs
-userRouter.post('/api/user/addBlog',protect,blogController.addBlog);
-userRouter.get('/api/user/getAllblogs' , protect , blogController.getAllBlogs);
-userRouter.get('/api/user/getBlog' , protect , blogController.getBlog);
-userRouter.get('/api/user/getmentorBlog' , protect , blogController.getMentorBlog);
-userRouter.post('/api/user/updateBlog' , protect , blogController.updateBlog);
-userRouter.delete('/api/user/deleteBlog' , protect , blogController.deleteBlog);
+userRouter.post('/addBlog',protect,blogController.addBlog);
+userRouter.get('/getAllblogs' , protect , blogController.getAllBlogs);
+userRouter.get('/getBlog' , protect , blogController.getBlog);
+userRouter.get('/getmentorBlog' , protect , blogController.getMentorBlog);
+userRouter.post('/updateBlog' , protect , blogController.updateBlog);
+userRouter.delete('/deleteBlog' , protect , blogController.deleteBlog);
 
 
-export default userRouter;  
-
+export default userRouter;

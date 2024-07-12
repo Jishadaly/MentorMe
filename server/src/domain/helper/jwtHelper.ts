@@ -9,11 +9,11 @@ const SECRET_KEY_REFRESH = process.env.JWT_SECRET_REFRESH;
 
 export const generateToken = (user:string ,email:string , role:string ) => {
    const  accessToken =  jwt.sign({userId : user, email :email , userRole:role }, SECRET_KEY, {
-        expiresIn: '1m'
+        expiresIn: '1d'
     });
 
     const  refreshToken =  jwt.sign({userId : user, email :email , userRole:role }, SECRET_KEY_REFRESH , {
-        expiresIn: '2m'
+        expiresIn: '7d'
     });
 
     return { accessToken , refreshToken };

@@ -4,6 +4,7 @@ import {
   createRoutesFromElements,
 } from 'react-router-dom'
 
+
 import Protected from './protected'
 import UserLogin from '../pages/mentee/userLogin'
 import Signup from '../pages/mentee/Signup'
@@ -33,7 +34,7 @@ import Blogs from '@/pages/mentor/Blogs'
 import EditBlog from '@/pages/mentor/EditBlog'
 
 
-const router = createBrowserRouter(
+const router = createBrowserRouter( 
   createRoutesFromElements(
     <Route path='/'>
       <Route index element={<LandingPage />} />
@@ -85,4 +86,4 @@ const router = createBrowserRouter(
   )
 )
 
-export default router;  
+export default router 

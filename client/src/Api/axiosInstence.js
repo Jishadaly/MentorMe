@@ -17,10 +17,10 @@ export const authInstanceAxios = axios.create({
   withCredentials:true,
 })
 
-// Add a request interceptor to include the token
+
 authInstanceAxios.interceptors.request.use(
   (config) => {
-    // const token = localStorage.getItem('token');
+   
     const token = Cookies.get('token')
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
@@ -34,8 +34,6 @@ authInstanceAxios.interceptors.request.use(
 
 export const setupInterceptors = () => {
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate()
 
   authInstanceAxios.interceptors.response.use(
     (response) => {
@@ -71,9 +69,9 @@ export const setupInterceptors = () => {
 
               } catch (refreshError) {
 
-                      dispatch(logout());
-                      toast.error('Session expired. Please log in again.');
-                      navigate('/mentee/login');
+                      // dispatch(logout());
+                      // toast.error('Session expired. Please log in again.');
+                      // navigate('/mentee/login');
               }
             }
            
@@ -99,6 +97,3 @@ export const setupInterceptors = () => {
     }
   );
 };
-
-setupInterceptors();
-

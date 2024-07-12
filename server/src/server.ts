@@ -9,8 +9,8 @@ const port = 3000;
 app.use(express.json());
 configureExpress(app)
 
-app.use(userRouter)
-app.use(adminRouter)
+app.use('/api/user',userRouter)
+app.use('/api/admin',adminRouter)
 
 
 

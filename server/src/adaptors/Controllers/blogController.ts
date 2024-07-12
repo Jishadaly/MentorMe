@@ -50,7 +50,6 @@ export default {
     }
   },
   updateBlog: async (req: Request, res: Response, next: NextFunction) => {
-    
     const { title, summary, image, content , mentorId , blogId}: { title: string; summary: string; image: any; content: any , mentorId:string ,blogId:string } = req.body;
     const data = await blogInteractor.updateBlog(title, summary, image, content,mentorId , blogId);
     res.status(200).json({ message: 'Blog saved successfully', data });
