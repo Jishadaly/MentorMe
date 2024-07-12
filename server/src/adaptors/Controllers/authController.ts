@@ -38,14 +38,11 @@ export default {
    },
    refreshToken: async (req: Request, res: Response, next: NextFunction) => {
       try {
-         console.log("refreshToken");
+         
 
          const refreshToken = req.cookies.refreshToken;
          console.log(req.cookies);
          if(!refreshToken){
-         console.log("refreshToken1111");
-
-            console.log("nooooooooo refreshTokekn");
             return res.status(401).json({ message: "Refresh token not provided" });
          }
 
