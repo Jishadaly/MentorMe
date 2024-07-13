@@ -3,7 +3,6 @@ import authController from '../../../adaptors/Controllers/authController';
 import mentorController from '../../../adaptors/Controllers/mentorController';
 import protect from '../../middlewares/jwt/authMiddleware';
 import menteeController from '../../../adaptors/Controllers/menteeController';
-import blogController from '../../../adaptors/Controllers/blogController';
 import checkRole from '../../middlewares/jwt/checkRole';
 
 
@@ -38,15 +37,5 @@ userRouter.post('/slotBooking' ,protect, mentorController.slotBooking);
 userRouter.post('/create-checkout-session' ,protect, mentorController.createCheckoutSession)
 userRouter.post('/webhooks', mentorController.webhook);
 userRouter.get('/getBookedSlotes',protect,mentorController.getBookedSlotes);
-
-
-//blogs
-userRouter.post('/addBlog',protect,blogController.addBlog);
-userRouter.get('/getAllblogs' , protect , blogController.getAllBlogs);
-userRouter.get('/getBlog' , protect , blogController.getBlog);
-userRouter.get('/getmentorBlog' , protect , blogController.getMentorBlog);
-userRouter.post('/updateBlog' , protect , blogController.updateBlog);
-userRouter.delete('/deleteBlog' , protect , blogController.deleteBlog);
-
 
 export default userRouter;
