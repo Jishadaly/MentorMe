@@ -65,15 +65,17 @@ export default {
         if(!existingUser){
             throw new Error('User not fount');
         }
+        console.log(password);
+        
         const isValid = await Encrypt.comparePassword(password , existingUser.password);
         if (!isValid) {
             throw new Error("Invalid password");
         }
         if(existingUser && existingUser.isBlocked){
-            throw new Error('Account is Blocked');
+            throw new Error('Account is Blocked')
         }
         const role = 'mentee'
-        const token =  generateToken(existingUser.id , email , role)
+        const token =  generateToken(existingUser.id , email , role);
         const user={ 
             id:existingUser.id,
             name:existingUser.userName,
@@ -82,7 +84,7 @@ export default {
     }
         const accessToken = token.accessToken;
         const refreshToken = token.refreshToken;
-        return { accessToken,refreshToken , user }
+        return { accessToken,refreshToken , user };
     },
 
 loginMentor : async (email:string , password:string )=> {

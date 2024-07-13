@@ -2,8 +2,8 @@
 // import react from '@vitejs/plugin-react';
 
 // export default defineConfig({
+  //   resolve: {
 //   plugins: [react()],
-//   resolve: {
 //     alias: {
 //       '@': '/src',
 //       '@material-ui/core': '@material-ui/core/esm',
