@@ -81,7 +81,8 @@ export default {
 
   slotBooking:async(req:Request , res:Response , next:NextFunction)=>{
     try {
-
+      console.log("sloototot");
+      
       const {menteeId , mentorId ,slotId }  = req.body
       // const slot = await mentorInteractor.slotBooking(menteeId , mentorId ,slotId );
       res.status(200).json(await mentorInteractor.slotBooking(menteeId , mentorId ,slotId ));
@@ -139,6 +140,8 @@ export default {
     //   console.log("22222",{event,type:event?.type});
 
      const event = req.body;
+     console.log("webhook");
+     
   switch (event.type) {
       case 'checkout.session.completed':
         const metaData = event?.data?.object?.metadata;

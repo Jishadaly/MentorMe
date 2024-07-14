@@ -32,6 +32,7 @@ import BlogList from '@/pages/mentee/BlogList'
 import BlogView from '@/pages/mentee/BlogView'
 import Blogs from '@/pages/mentor/Blogs'
 import EditBlog from '@/pages/mentor/EditBlog'
+import Chat from '@/pages/mentee/chat'
 
 
 const router = createBrowserRouter( 
@@ -48,6 +49,8 @@ const router = createBrowserRouter(
             <Route path='profile' element={<MenteeProfile/>}/>
             <Route path='blogs' element={<BlogList/>}/>
             <Route path='blogView/:blogId' element={<BlogView/>}/>
+            <Route path='chat/' element={<Chat/>}/>
+
 
         </Route>
       </Route>

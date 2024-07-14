@@ -85,6 +85,9 @@ export default {
    },
 
    mentorLogin: async (req: Request, res: Response, next: NextFunction) => {
+
+      console.log("mentor login");
+      
       try {
 
          const { email, password } = req.body

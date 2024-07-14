@@ -110,7 +110,7 @@ loginMentor : async (email:string , password:string )=> {
             throw new Error('Account is Blocked')
         }
         const role = 'mentor'
-        const token = await generateToken(existingUser.id , email , role)
+        const { accessToken } = await generateToken(existingUser.id , email , role)
         const user={ 
             id:existingUser.id,
             name:existingUser.userName,
@@ -118,7 +118,9 @@ loginMentor : async (email:string , password:string )=> {
             phone:existingUser.phone
         }
 
-        return { token , user }
+        
+
+        return { token:accessToken , user }
     },
 
     adminLogger :async(cred:{email:string , password:string})=>{

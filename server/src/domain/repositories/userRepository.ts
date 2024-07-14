@@ -94,10 +94,10 @@ export const saveGoogleUser =async(userData:IUser)=>{
 export const getBookdslotdb=async(userId:string)=>{
   
   const slots = await Availability.find({ bookedBy: userId , isBooked:true})
-      .populate('mentorId') // Adjust fields to populate as needed, e.g., 'name'
-      .exec();
-   console.log("slotes",slots);
-
+  // .populate('mentorId').populate({path:'mentorAdditional'})
+  // .exec();
+  // console.log("slotes",slots);
+  
    if(!slots){
    throw new Error("there is no booked slotes")
   }

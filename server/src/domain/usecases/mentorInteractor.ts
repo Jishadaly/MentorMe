@@ -134,7 +134,7 @@ createPaymentIntent:async(mentee:string , mentor:string , slotId:string , price:
    }
 },
 getBookedSlotes:async(userId:string)=>{
-   const slotes = await  getBookdslotdb(userId)
+   const slotes = await  getBookdslotdb(userId);
    return slotes;
 }
   

@@ -5,6 +5,7 @@ import { fetchBookedSlotes } from '@/Api/services/menteeService';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
+import { startChat } from '@/Api/services/chatServices';
 
 function CallesPage() {
   const navigate = useNavigate();
@@ -22,6 +23,14 @@ function CallesPage() {
 
   console.log(bookedSLotes);
 
+  const handleMessageBtn = async(mentorId)=>{
+    
+      const chatId = await startChat('chat/startChat',mentorId , user.id);
+      console.log(chatId);
+      // navigate(`/mentee/chat?chatid=${chatId.}`)
+    
+  }
+
   return (
     <div className="flex min-h-screen bg-gray-100">
       <Header />
@@ -37,10 +46,12 @@ function CallesPage() {
                   <h3 className="text-xl">Full Stack</h3>
                   <p>{moment(slot.startTime).format('MMMM Do YYYY')}</p>
                   <p>{moment(slot.startTime).format('h:mm a')} - {moment(slot.endTime).format('h:mm a')}</p>
-                  <button className="bg-indigo-300 text-white px-4 py-2 rounded mt-2 hover:bg-indigo-400">Join</button>
+                  <button className="bg-indigo-300 text-white px-4 py-2 rounded mt-2 hover:bg-indigo-400 mr-2">Join</button>
+                  <button onClick={()=> handleMessageBtn(slot.mentorId) } className="bg-indigo-300 text-white px-4 py-2 rounded mt-2 hover:bg-indigo-400">message</button>
+
                 </div>
                 <div>
-                  <p className="text-right">{slot.mentorId.name}</p>
+                  <p className="text-right">{slot.userName}</p>
                   <p className="text-right text-sm">{slot.mentorId.jobTitle}</p>
                   <p className="text-right text-sm">5.0</p>
                 </div>
