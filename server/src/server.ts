@@ -1,4 +1,6 @@
 import express, { Application} from 'express';
+import http from 'http';
+import { Server } from 'socket.io';
 import { configureExpress } from './config/expressConfig';
 import userRouter from './frameworks/webserver/routes/userRoute';
 import adminRouter from './frameworks/webserver/routes/adminRoute';
@@ -13,10 +15,33 @@ app.use('/api/user',userRouter)
 app.use('/api/admin',adminRouter)
 app.use('/api/chat',chatRouter)
 
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+      origin: "http://localhost:5173", // Replace with your client's URL
+      methods: ["GET", "POST"]
+  }
+});
 
 
+io.on('connection',(socket:any)=> {
+  console.log('a user conected');
 
+  socket.on('joinChat', (chatId:any) => {
+    console.log(`User joined chat: ${chatId}`);
+});
 
-app.listen(port, () => {
+socket.on('sendMessage', (data:any) => {
+    console.log("here here");
+    
+    io.to(data.chatId).emit('receiveMessage', data);
+});
+
+socket.on('disconnect', () => {
+    console.log('User disconnected');
+});
+})
+
+server.listen(port, () => {
   console.log(`Backend server is running on http://localhost:${port}`);
 });

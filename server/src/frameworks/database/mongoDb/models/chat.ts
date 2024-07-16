@@ -15,7 +15,7 @@ const chatSchema:Schema<chatDocument> = new Schema(
         },
         users:[{
             type:mongoose.Schema.ObjectId,
-            ref:'User'
+            ref:'Users'
         }],
         latestMessage:{
             type:mongoose.Schema.ObjectId,

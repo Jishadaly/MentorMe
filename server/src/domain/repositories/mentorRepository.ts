@@ -176,14 +176,14 @@ getMentor: async (mentorId: string) => {
       return availableSlots;
   },
   
-  bookAslot:async(menteeId:string , mentorId:string ,slotId:string)=>{
+   bookAslot:async(menteeId:string , mentorId:string ,slotId:string)=>{
       try{
         console.log("222222 ",mentorId , menteeId , slotId);
         
         const mentorApplicationId = await MentorApplication.findOne({user:mentorId})
         console.log(mentorApplicationId);
         
-        const bookAslot = await Availability.findByIdAndUpdate(slotId , { mentorId:mentorApplicationId?._id , isBooked:true , bookedBy:menteeId}, { new: true })
+        const bookAslot = await Availability.findByIdAndUpdate(slotId , { mentorId , isBooked:true , bookedBy:menteeId}, { new: true })
         return bookAslot
         
       }catch(error:any){

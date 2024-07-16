@@ -9,7 +9,7 @@ export interface messageDocument extends Document {
 const messageSchema: Schema<messageDocument> = new Schema({
     sender: {
         type: mongoose.Schema.ObjectId,
-        ref: 'User'
+        ref: 'Users'
     },
     content: {
         type: String,

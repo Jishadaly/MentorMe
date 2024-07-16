@@ -13,6 +13,8 @@
     "outDir": "./dist",
     "rootDir": "./src", 
                 /* Reduce the number of projects loaded automatically by TypeScript. */
+                // "typeRoots": ["./node_modules/@types", "./src/domian/entities/types/user"],
+                
 
     /* Language and Environment */
     "target": "es2016",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
