@@ -58,3 +58,14 @@ export const updateBlockStatus = async (endPoint , id , isBlocked , )=>{
     console.log(error);
   }
 }
+
+
+export const fetchSlotes = async (endPoint )=>{
+
+  try {
+    const response = await authInstanceAxios.get(`/${endPoint}`);
+    return response.data;
+  } catch (error) {
+    throw error
+  }
+} 

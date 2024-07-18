@@ -74,18 +74,21 @@ function Header({ toggleMenu, isOpen }) {
             {isOpen ? <FiX /> : <FiMenu />}
           </button>
         </div>
-        <h1 className="text-2xl font-bold text-indigo-600">Mentor me.</h1>
+        <h1 className="text-2xl font-extrabold text-indigo-600 font-inter">Mentor me.</h1>
       </div>
       <div className="flex items-center space-x-4">
         <a href="#" className="text-indigo-500">
           <i className="fas fa-bell text-xl"></i>
         </a>
-        <a onClick={handleLogout} href="#" className="text-indigo-500">Sign Out</a>
+        {/* <a onClick={handleLogout} href="#" className="text-indigo-500 font-inter font-bold">Sign Out</a> */}
+        <div className='cursor-pointer' onClick={()=> navigate('/mentor/profile')}>
         <img
           src="https://randomuser.me/api/portraits/men/75.jpg"
           alt="profile"
-          className="w-8 h-8 rounded-full"
+          className="w-8 h-8 rounded-full"  
         />
+        </div>
+        
       </div>
     </header>
   );

@@ -12,6 +12,7 @@ export default {
     },
     sendMessage:async(chatId:string , message:string , senderId:string)=>{
         const savedMssg = await chatRepository.saveMessage(chatId, message,senderId);
+        return savedMssg
         
     },
     getAllChats:async(userId:string)=>{

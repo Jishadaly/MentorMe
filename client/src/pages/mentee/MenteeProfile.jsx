@@ -73,25 +73,25 @@ const MenteeProfile = () => {
             <div className='flex flex-row md:flex-row justify-between items-start  bg-gray-100 min-h-screen space-y-6 md:space-y-0 md:space-x-6 w-full'>
               <div className="bg-white p-2 rounded-3xl shadow-md w-full md:w-1/2 flex flex-col items-center">
                 <div className="mt-4 w-full">
-                  <div className="flex items-center py-2 cursor-pointer" onClick={() => handleActiveField('name')}>
+                  <div className={`flex items-center py-2 cursor-pointer f ${activeField === 'name' ? 'bg-gray-200 rounded-lg' : ''}`} onClick={() => handleActiveField('name')}>
                     <span className="w-8 text-center">🏷️</span>
-                    <span>Name: {mentee.userName}</span>
+                    <span className='font-inter font-bold'>Name: {mentee.userName}</span>
                   </div>
-                  <div className="flex items-center py-2 cursor-pointer" onClick={() => handleActiveField('email')}>
+                  <div className={`flex items-center py-2 cursor-pointer ${activeField === 'email' ? 'bg-gray-200 rounded-lg' : ''}`}onClick={() => handleActiveField('email')}>
                     <span className="w-8 text-center">📧</span>
-                    <span>Email: {mentee.email}</span>
+                    <span className='font-inter font-bold'>Email: {mentee.email}</span>
                   </div>
-                  <div className="flex items-center py-2 cursor-pointer" onClick={() => handleActiveField('phone')}>
+                  <div className={`flex items-center py-2 cursor-pointer ${activeField === 'phone' ? 'bg-gray-200 rounded-lg' : ''}`} onClick={() => handleActiveField('phone')}>
                     <span className="w-8 text-center">📱</span>
-                    <span>Mobile number: {mentee.phone}</span>
+                    <span className='font-inter font-bold'>Mobile number: {mentee.phone}</span>
                   </div>
                   {/* <div className="flex items-center py-2 cursor-pointer">
                     <span className="w-8 text-center">🔔</span>
                     <span>Notifications</span>
                   </div> */}
-                  <div className="flex items-center py-2 cursor-pointer"onClick={() => handleActiveField('password')}>
+                  <div className={`flex items-center py-2 cursor-pointer ${activeField === 'password' ? 'bg-gray-200 rounded-lg' : ''}`}onClick={() => handleActiveField('password')}>
                     <span className="w-8 text-center">🔑</span>
-                    <span>Password</span>
+                    <span className='font-inter font-bold'>Password</span>
                   </div>
                   {/* <div className="flex items-center py-2 cursor-pointer">
                     <span className="w-8 text-center">⚠️</span>
@@ -99,7 +99,7 @@ const MenteeProfile = () => {
                   </div> */}
                   <div className="flex items-center py-2 cursor-pointer">
                     <span className="w-8 text-center">🚪</span>
-                    <span onClick={handleLogout}>Log out</span>
+                    <span className='font-inter font-bold' onClick={handleLogout}>Log out</span>
                   </div>
                 </div>
               </div>

@@ -29,15 +29,15 @@ export default {
         try {
             
             const { chatId , message } = req.body;
-            console.log(req.body);
             const id:string = chatId;
             const mssg:string = message;
             const senderId = req.userId;
-            console.log(senderId);
+        
             if(!senderId) throw Error('user not authorised');
-            
             const savedMessage = await chatInteractor.sendMessage(id, mssg,senderId);
-            res.status(200).json({message:"your message is sended "});
+            
+            
+            res.status(200).json(savedMessage);
         } catch (error:any) {
             res.status(500).json(error.message)
         }

@@ -1,6 +1,6 @@
 import React from "react";
 import { Sidebar } from "flowbite-react";
-import { HiChartPie, HiUser, HiClipboardCheck, HiDocumentReport, HiLogout } from "react-icons/hi";
+import { HiChartPie, HiUser, HiClipboardCheck, HiDocumentReport, HiLogout , HiCalendar } from "react-icons/hi";
 import { useDispatch } from "react-redux";
 import { logout } from "@/redux/slice/adminAuthSlice";
 import { useNavigate } from "react-router-dom";
@@ -33,6 +33,10 @@ export function Sidenav({setCurrentView}) {
             <Sidebar.Item href="#" icon={HiDocumentReport}>
               Reports
             </Sidebar.Item>
+            <Sidebar.Item href="#" icon={HiCalendar} onClick={() => setCurrentView("slotManage")} >
+              Slot Manage
+            </Sidebar.Item>
+
           </Sidebar.ItemGroup>
         </Sidebar.Items>
         <Sidebar.Items className="mb-20">

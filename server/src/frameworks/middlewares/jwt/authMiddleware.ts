@@ -29,8 +29,6 @@ if (!secretKey) {
     
     req.userId = decoded.userId; 
     req.userRole = decoded.userRole
-
-    
     
     next();
 

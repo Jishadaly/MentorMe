@@ -1,8 +1,19 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
+import { io } from 'socket.io-client';
+
+const socket = io('http://localhost:3000');
+
 
 export default function UserList({ chats, setSelectedChatId, selectedChatId }) {
     const user = useSelector((state) => state.auth.user);
+
+    const handleSelectedChat = (chatId) => {
+        console.log(chatId);
+        setSelectedChatId(chatId);
+        socket.emit('joinChat', chatId); // Join the chat room
+    }
+
     return (
         <div className="bg-white p-6 border-r w-1/3">
 
@@ -13,25 +24,22 @@ export default function UserList({ chats, setSelectedChatId, selectedChatId }) {
                 <input type="text" placeholder="Search for a mentor..." className="w-full bg-transparent" />
             </div>
             <div className="mt-4 space-y-4">
-                {chats && chats.map((chat, index) => {
-
-                    const mentor = chat.users.find((u) => u._id !== user.id)
+                {chats.map((chat, index) => {
+                    const otherUser = chat.users.find((u) => u._id !== user.id);
                     const isSelected = chat._id === selectedChatId;
                     return (
-                        <div key={index} className={`flex items-center gap-4 cursor-pointer p-2 rounded-md ${isSelected ? 'bg-gray-200' : 'hover:bg-gray-100'}`} onClick={() => setSelectedChatId(chat._id)}>
+                        <div key={index} className={`flex items-center gap-4 cursor-pointer p-2 rounded-md ${isSelected ? 'bg-gray-200' : 'hover:bg-gray-100'}`} onClick={() => handleSelectedChat(chat._id)}>
                             <div className="w-8 h-8 border rounded-full overflow-hidden">
                                 <img src="/placeholder-user.jpg" alt="User" className="w-full h-full object-cover" />
                             </div>
                             <div className="flex-1">
-                                <p className="font-medium">{mentor.userName}</p>
+                                <p className="font-medium">{otherUser?.userName}</p>
                                 <p className="text-xs text-gray-500">
-
-                                    {chat.latestMessage.content};
+                                    {chat.latestMessage?.content}
                                 </p>
                             </div>
                         </div>
-                    )
-
+                    );
                 })}
             </div>
         </div>

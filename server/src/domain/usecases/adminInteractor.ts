@@ -1,4 +1,5 @@
-import {  getMentoresForVerification, updateBlockStatus ,updateMentorVerificationVerify , updateMentorVerificationReject, getAllUsers ,getAllMentors} from "../repositories/adminReposetory"
+import {  getMentoresForVerification, updateBlockStatus ,updateMentorVerificationVerify , 
+   updateMentorVerificationReject, getAllUsers ,getAllMentors , getAllSlots} from "../repositories/adminReposetory"
 import { findAdmin } from "../repositories/adminReposetory";
 
 
@@ -67,5 +68,13 @@ export default {
       } catch (error:any) {
          throw new Error(error)
       }
-   }
+   },
+   getSlots:async()=>{
+      try {
+         const slots  = await getAllSlots();
+         return slots;
+      } catch (error:any) {
+         throw new Error(error)
+      }
+   },
 }

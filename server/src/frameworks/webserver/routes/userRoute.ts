@@ -23,12 +23,16 @@ userRouter.post('/refreshToken',authController.refreshToken)
 //mentor?
 userRouter.get('/getMentor' ,protect, mentorController.getMentor);
 userRouter.get('/getMentorApplication', protect, mentorController.getApplicationId);
+userRouter.get('/getMentorDetails' ,protect, mentorController.getMentorDetails);
+userRouter.put('/updateMentor' ,protect, mentorController.updateMentorProfile);
+
+
 
 
 //mentee ?
 userRouter.get('/getMentors', protect,checkRole('any'), mentorController.getMentors);
-userRouter.get('/getMentee' , protect , menteeController.getMentee);
-userRouter.post('/editProfile',protect,menteeController.editProfile);   
+userRouter.get('/getMentee' , protect ,checkRole('mentee'), menteeController.getMentee);
+userRouter.post('/editProfile',protect,menteeController.editProfile);  
 
 
 //slot ?
