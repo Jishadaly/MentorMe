@@ -59,30 +59,7 @@ const LandingPage = () => {
           Key Features
         </h2>
         <div className="flex items-center flex-wrap mb-20">
-          {/* <div className="w-full md:w-1/2 lg:w-1/3 px-4 mb-8">
-            <div className="bg-white rounded-lg shadow-xl p-6">
-              <h3 className="text-xl font-bold mb-2 text-gray-800">Personalized Mentorship</h3>
-              <p className="text-gray-700">
-                Get matched with a mentor tailored to your goals and learning style.
-              </p>
-            </div>
-          </div>
-          <div className="w-full md:w-1/2 lg:w-1/3 px-4 mb-8">
-            <div className="bg-white rounded-lg shadow-xl p-6">
-              <h3 className="text-xl font-bold mb-2 text-gray-800">Learning Resources</h3>
-              <p className="text-gray-700">
-                Access a library of coding tutorials, articles, and exercises.
-              </p>
-            </div>
-          </div>
-          <div className="w-full md:w-1/2 lg:w-1/3 px-4 mb-8">
-            <div className="bg-white rounded-lg shadow-xl p-6">
-              <h3 className="text-xl font-bold mb-2 text-gray-800">Community Support</h3>
-              <p className="text-gray-700">
-                Engage with a supportive community of learners and mentors.
-              </p>
-            </div>
-          </div> */}
+          
           <InfiniteMovingCardsDemo/>
         </div>
       </section>

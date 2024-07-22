@@ -20,8 +20,7 @@ export default function MentorChat() {
           console.error('Error fetching chats:', error);
         }
       };
-
-
+    
     const handleSelectedChat = (chatId)=>{
         console.log("selectedChatId",chatId);
         setSelectedChatId(chatId);

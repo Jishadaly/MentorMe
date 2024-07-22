@@ -1,45 +1,30 @@
 import { ApplicationForm } from "../entities/mentorApplication";
 import MentorApplication from "../../frameworks/database/mongoDb/models/mentorApplicationModel";
-// import { sameUser } from "./userRepository";
-// import { Users } from "../../frameworks/database/mongoDb/models/user";
-// import mentorController from "../../adaptors/Controllers/mentorController";
-// import mongoose from "mongoose";
 import Availability from "../../frameworks/database/mongoDb/models/Availability";
 import { Users } from "../../frameworks/database/mongoDb/models/user";
 import { checkExistingUser } from "./userRepository";
-
 
 interface DateRange {
   from: Date | string;
   to: Date | string;
 }
 
-
 export default {
   saveApplicationForm: async (formData: ApplicationForm) => {
     try {
 
-      // if (formData.user) {
-      //   const checkUser = await sameUser(formData.user);
-      //   console.log(checkUser);
-
-      //   if (checkUser) {
-      //    throw new Error("user request is alredy pending")
-      //   }
-      // }
-
+      
       const newForm = new MentorApplication({
         ...formData
       });
-
       const savedForm = await newForm.save();
-
       return newForm;
 
     } catch (error: any) {
       throw new Error(error);
     }
   },
+  
   updateMentorData: async (formData: ApplicationForm, userId: string) => {
       try {
         console.log("///",formData);
@@ -86,7 +71,10 @@ export default {
   },
 
   getMentor: async (mentorId: string) => {
-    const mentor = await MentorApplication.findById(mentorId).populate('availabilities');
+    const mentor = await MentorApplication.findById(mentorId).populate('availabilities').populate({
+      path: 'user',
+      select: 'profilePic'
+    })
     return mentor;
   },
 
@@ -242,7 +230,4 @@ export default {
       throw new Error(error.message);
     }
   },
-
-
-
 }

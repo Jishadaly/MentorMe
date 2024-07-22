@@ -11,15 +11,13 @@ export default function UserList({ chats, setSelectedChatId, selectedChatId }) {
     const handleSelectedChat = (chatId) => {
         console.log(chatId);
         setSelectedChatId(chatId);
-        socket.emit('joinChat', chatId); // Join the chat room
+        socket.emit('joinChat', chatId);
+        
     }
-
+    
     return (
-        <div className="bg-white p-6 border-r w-1/3">
-
+        <div className="bg-white p-6 border-r w-1/3">       
             <h1 className='text-2xl font-inter font-extrabold mb-2' >messages</h1>
-
-
             <div className="bg-gray-200 rounded-md px-4 py-2 text-sm">
                 <input type="text" placeholder="Search for a mentor..." className="w-full bg-transparent" />
             </div>

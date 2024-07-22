@@ -1,4 +1,3 @@
-
 import { Formik, Form , ErrorMessage } from 'formik';
 import {  validationSchema  , initialValue} from '../../utils/validations/userSignupValidation';
 import { userRegister } from '../../Api/services/auth/user-auth-service';
@@ -10,6 +9,7 @@ import { signInWithPopup } from 'firebase/auth';
 import { auth, provider } from '@/utils/fireBase/config';
 import { googleAuth } from '@/redux/services/userAuthServices';
 import { useDispatch } from 'react-redux';
+import GoogleLoginButton from '@/componets/GoogleLoginButton';
 
 
 const Signup = () => {
@@ -20,15 +20,13 @@ const Signup = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  
-
   const handleSubmit = async (values, { setSubmitting }) => {
     setUserEmail(values.email);
     setSubmitting(true);
 
     try {
 
-       const response = await userRegister('user/signup', values );
+      const response = await userRegister('user/signup', values );
       const user = response.data.user; 
       setIsModalOpen(true);
     } catch (error) {
@@ -50,11 +48,11 @@ const Signup = () => {
   const handleGoogleAuthClick = ()=>{
           
      signInWithPopup(auth ,provider).then((data)=>{
-
+      
         const userData = {
-           name : data.user.displayName,
-           email: data.user.email,
-           profilePic:data.user.photoURL
+            name : data.user.displayName,
+            email: data.user.email,
+            profilePic:data.user.photoURL
          }
 
          setuserGoogleData(userData);
@@ -107,7 +105,6 @@ const Signup = () => {
                     <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
                   </svg>
                   <input className="pl-2 outline-none border-none" type="text" placeholder="Full name" name='name' onChange={handleChange} value={values.name} />
-                  
                 </div>
                 <ErrorMessage name="name" component="div" className="text-red-500 text-sm mt-1" />
                 
@@ -167,9 +164,6 @@ const Signup = () => {
                      
                 </div>
                 {touched.confirmPassword && errors.confirmPassword && <div className="text-red-500">{errors.confirmPassword}</div>}
-
-
-
                 <button type="submit"
                   disabled = {isSubmitting}
                  className="block w-full bg-[rgb(68,64,203)] mt-4 py-2 rounded-2xl text-white font-semibold mb-2">
@@ -180,7 +174,7 @@ const Signup = () => {
                   <span className="px-4 text-gray-500">or</span>
                   <hr className="flex-grow border-gray-300" />
                 </div>
-                <button onClick={handleGoogleAuthClick} type="button" className="flex items-center justify-center w-full border-2 border-gray-300 bg-white py-2 rounded-2xl text-gray-600 font-semibold mb-4">
+                { /* <button onClick={handleGoogleAuthClick} type="button" className="flex items-center justify-center w-full border-2 border-gray-300 bg-white py-2 rounded-2xl text-gray-600 font-semibold mb-4">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M21.35 11.1h-9.1v2.73h5.27c-.23 1.37-.92 2.53-1.94 3.3v2.75h3.12c1.83-1.69 2.88-4.19 2.88-7.03 0-.66-.07-1.3-.2-1.92z" fill="#4285F4" />
                     <path d="M12.25 22c2.47 0 4.54-.82 6.06-2.22l-3.12-2.75c-.88.6-2.01.96-3.23.96-2.48 0-4.58-1.68-5.33-3.94H3.34v2.77C4.88 19.74 8.28 22 12.25 22z" fill="#34A853" />
@@ -188,9 +182,11 @@ const Signup = () => {
                     <path d="M12.25 4.96c1.34 0 2.55.46 3.49 1.36l2.6-2.6C16.8 2.33 14.72 1.33 12.25 1.33 8.28 1.33 4.88 3.59 3.34 6.47l3.58 2.12c.75-2.26 2.85-3.94 5.33-3.94z" fill="#EA4335" />
                   </svg>
                   Login with Google
-                </button>
+                </button> */ }
+
+                <GoogleLoginButton handleGoogleAuthClick={handleGoogleAuthClick}/>
                 <div className="mt-4">
-                  <span  onClick={()=> navigate('/mentee/login')} className="text-sm font-sans " >Already have an account? <a href="#" className="text-blue-500">Sign in</a></span>
+                  <span onClick={()=> navigate('/mentee/login')} className="text-sm font-sans " >Already have an account? <a className="text-blue-500">Sign in</a></span>
                 </div>
               </Form>
             )}

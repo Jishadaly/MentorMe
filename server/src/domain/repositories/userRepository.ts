@@ -133,3 +133,11 @@ export const updateUserPass = async (userId:string, newField:string)=>{
   return "updated";
 }
 
+export const saveProfilePicture = async(imageUrl:string , userId:string)=>{
+  try {
+    const image = await Users.findByIdAndUpdate(userId, {profilePic:imageUrl})
+    return image?.profilePic;
+  } catch (error) {
+    throw error
+  }
+}

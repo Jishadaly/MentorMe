@@ -5,7 +5,7 @@ import { Request } from "express";
 import { Encrypt } from "../../helper/hashPassword";
 import { generateToken } from "../../helper/jwtHelper";
 import {  findAdmin } from "../../repositories/adminReposetory";
-import { checkExistingUser , saveGoogleUser } from "../../repositories/userRepository";
+import { checkExistingUser , saveGoogleUser , saveProfilePicture } from "../../repositories/userRepository";
 
 
 
@@ -180,6 +180,14 @@ loginMentor : async (email:string , password:string )=> {
           
         } catch (error) {
           throw error
+        }
+      },
+      uploadProfile:async(imageUrl:string , userId:string)=>{
+        try {
+            const image  = await saveProfilePicture(imageUrl,userId);
+            return image;
+        } catch (error) {
+            throw error
         }
       }
 }

@@ -19,7 +19,7 @@ const MentorDetails = () => {
   const user = useSelector((state) => state.auth.user);
   const [isModalvisible , setIsmodalVisble] = useState(false);
 
-  
+  console.log(mentor1);
   useEffect(() => {
     const getMentor = async () => {
       try {
@@ -82,7 +82,7 @@ const MentorDetails = () => {
           
           <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-md">
             <div className="flex items-center space-x-4 mb-6">
-              <img src={mentor.profilePicture} alt="profile" className="w-24 h-24 rounded-full" />
+              <img src={mentor1.user.profilePic} alt="profile" className="w-24 h-24 rounded-full" />
               <div>
                 <h2 className="text-2xl font-bold font-inter">{mentor1.name}</h2>
                 <p className="text-gray-500 font-inter" >{mentor1.jobTitle}</p>

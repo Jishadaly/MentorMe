@@ -5,10 +5,9 @@ import protect from '../../middlewares/jwt/authMiddleware';
 import menteeController from '../../../adaptors/Controllers/menteeController';
 import blogController from '../../../adaptors/Controllers/blogController';
 import checkRole from '../../middlewares/jwt/checkRole';
+const parser = require('../../../config/cloudinary.config');
 
-
-
-const userRouter = express.Router();
+const userRouter = express.Router(); 
 
 // auth?
 userRouter.post('/signup',authController.userRegistration);
@@ -19,6 +18,7 @@ userRouter.post('/googleLogin' , authController.googleAuth);
 userRouter.post('/mentorLogin',authController.mentorLogin);
 userRouter.post('/mentorAppicationForm',mentorController.mentorApplicationFormSub);
 userRouter.post('/refreshToken',authController.refreshToken)
+userRouter.post('/uploadProfilePicture',protect,parser.single("profilePicture"),authController.uploadProfile);
 
 //mentor?
 userRouter.get('/getMentor' ,protect, mentorController.getMentor);
@@ -27,13 +27,10 @@ userRouter.get('/getMentorDetails' ,protect, mentorController.getMentorDetails);
 userRouter.put('/updateMentor' ,protect, mentorController.updateMentorProfile);
 
 
-
-
 //mentee ?
 userRouter.get('/getMentors', protect,checkRole('any'), mentorController.getMentors);
 userRouter.get('/getMentee' , protect ,checkRole('mentee'), menteeController.getMentee);
 userRouter.post('/editProfile',protect,menteeController.editProfile);  
-
 
 //slot ?
 userRouter.post('/addSlots' ,protect, mentorController.addSlots);
@@ -43,9 +40,8 @@ userRouter.post('/create-checkout-session' ,protect, mentorController.createChec
 userRouter.post('/webhooks', mentorController.webhook);
 userRouter.get('/getBookedSlotes',protect,mentorController.getBookedSlotes);
 
-
 //blogs
-userRouter.post('/addBlog',protect,blogController.addBlog);
+userRouter.post('/addBlog',protect,parser.single("image"),blogController.addBlog);
 userRouter.get('/getAllblogs' , protect , blogController.getAllBlogs);
 userRouter.get('/getBlog' , protect , blogController.getBlog);
 userRouter.get('/getmentorBlog' , protect , blogController.getMentorBlog);

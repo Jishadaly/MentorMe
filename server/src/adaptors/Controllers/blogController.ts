@@ -5,19 +5,25 @@ import blogInteractor from "../../domain/usecases/blogInteractor";
 export default {
   addBlog: async (req: Request, res: Response, next: NextFunction) => {
     
-    const { title, summary, image, content , mentorId }: { title: string; summary: string; image: any; content: any , mentorId:string } = req.body;
-    const data = await blogInteractor.addBlog(title, summary, image, content,mentorId);
+    const { title, summary, content , mentorId }: { title: string; summary: string; image: any; content: any , mentorId:string } = req.body;
+     
+   
+    const parsedContent = JSON.parse(content);
+    const image = req.file?.path;
+    const data = await blogInteractor.addBlog(title, summary, image, parsedContent,mentorId);
     res.status(200).json({ message: 'Blog saved successfully', data });
     
   },
 
   getAllBlogs:async( req:Request ,res: Response, next: NextFunction)=>{
     try {
-       const blogs  = await blogInteractor.getAllBlogs();
-       if (!blogs) {
-         throw Error('no blogs')
-       }
-
+       const page : any = req.query.page;
+       console.log(page);
+       
+       if(!page) throw Error('page not provided')
+       const blogs  = await blogInteractor.getAllBlogs(page);
+      console.log(blogs);
+      
        res.status(200).json(blogs);
     } catch (error:any) {
       res.status(400).json(error.message)
