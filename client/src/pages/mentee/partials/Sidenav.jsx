@@ -18,7 +18,7 @@ function Sidenav() {
         <Link  to="/mentee/home" className = "text-indigo-500 "><FiHome size={24} /></Link>
         <Link  to="/mentee/blogs" className = "text-indigo-500 "><FiCompass size={24} /></Link>
         <Link  to="/mentee/home" className = "text-indigo-500 "><FiBook size={24} /></Link>
-        <a href="#" className="text-indigo-500"><FiMessageSquare size={24} /></a>
+        <a href="/mentee/chat" className="text-indigo-500"><FiMessageSquare size={24} /></a>
         <Link  to="/mentee/calles" className = "text-indigo-500 "><FiVideo size={24}/></Link>
         <a href="#" className="text-indigo-500"><FiCalendar size={24} /></a>
         <a href="#" className="text-indigo-500"><FiMoreHorizontal size={24} /></a>

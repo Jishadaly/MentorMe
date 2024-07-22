@@ -1,6 +1,8 @@
 import { Admins } from "../../frameworks/database/mongoDb/models/adminModel"
 import MentorApplication from "../../frameworks/database/mongoDb/models/mentorApplicationModel";
 import { Users } from "../../frameworks/database/mongoDb/models/user";
+import Availability, { IAvailability } from "../../frameworks/database/mongoDb/models/Availability";
+
 
 export const findAdmin = async (email:string)=> await Admins.findOne({email})
 
@@ -80,6 +82,23 @@ export const updateBlockStatus = async (userId : string,isBlocked:boolean) => {
     return updatedUser;
   } catch (error) {
     console.error('Error updating block status:', error);
+    throw error;
+  }
+};
+
+
+export const getAllSlots = async () => {
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);  // Set time to the start of the day
+
+    const slots: IAvailability[] = await Availability.find({ date: { $gte: today } })
+      .populate('mentorId')
+      .populate('bookedBy')
+      .exec();
+
+    return slots;
+  } catch (error) {
     throw error;
   }
 };

@@ -16,17 +16,17 @@ function SideNav({ isOpen }) {
             <FiCalendar size={24} />
             <span>Sessions</span>
           </a>
-          <a href="#" className="flex items-center space-x-3 px-6 py-3">
+          <a href="#"  className="flex items-center space-x-3 px-6 py-3">
             <FiList size={24} />
             <span>Bookings</span>
           </a>
-          <a href="#" className="flex items-center space-x-3 px-6 py-3">
+          <a href="#" onClick={() => navigate('/mentor/chat')} className="flex items-center space-x-3 px-6 py-3">
             <FiDollarSign size={24} />
             <span>Messages</span>
           </a>
           <a href="#" className="flex items-center space-x-3 px-6 py-3">
             <FiUser size={24} />
-            <span>Payment & Coupons</span>
+            <span>Payment</span>
           </a>
           <a href="#" className="flex items-center space-x-3 px-6 py-3" onClick={() => navigate('/mentor/availability')}>
             <FiUploadCloud size={24} />

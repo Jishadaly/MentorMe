@@ -72,7 +72,7 @@ function BlogView() {
               <button className="rounded-lg bg-gray-100 px-2 py-1 font-medium text-gray-600 hover:bg-gray-200">Digital</button>
               <button className="rounded-lg bg-gray-100 px-2 py-1 font-medium text-gray-600 hover:bg-gray-200">Identity</button>
             </div>
-            <img className="sm:h-[34rem] mt-10 w-full object-contain" src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Featured Image" />
+            <img className="sm:h-[34rem] mt-10 w-full object-contain" src={blog.image} alt="Featured Image" />
           </header>
 
           <div className="mx-auto mt-10 max-w-screen-md space-y-12">

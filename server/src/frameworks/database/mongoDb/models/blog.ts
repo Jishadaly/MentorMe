@@ -42,7 +42,7 @@ const blogSchema = new Schema<IBlog>({
   },
   image: {
     type: String,
-    // required: true
+    required: true
   },
   content: {
     time: {

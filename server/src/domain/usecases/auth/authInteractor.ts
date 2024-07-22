@@ -5,7 +5,7 @@ import { Request } from "express";
 import { Encrypt } from "../../helper/hashPassword";
 import { generateToken } from "../../helper/jwtHelper";
 import {  findAdmin } from "../../repositories/adminReposetory";
-import { checkExistingUser , saveGoogleUser } from "../../repositories/userRepository";
+import { checkExistingUser , saveGoogleUser , saveProfilePicture } from "../../repositories/userRepository";
 
 
 
@@ -110,7 +110,7 @@ loginMentor : async (email:string , password:string )=> {
             throw new Error('Account is Blocked')
         }
         const role = 'mentor'
-        const token = await generateToken(existingUser.id , email , role)
+        const { accessToken } = await generateToken(existingUser.id , email , role)
         const user={ 
             id:existingUser.id,
             name:existingUser.userName,
@@ -118,7 +118,9 @@ loginMentor : async (email:string , password:string )=> {
             phone:existingUser.phone
         }
 
-        return { token , user }
+        
+
+        return { token:accessToken , user }
     },
 
     adminLogger :async(cred:{email:string , password:string})=>{
@@ -178,6 +180,14 @@ loginMentor : async (email:string , password:string )=> {
           
         } catch (error) {
           throw error
+        }
+      },
+      uploadProfile:async(imageUrl:string , userId:string)=>{
+        try {
+            const image  = await saveProfilePicture(imageUrl,userId);
+            return image;
+        } catch (error) {
+            throw error
         }
       }
 }

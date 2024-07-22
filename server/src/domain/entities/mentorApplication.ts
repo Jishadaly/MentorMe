@@ -1,6 +1,7 @@
 export interface ApplicationForm {
   user?: string; // Assuming user ID will be a string representation of ObjectId
   name?: string;
+  phone?:string;
   email?: string;
   bio?: string;
   jobTitle?: string;

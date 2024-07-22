@@ -17,6 +17,7 @@ const EditBlog = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const navigate = useNavigate();
   const editorInstance = useRef(null);
+ console.log(blog)
 
   useEffect(() => {
     const getBlog = async () => {
@@ -61,41 +62,91 @@ const EditBlog = () => {
     },
     validationSchema,
     enableReinitialize: true,
-    onSubmit: async (values) => {
+    // onSubmit: async (values) => {
+    //   if (editorInstance.current) {
+    //     const outputData = await editorInstance.current.save();
+
+    //     // Check if content is empty
+    //     if (outputData.blocks.length === 0) {
+    //       toast.error('Content is required');
+    //       return;
+    //     }
+
+        
+
+    //     const blogData = {
+    //       ...values,
+    //       content: outputData,
+    //       blogId,
+    //     };
+
+    //     try {
+    //       const updatePromise = new Promise((resolve, reject) => {
+    //         setTimeout(() => {
+    //           updatePost('user/updateBlog', blogData)
+    //             .then((data) => resolve({ message: 'Your Blog is updated' }))
+    //             .catch((error) => reject(error));
+    //         }, 1500);
+    //       });
+
+    //       await toast.promise(updatePromise, {
+    //         loading: 'Blog updating...',
+    //         success: (data) => {
+    //           navigate('/mentor/blogs');
+    //           return data.message
+    //         },
+    //         error: 'Error updating blog',
+    //       });
+
+
+    //     } catch (error) {
+    //       toast.error('Error updating blog');
+    //     }
+    //   }
+    // },
+
+    onSubmit : async (values) => {
       if (editorInstance.current) {
         const outputData = await editorInstance.current.save();
-
+    
         // Check if content is empty
         if (outputData.blocks.length === 0) {
           toast.error('Content is required');
           return;
         }
-
-        const blogData = {
-          ...values,
-          content: outputData,
-          blogId,
-        };
-
+    
+        const formData = new FormData();
+        formData.append('title', values.title);
+        formData.append('summary', values.summary);
+        formData.append('content', JSON.stringify(outputData)); // Stringify the content
+        formData.append('blogId', blogId);
+        formData.append('mentorId', blog.mentor._id); // Ensure mentorId is a string
+        if (values.image) {
+          formData.append('image', values.image);
+        }
+    
         try {
           const updatePromise = new Promise((resolve, reject) => {
+            const config = {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            };
             setTimeout(() => {
-              updatePost('user/updateBlog', blogData)
+              updatePost('user/updateBlog', formData, config)
                 .then((data) => resolve({ message: 'Your Blog is updated' }))
                 .catch((error) => reject(error));
             }, 1500);
           });
-
+    
           await toast.promise(updatePromise, {
             loading: 'Blog updating...',
             success: (data) => {
               navigate('/mentor/blogs');
-              return data.message
+              return data.message;
             },
             error: 'Error updating blog',
           });
-
-
         } catch (error) {
           toast.error('Error updating blog');
         }

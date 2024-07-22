@@ -9,6 +9,12 @@ import { generateOtpEmailContent, generateResendOtpEmailContent } from "../../do
 import jwt from 'jsonwebtoken';
 import { generateToken } from "../../domain/helper/jwtHelper";
 
+declare module 'express-serve-static-core' {
+   interface Request {
+       userId?: string;
+   }
+}
+
 
 export default {
    userRegistration: async (req: Request, res: Response, next: NextFunction) => {
@@ -85,6 +91,9 @@ export default {
    },
 
    mentorLogin: async (req: Request, res: Response, next: NextFunction) => {
+
+      console.log("mentor login");
+      
       try {
 
          const { email, password } = req.body
@@ -151,6 +160,28 @@ export default {
          console.log(error);
          res.status(500).json(error);
       }
+   },
+
+   uploadProfile:async (req: Request, res: Response, next: NextFunction) => {
+      try {
+         
+         const path = req.file?.path;
+         const userId = req.userId;
+         if(!userId) throw Error('user not authorised')
+         if (!path) throw Error('image not found')
+
+         const imageUrl  = await authInteractor.uploadProfile(path , userId);
+         console.log(imageUrl);
+         
+         res.status(200).json({
+            profilePic: imageUrl,
+            message: "Profile picture updated successfully",
+        });
+
+       } catch (error) {
+         res.status(500).json(error);
+         next(error);
+       }
    },
 
 

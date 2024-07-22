@@ -53,3 +53,24 @@ export const getMentorAvalableSlots = async (endPoint)=>{
     console.log(error);
   }
 }  
+
+export const getMentorData = async(endPoint , userId)=>{
+  try {
+    const response = await authInstanceAxios.get(`/${endPoint}?userId=${userId}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export const updateMentorProfile = async (endPoint , datas)=>{
+
+  try {
+    const response = await authInstanceAxios.put(`/${endPoint}`,datas);
+    return response.data;
+  } catch (error) {
+    throw error
+  }
+} 
+
+

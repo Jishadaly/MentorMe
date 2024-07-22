@@ -13,6 +13,8 @@
     "outDir": "./dist",
     "rootDir": "./src", 
                 /* Reduce the number of projects loaded automatically by TypeScript. */
+                // "typeRoots": ["./node_modules/@types", "./src/domian/entities/types/user"],
+                
 
     /* Language and Environment */
     "target": "es2016",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
@@ -108,10 +110,35 @@
 
     /* Completeness */
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
-    "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
+    "skipLibCheck": true,
+    /* Skip type checking all .d.ts files. */
+    "typeRoots": ["./node_modules/@types", "./src/domain/entities"]                       
   },
+  
   "include": [
     "src/**/*.ts",
-    "src/domian/entities/types/express-session.d.ts"
-  ]
+    "src/domain/entities/types/express-session.d.ts",
+    "src/domain/entities/types/express.d.ts"
+  ],
+  
 }
+
+
+// {
+//   "compilerOptions": {
+//     "outDir": "./dist",
+//     "rootDir": "./src",
+//     "target": "es2016",
+//     "module": "commonjs",
+//     "esModuleInterop": true,
+//     "forceConsistentCasingInFileNames": true,
+//     "strict": true,
+//     "skipLibCheck": true,
+//     "typeRoots": ["./node_modules/@types", "./src/domain/entities/types"]
+//   },
+//   "include": [
+//     "src/**/*.ts",
+//     "src/domain/entities/types/express-session.d.ts",
+//     "src/domain/entities/types/express.d.ts"
+//   ]
+// }

@@ -12,7 +12,7 @@ export interface IAvailability extends Document {
 
 // Mongoose schema for Availability
 const AvailabilitySchema: Schema = new Schema({
-  mentorId: { type: Schema.Types.ObjectId, ref: 'MentorApplication', required: true },
+  mentorId: { type: Schema.Types.ObjectId, ref: 'Users', required: true },
   date: { type: Date, required: true },
   startTime: { type: String, required: true },
   endTime: { type: String, required: true },

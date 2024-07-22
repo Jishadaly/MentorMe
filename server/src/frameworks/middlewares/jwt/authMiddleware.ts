@@ -26,20 +26,15 @@ if (!secretKey) {
   const token = tokenParts[1];
   try {
     const decoded = jwt.verify(token, secretKey) as jwt.JwtPayload;
-    console.log("decodeed",decoded);
     
     req.userId = decoded.userId; 
     req.userRole = decoded.userRole
-
-    console.log("auth middleware",req.userRole);
-    
-    console.log("token verified succesfully");
     
     next();
 
   } catch (error) {
     if (error instanceof jwt.TokenExpiredError) {
-      res.status(401).json({ message: "token expired" });
+      res.status(403).json({ message: "token expired" });
   } else {
       res.status(401).json({ message: "Not authorized Invalid token" });
   }

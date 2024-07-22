@@ -13,6 +13,14 @@ export default {
       throw  error
      }
   },
+  updateMentor :async(formData:ApplicationForm , userId:string)=>{
+   try {
+      const updatedData = await mentorRepository.updateMentorData(formData , userId);
+      return updatedData;
+   } catch (error) {
+    throw  error
+   }
+},
 
   getMentors:async()=>{
        try {
@@ -134,8 +142,12 @@ createPaymentIntent:async(mentee:string , mentor:string , slotId:string , price:
    }
 },
 getBookedSlotes:async(userId:string)=>{
-   const slotes = await  getBookdslotdb(userId)
+   const slotes = await  getBookdslotdb(userId);
    return slotes;
+},
+getMentorDetails:async(userId:string)=>{
+   const mentor = await mentorRepository.getMentorDetails(userId);
+   return mentor;
 }
   
 }

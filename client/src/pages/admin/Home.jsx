@@ -6,6 +6,7 @@ import Header from "./partials/Header";
 import Dashboard from "./Dashboard";
 import VerificationRequests from "./VerificationRequests";
 import Users from "./Users";
+import SlotManage from "./slotManage";
 
 
 
@@ -22,6 +23,8 @@ export function AdminHome() {
       // Add more cases as needed for other components
       case "users":
         return <Users />;
+        case "slotManage":
+        return <SlotManage />;
       // Add more cases as needed for other components
       default:
         return <Dashboard />;

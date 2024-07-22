@@ -32,7 +32,10 @@ import BlogList from '@/pages/mentee/BlogList'
 import BlogView from '@/pages/mentee/BlogView'
 import Blogs from '@/pages/mentor/Blogs'
 import EditBlog from '@/pages/mentor/EditBlog'
-
+import Chat from '@/pages/mentee/chat'
+import MentorChat from '@/pages/mentor/chat/chat'
+import MentorProfile from '@/pages/mentor/MentorProfile'
+import SlotManage from '@/pages/admin/slotManage'
 
 const router = createBrowserRouter( 
   createRoutesFromElements(
@@ -48,6 +51,8 @@ const router = createBrowserRouter(
             <Route path='profile' element={<MenteeProfile/>}/>
             <Route path='blogs' element={<BlogList/>}/>
             <Route path='blogView/:blogId' element={<BlogView/>}/>
+            <Route path='chat' element={<Chat/>}/>
+
 
         </Route>
       </Route>
@@ -56,6 +61,10 @@ const router = createBrowserRouter(
         <Route path='/admin'>
         <Route index element={<AdminHome/>} />
          <Route path='home' element={<AdminHome/>}/>
+         <Route path='slotManage' element={<SlotManage/>}/>
+         
+
+
         </Route>                                                          
       </Route>
 
@@ -67,6 +76,8 @@ const router = createBrowserRouter(
           <Route path='Createblogs' element={<CreateBlogs/>} />
           <Route path='blogs' element={<Blogs/>} />
           <Route path='editBlog/:blogId' element={<EditBlog/>}/>
+          <Route path='chat' element={<MentorChat/>}/>
+          <Route path='profile' element={<MentorProfile/>}/>
 
         </Route>    
       </Route>

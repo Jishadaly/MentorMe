@@ -71,4 +71,13 @@ export default {
     }
   },
 
+  fetchSlots:async(req:Request ,res:Response , next:NextFunction)=>{
+    try {
+      const slots = await adminInteractor.getSlots();
+      res.status(200).json({message: "mentor data fetched  successfully",slots})
+    } catch (error:any) {
+      res.status(500).json(error.message);
+    }
+  },
+
 }

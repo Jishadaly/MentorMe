@@ -11,6 +11,8 @@ adminRouter.post('/rejectMentorApplication',adminController.rejectRequest)
 adminRouter.get('/getAllUsers',adminController.getAllUsers)
 adminRouter.get('/getAllMentors',adminController.getAllMentors)
 adminRouter.patch('/updateBlockStatus',adminController.updateBlockStatus)
+adminRouter.get('/ferchMentoSlots',adminController.fetchSlots)
+
 
 
 export default adminRouter;

@@ -41,7 +41,7 @@ export default {
     const blogData = {
       title,
       summary,
-      // image,
+      image,
       content: {
         time: content.time,
         blocks: blocksArray,
@@ -50,16 +50,16 @@ export default {
       mentor:mentorId,
     };
 
-    console.log(blogData);
+    
     
     const savedBlog = blogReposetory.saveBlog(blogData);
 
     return savedBlog;
       
   },
-  getAllBlogs:async()=>{
+  getAllBlogs:async(page:any)=>{
     try {
-       const blogs = await blogReposetory.getBlogs();
+       const blogs = await blogReposetory.getBlogs(page);
        return blogs
     } catch (error:any) {
       throw Error(error)
@@ -98,7 +98,7 @@ export default {
     const blogData = {
       title,
       summary,
-      // image,
+      image,
       content: {
         time: content.time,
         blocks: blocksArray,
