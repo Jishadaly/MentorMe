@@ -98,7 +98,7 @@ export default {
     const blogData = {
       title,
       summary,
-      // image,
+      image,
       content: {
         time: content.time,
         blocks: blocksArray,

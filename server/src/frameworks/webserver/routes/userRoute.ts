@@ -45,7 +45,7 @@ userRouter.post('/addBlog',protect,parser.single("image"),blogController.addBlog
 userRouter.get('/getAllblogs' , protect , blogController.getAllBlogs);
 userRouter.get('/getBlog' , protect , blogController.getBlog);
 userRouter.get('/getmentorBlog' , protect , blogController.getMentorBlog);
-userRouter.post('/updateBlog' , protect , blogController.updateBlog);
+userRouter.post('/updateBlog' , protect,parser.single('image') , blogController.updateBlog);
 userRouter.delete('/deleteBlog' , protect , blogController.deleteBlog);
 
 

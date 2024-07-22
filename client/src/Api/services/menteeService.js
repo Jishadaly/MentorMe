@@ -88,8 +88,8 @@
   }
 
 
-  export const updatePost =async (endPoint , datas)=>{  
-    const response = await authInstanceAxios.post(`/${endPoint}`,datas);
+  export const updatePost =async (endPoint , datas ,config)=>{  
+    const response = await authInstanceAxios.post(`/${endPoint}`,datas,config);
     return response.data
 
   }
