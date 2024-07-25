@@ -20,7 +20,7 @@ export default {
         return chats
     },
     getMessages:async(chatId:string)=>{
-        const messages = await chatRepository.getMessages(chatId);
+        const messages = await chatRepository.getMessages(chatId)
         return messages;
     }
 }

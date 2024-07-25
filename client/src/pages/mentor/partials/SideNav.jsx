@@ -12,7 +12,7 @@ function SideNav({ isOpen }) {
             <FiHome size={24} />
             <span onClick={()=> navigate('/mentor')}>Home</span>
           </a>
-          <a href="#" className="flex items-center space-x-3 px-6 py-3">
+          <a href="#" className="flex items-center space-x-3 px-6 py-3" onClick={() => navigate('/mentor/sessions')} >
             <FiCalendar size={24} />
             <span>Sessions</span>
           </a>

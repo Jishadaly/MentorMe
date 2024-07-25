@@ -13,7 +13,7 @@ export const  startChat = async(endPoint  , mentorId , menteeId )=>{
 
   export const sendMessge = async (endPoint , chatId , message)=>{
       try {
-        console.log(chatId , message);
+      console.log(chatId , message);
       const response =await authInstanceAxios.post(`/${endPoint}` , {chatId , message});
       return response.data;
       } catch (error) {

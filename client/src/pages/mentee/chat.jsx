@@ -19,6 +19,7 @@ export default function Chat() {
     const fetchAllChats = async () => {
         try {
           const fetchedChats = await getChats('chat/getAllChats');
+          console.log(fetchedChats);
           setChats(fetchedChats);
         } catch (error) {
           console.error('Error fetching chats:', error);

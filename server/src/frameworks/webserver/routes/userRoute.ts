@@ -24,7 +24,8 @@ userRouter.get('/getMentor' ,protect, mentorController.getMentor);
 userRouter.get('/getMentorApplication', protect, mentorController.getApplicationId);
 userRouter.get('/getMentorDetails' ,protect, mentorController.getMentorDetails);
 userRouter.put('/updateMentor' ,protect, mentorController.updateMentorProfile);
-
+userRouter.get('/getNotifications',protect,mentorController.getNotifications);
+userRouter.patch('/editNotification',protect,mentorController.editNotification);
 
 //mentee ?
 userRouter.get('/getMentors', protect,checkRole('any'), mentorController.getMentors);
@@ -38,17 +39,6 @@ userRouter.post('/slotBooking' ,protect, mentorController.slotBooking);
 userRouter.post('/create-checkout-session' ,protect, mentorController.createCheckoutSession)
 userRouter.post('/webhooks', mentorController.webhook);
 userRouter.get('/getBookedSlotes',protect,mentorController.getBookedSlotes);
+userRouter.get('/mentorSessions',protect,mentorController.getMentorSessions)
 
-// <<<<<<< HEAD
-// =======
-// //blogs
-// userRouter.post('/addBlog',protect,parser.single("image"),blogController.addBlog);
-// userRouter.get('/getAllblogs' , protect , blogController.getAllBlogs);
-// userRouter.get('/getBlog' , protect , blogController.getBlog);
-// userRouter.get('/getmentorBlog' , protect , blogController.getMentorBlog);
-// userRouter.post('/updateBlog' , protect,parser.single('image') , blogController.updateBlog);
-// userRouter.delete('/deleteBlog' , protect , blogController.deleteBlog);
-
-
-// >>>>>>> chat
 export default userRouter;

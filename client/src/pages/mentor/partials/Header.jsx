@@ -53,6 +53,7 @@ import { logout } from '@/redux/slice/userAuthSlice';
 import { FiMenu, FiX } from 'react-icons/fi';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { BellIcon } from '@heroicons/react/24/outline';
 
 function Header({ toggleMenu, isOpen }) {
   const navigate = useNavigate();
@@ -81,12 +82,14 @@ function Header({ toggleMenu, isOpen }) {
           <i className="fas fa-bell text-xl"></i>
         </a>
         {/* <a onClick={handleLogout} href="#" className="text-indigo-500 font-inter font-bold">Sign Out</a> */}
-        <div className='cursor-pointer' onClick={()=> navigate('/mentor/profile')}>
-        <img
+        <div className='flex justify-center  cursor-pointer ' >
+        <div className='mr-6 w-6 text-indigo-500' onClick={()=> navigate('/mentor/notifications')}><BellIcon/></div>
+        <img onClick={()=> navigate('/mentor/profile')}
           src="https://randomuser.me/api/portraits/men/75.jpg"
           alt="profile"
           className="w-8 h-8 rounded-full"  
         />
+       
         </div>
         
       </div>

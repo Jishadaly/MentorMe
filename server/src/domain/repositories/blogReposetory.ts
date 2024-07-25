@@ -29,7 +29,7 @@ export default {
 
         return blogs
     } catch (error: any) {
-      throw Error(error)
+      throw Error(error);
     }
   },
 

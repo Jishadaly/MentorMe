@@ -23,7 +23,6 @@ import LandingPage from '@/pages/others/LandingPage'
 import PageNotFound from '@/pages/others/notFount'
 import MentorDetails from '@/pages/mentee/MentorDeatails'
 import MentorAvailability from '@/pages/mentor/Availability'
-import CallesPage from '@/pages/mentee/Calles'
 import MenteeProfile from '@/pages/mentee/MenteeProfile'
 import CreateBlogs from '@/pages/mentor/CreateBlogs'
 import MenteeLayout from '@/pages/layouts/MenteeLayout'
@@ -36,6 +35,10 @@ import Chat from '@/pages/mentee/chat'
 import MentorChat from '@/pages/mentor/chat/chat'
 import MentorProfile from '@/pages/mentor/MentorProfile'
 import SlotManage from '@/pages/admin/slotManage'
+import CallesPage from '@/pages/mentee/Calles'
+import Sessions from '@/pages/mentor/sessions/Sessions'
+import Room from '@/pages/mentor/sessions/room'
+import Notifications from '@/pages/others/notifications/Notifications'
 
 const router = createBrowserRouter( 
   createRoutesFromElements(
@@ -52,8 +55,6 @@ const router = createBrowserRouter(
             <Route path='blogs' element={<BlogList/>}/>
             <Route path='blogView/:blogId' element={<BlogView/>}/>
             <Route path='chat' element={<Chat/>}/>
-
-
         </Route>
       </Route>
 
@@ -78,7 +79,9 @@ const router = createBrowserRouter(
           <Route path='editBlog/:blogId' element={<EditBlog/>}/>
           <Route path='chat' element={<MentorChat/>}/>
           <Route path='profile' element={<MentorProfile/>}/>
-
+          <Route path='sessions' element= {<Sessions/>}/>
+          <Route path='notifications' element={<Notifications/>}/>
+           
         </Route>    
       </Route>
 
@@ -91,7 +94,7 @@ const router = createBrowserRouter(
       <Route path='/mentor/MentorConfirmationPage' element={<ConfirmationPage/>} />
       <Route path='/admin/login' element={<AdminLogin/>} />
       <Route path="*" element={ <PageNotFound/>}/>
-
+      <Route path='/meet/:roomId' element= {<Room/>} />
     </Route>
     
   )

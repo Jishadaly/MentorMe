@@ -19,6 +19,7 @@ const MentorDetails = () => {
   const user = useSelector((state) => state.auth.user);
   const [isModalvisible , setIsmodalVisble] = useState(false);
 
+  
   console.log(mentor1);
   useEffect(() => {
     const getMentor = async () => {
@@ -74,9 +75,6 @@ const MentorDetails = () => {
   
   return (
     <div className="flex min-h-screen bg-gray-100">
-      
-    
-      
       <main className="ml-20 mt-16 p-6 flex-1 overflow-y-auto">
         <section className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
           

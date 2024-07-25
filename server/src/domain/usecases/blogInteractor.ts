@@ -36,8 +36,6 @@ export default {
       console.log('Block: ', block);
       blocksArray.push(block);
     });
-
-    
     const blogData = {
       title,
       summary,
@@ -49,11 +47,7 @@ export default {
       },
       mentor:mentorId,
     };
-
-    
-    
     const savedBlog = blogReposetory.saveBlog(blogData);
-
     return savedBlog;
       
   },

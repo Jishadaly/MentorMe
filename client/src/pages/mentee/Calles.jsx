@@ -9,7 +9,7 @@ import { startChat } from '@/Api/services/chatServices';
 import { useChat } from '@/Context/chatContext';
 
 
-function CallesPage() {
+export default function CallesPage() {
   const navigate = useNavigate();
   const user = useSelector((state)=> state.auth.user);
   const [bookedSLotes , setBookedSlotes] = useState([]);
@@ -90,4 +90,4 @@ function CallesPage() {
   );
 }
 
-export default CallesPage
+ 

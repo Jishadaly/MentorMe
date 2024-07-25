@@ -6,23 +6,27 @@ import { getMentorData, updateMentorProfile } from '@/Api/services/mentorService
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '@/redux/slice/userAuthSlice';
+import EditProfilePicture from '@/componets/EditProfilePicture';
+import ReactLoading from 'react-loading';
+
 
 const MentorProfile = () => {
     const user = useSelector((state) => state.auth.user);
     const [mentorDetails, setMentorDetails] = useState(null);
-    const [userName , setUserName] = useState(null);
+    const [userName, setUserName] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [editingProfilePicture, setEditingProfilePicture] = useState(false);
 
 
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
-    const handleLogout = ()=>{
-        
-       dispatch(logout());
-       navigate('/mentor/login');
-       persistor.purge();
-       localStorage.clear(); 
+    const handleLogout = () => {
+
+        dispatch(logout());
+        navigate('/mentor/login');
+        persistor.purge();
+        localStorage.clear();
     }
 
 
@@ -30,7 +34,7 @@ const MentorProfile = () => {
         setLoading(true);
         const data = await getMentorData(`user/getMentorDetails`, user.id);
         setMentorDetails(data);
-        console.log("data",data);
+        console.log("data", data);
         setUserName(data.userName);
         formik.setValues({
             userName: data.userName || '',
@@ -82,7 +86,7 @@ const MentorProfile = () => {
         onSubmit: async (values) => {
             try {
                 console.log(values);
-                const updated = await updateMentorProfile('user/updateMentor',values)
+                const updated = await updateMentorProfile('user/updateMentor', values)
                 console.log(updated);
                 // setUserName(updated.userName);
                 toast.success('profile updated');
@@ -108,21 +112,35 @@ const MentorProfile = () => {
         formik.setFieldValue(field, newArray);
     };
 
+    const handleFieldUpdate = (field, newValue) => {
+        setMentorDetails((prevMentor) => ({ ...prevMentor, [field]: newValue }));
+    };
+
+      const handleProfilePictureEdit = () => {
+        setEditingProfilePicture(true);
+    
+        
+      };
+
     if (loading) return <div>Loading...</div>;
 
     return (
         <div className="flex flex-col min-h-screen bg-gray-100">
             <main className="flex-1 bg-gray-50 p-4 sm:px-6 sm:py-0 md:gap-8">
                 <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4">
-                    
+
                     <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8  mt-28 w-auto">
                         <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
                             <div className="w-full bg-white p-4 rounded-lg shadow-sm">
                                 <div className="bg-grey flex flex-row mb-5">
-                                    <img className="mr-2 rounded-full w-24 h-24 mb-4" src="https://via.placeholder.com/150" alt="Profile" />
+                                    <img className="mr-2 rounded-full w-24 h-24 mb-4" src={mentorDetails.profilePic} alt="Profile" />
                                     <div className="flex flex-col">
                                         <h2 className="text-xl font-bold font-inter">{userName ? userName : "mentorDetails.userName"}</h2>
-                                        <a href="#edit-profile-picture" className="text-blue-500">Update profile picture</a>
+                                        {!editingProfilePicture ? (
+                                            <a  onClick={handleProfilePictureEdit} className="text-blue-500">Edit profile picture</a>
+                                        ) : (
+                                            <EditProfilePicture onUpdate={handleFieldUpdate}  />
+                                        )}
                                         <p className="text-gray-500">signed up • 6 days ago</p>
                                     </div>
                                 </div>
@@ -347,12 +365,12 @@ const MentorProfile = () => {
                                     </div>
                                 </div>
                                 <div>
-                                <button
-                                            onClick={handleLogout}
-                                            className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 font-inter font-bold"
-                                        >
-                                            Logout
-                                        </button>
+                                    <button
+                                        onClick={handleLogout}
+                                        className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 font-inter font-bold"
+                                    >
+                                        Logout
+                                    </button>
                                 </div>
                             </div>
                         </div>

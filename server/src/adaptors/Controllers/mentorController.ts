@@ -213,5 +213,40 @@ export default {
     } catch (error:any) {
       res.status(400).json(error.message)
     }
+  },
+  getMentorSessions:async(req:Request , res:Response , next:NextFunction)=>{
+    try {
+      const mentorId = req.userId;
+      if(!mentorId) throw Error('user not authorised');
+      const sessions = await mentorInteractor.getSessions(mentorId);
+      res.status(200).json(sessions)
+    } catch (error:any) {
+       res.status(400).json(error.message)
+    }
+  },
+
+  getNotifications:async(req:Request , res:Response , next:NextFunction)=>{
+    try {
+      const userId = req.userId as string;
+      const response = await mentorInteractor.getNotifications(userId);
+      console.log(response);
+      
+      res.status(200).json(response);
+    } catch (error:any) {
+      res.status(400).json(error.message);
+    }
+  },
+  editNotification:async(req:Request , res:Response, next:NextFunction)=>{
+     try {
+    
+      
+       const notificationId  = req.query.notificationId as string
+       console.log(notificationId);
+       const id = await mentorInteractor.editNotification(notificationId)
+       console.log("succs",id);
+       res.status(200).json(id);
+     } catch (error:any) {
+      res.status(400).json(error.message)
+     }
   }
 }

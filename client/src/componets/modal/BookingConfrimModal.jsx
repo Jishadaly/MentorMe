@@ -5,12 +5,13 @@ import moment from "moment";
 
 
 function BookingConfirmModal({ onClose , mentorData , mentee , slot , price}) {
-     console.log("11111111",mentorData);
+    
      
     const handleAccept = async ()=>{
       
       const slotId = slot._id;
-      const mentor = mentorData.user;
+      const mentor = mentorData.user._id;
+      console.log("11111111111111",mentor);
         try {
             const data = await createCheckoutSession('user/create-checkout-session',
                { mentee , mentor , slotId , price });

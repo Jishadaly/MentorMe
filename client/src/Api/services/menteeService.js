@@ -106,13 +106,8 @@
   //   return response.data
   // }
 
-  export const uploadProfilePicture = async (endPoint, formData) => {
-    const config = {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    };
-  
+  export const uploadProfilePicture = async (endPoint, formData , config) => {
+    
     try {
       // Use authInstanceAxios for the request
       const response = await authInstanceAxios.post(`/${endPoint}`, formData, config);

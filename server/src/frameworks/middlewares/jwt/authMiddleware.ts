@@ -27,7 +27,7 @@ if (!secretKey) {
   try {
     const decoded = jwt.verify(token, secretKey) as jwt.JwtPayload;
     
-    req.userId = decoded.userId; 
+    req.userId = decoded.userId;
     req.userRole = decoded.userRole
     
     next();

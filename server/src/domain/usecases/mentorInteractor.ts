@@ -3,6 +3,8 @@ import { ApplicationForm } from "../entities/mentorApplication";
 import mentorRepository from "../repositories/mentorRepository";
 import { IDateRange } from "../entities/dateRange";
 import { getBookdslotdb, sameUser } from "../repositories/userRepository";
+import { generateNotification } from "../utils/generateNotification";
+
 
 export default {
   mentorApplicationForm: async(formData:ApplicationForm)=>{
@@ -93,8 +95,31 @@ slotBooking:async(menteeId :string , mentorId:string ,slotId:string)=>{
    try {
       console.log("11111",menteeId , mentorId,slotId);
       
-      const response = await mentorRepository.bookAslot(menteeId , mentorId ,slotId);
-      return response
+      const slot = await mentorRepository.bookAslot(menteeId , mentorId ,slotId);
+       
+      if (slot) {
+         console.log("boooooooooked slot",slot);
+         // console.log("user",slot.bookedBy.userName);
+
+         
+         const menteeName = slot.bookedBy
+         const sessionDate = new Date(slot.date).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          });
+         const description = `${menteeName} booked a session on ${sessionDate}`;
+         const notifiyMentor = {
+            userId:mentorId,
+            type:'session_booking',
+            title:'New Booking',
+            description,
+         }
+         const notifyy = await generateNotification(notifiyMentor);
+      }
+
+     
+      return slot
    } catch (error:any) {
      throw new Error(error)
    }
@@ -126,9 +151,9 @@ createPaymentIntent:async(mentee:string , mentor:string , slotId:string , price:
         locale: 'en', 
         customer_email: user?.email,
         metadata: {
-          mentee:mentee,
-          mentor:mentor,
-          slotId:slotId
+          mentee:mentee.toString(),
+          mentor:mentor.toString(),
+          slotId:slotId.toString()
         },
       });
 
@@ -148,6 +173,18 @@ getBookedSlotes:async(userId:string)=>{
 getMentorDetails:async(userId:string)=>{
    const mentor = await mentorRepository.getMentorDetails(userId);
    return mentor;
+},
+getSessions:async(mentorId:string)=>{
+   const sessions = await mentorRepository.getSessions(mentorId);
+   return sessions;
+},
+getNotifications:async(userId:string)=>{
+   const notifications = await mentorRepository.getNotifications(userId)
+   return notifications;
+},
+editNotification:async(notfyId:string)=>{
+   const notification = await mentorRepository.markAsReadNotification(notfyId)
+   return notification
 }
   
 }

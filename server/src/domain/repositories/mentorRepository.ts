@@ -3,11 +3,14 @@ import MentorApplication from "../../frameworks/database/mongoDb/models/mentorAp
 import Availability from "../../frameworks/database/mongoDb/models/Availability";
 import { Users } from "../../frameworks/database/mongoDb/models/user";
 import { checkExistingUser } from "./userRepository";
+import Notification from "../../frameworks/database/mongoDb/models/notification";
+
 
 interface DateRange {
   from: Date | string;
   to: Date | string;
 }
+
 
 export default {
   saveApplicationForm: async (formData: ApplicationForm) => {
@@ -196,10 +199,8 @@ export default {
 
   getMentorApplication: async (mentorId: string) => {
     const mentorApplication = await MentorApplication.findOne({ user: mentorId }).populate('availabilities');
-
     if (!mentorApplication) throw new Error("there is no mentor application")
     const availableSlots = await Availability.find({ mentorId: mentorApplication.user });
-
     return availableSlots;
   },
 
@@ -210,7 +211,7 @@ export default {
       const mentorApplicationId = await MentorApplication.findOne({ user: mentorId })
       console.log(mentorApplicationId);
 
-      const bookAslot = await Availability.findByIdAndUpdate(slotId, { mentorId, isBooked: true, bookedBy: menteeId }, { new: true })
+      const bookAslot = await Availability.findByIdAndUpdate(slotId, { mentorId, isBooked: true, bookedBy: menteeId }, { new: true }).populate({path:'bookedBy' , select:'userName -_id' })
       return bookAslot
 
     } catch (error: any) {
@@ -230,4 +231,21 @@ export default {
       throw new Error(error.message);
     }
   },
+  getSessions:async(mentorId:string)=>{
+    try {
+      const sessions = await Availability.find({mentorId:mentorId , isBooked:true}).populate({path:"bookedBy" , select:"userName -_id profilePic"})
+      return sessions
+    } catch (error) {
+      throw error
+    }
+  },
+  getNotifications:async(userId:string)=>{
+    const notifications = await Notification.find({userId:userId})
+    return notifications;
+ },
+ markAsReadNotification:async(notifyid:string)=>{
+  const msrkRead = await Notification.findByIdAndUpdate(notifyid, { read:true ,  select:'_id'})
+
+  return msrkRead
+ }
 }

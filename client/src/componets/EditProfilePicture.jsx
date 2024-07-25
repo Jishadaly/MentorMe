@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { uploadProfilePicture } from '@/Api/services/menteeService'; // Make sure to implement this API service
 import { toast } from 'sonner';
 
-const EditProfilePicture = ({ menteeId, onUpdate , setLoading}) => {
+const EditProfilePicture = ({ menteeId, onUpdate }) => {
   const [selectedFile, setSelectedFile] = useState(null);
 
   const handleFileChange = (event) => {
@@ -29,16 +29,15 @@ const EditProfilePicture = ({ menteeId, onUpdate , setLoading}) => {
           'Content-Type': 'multipart/form-data',
         },
       };
-      setLoading(true);
       uploadProfilePicture('user/uploadProfilePicture', formData, config)
         .then((data) => {
           console.log(data);
           resolve({ message: 'Profile picture updated successfully', data });
-          setLoading(false)
+          
         })
         .catch((error) => {
           reject(error);
-          setLoading(false)
+  
 
         });
     });

@@ -71,6 +71,32 @@ export const updateMentorProfile = async (endPoint , datas)=>{
   } catch (error) {
     throw error
   }
-} 
+}
 
+export const getSessions = async (endPoint)=>{
 
+  try {
+    const response = await authInstanceAxios.get(`/${endPoint}`);
+    return response.data;
+  } catch (error) {
+    throw error
+  }
+}
+
+export const getNotifications = async(endPoint)=>{
+  try {
+    const response = await authInstanceAxios.get(`/${endPoint}`);
+    return response.data;
+  } catch (error) {
+    throw error
+  }
+}
+
+export const markRead = async(endPoint, notifyId)=>{
+  try {
+    const response = await authInstanceAxios.patch(`/${endPoint}?notificationId=${notifyId}`);
+    return response.data._id
+  } catch (error) {
+    throw error
+  }
+}

@@ -34,16 +34,27 @@ export default {
                 content: message,
                 chat: chatId
             });
-            await saveMssg.save();
-            const savelatestmessage = await Chat.findByIdAndUpdate(chatId, { latestMessage: saveMssg._id });
-            return saveMssg;
+
+            const populatedMessage = await saveMssg.save()
+                .then(savedMessage => Message.findById(savedMessage._id)
+                    .populate({
+                        path: 'sender',
+                        select: 'profilePic _id'
+                    })
+                );
+
+            const savelatestmessage = await Chat.findByIdAndUpdate(chatId, { latestMessage: saveMssg._id })
+
+            console.log(savelatestmessage);
+
+            return populatedMessage;
         } catch (error) {
             throw error
         }
     },
     getAllChat: async (userId: string) => {
         try {
-            
+
             let results: any = await Chat.find({ users: { $elemMatch: { $eq: userId } } })
                 .populate("users", "-password")
                 .populate('latestMessage')
@@ -58,6 +69,14 @@ export default {
 
             // console.log('Populated results:', results);
 
+            // Add unreadCounts to each chat
+        //     results = results.map((chat:any) => {
+        //     const unreadCount = chat.unreadCounts[userId] || 0;
+        //     return {
+        //         ...chat.toObject(),
+        //         unreadCount,
+        //     };
+        // });
 
 
             return results;
@@ -67,9 +86,9 @@ export default {
             throw error
         }
     },
-    getMessages:async(chatId:string)=>{
+    getMessages: async (chatId: string) => {
         try {
-            const messages = await Message.find({chat:chatId});
+            const messages = await Message.find({ chat: chatId }).populate({ path: 'sender', select: 'profilePic ' })
             return messages;
         } catch (error) {
             throw error

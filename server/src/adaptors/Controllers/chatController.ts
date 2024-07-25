@@ -32,10 +32,9 @@ export default {
             const id:string = chatId;
             const mssg:string = message;
             const senderId = req.userId;
-        
+            
             if(!senderId) throw Error('user not authorised');
             const savedMessage = await chatInteractor.sendMessage(id, mssg,senderId);
-            
             
             res.status(200).json(savedMessage);
         } catch (error:any) {

@@ -153,9 +153,7 @@ export default {
          const emailContent = generateResendOtpEmailContent(user.userName, otp);
          await sendMail(userEmail, emailContent);
          res.status(200).json({ message: "resend Otp sended succesfully", user });
-
-         // res.status(400).json({ message: "User registration failed" });
-
+         
       } catch (error) {
          console.log(error);
          res.status(500).json(error);

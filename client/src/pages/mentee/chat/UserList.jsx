@@ -28,7 +28,7 @@ export default function UserList({ chats, setSelectedChatId, selectedChatId }) {
                     return (
                         <div key={index} className={`flex items-center gap-4 cursor-pointer p-2 rounded-md ${isSelected ? 'bg-gray-200' : 'hover:bg-gray-100'}`} onClick={() => handleSelectedChat(chat._id)}>
                             <div className="w-8 h-8 border rounded-full overflow-hidden">
-                                <img src="/placeholder-user.jpg" alt="User" className="w-full h-full object-cover" />
+                                <img src={otherUser?.profilePic} alt="User" className="w-full h-full object-cover" />
                             </div>
                             <div className="flex-1">
                                 <p className="font-medium">{otherUser?.userName}</p>
@@ -36,6 +36,11 @@ export default function UserList({ chats, setSelectedChatId, selectedChatId }) {
                                     {chat.latestMessage?.content}
                                 </p>
                             </div>
+                            {/* {chat.unreadCount > 0 && (
+                                <div className="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                                    {chat.unreadCount}
+                                </div>
+                            )} */}
                         </div>
                     );
                 })}

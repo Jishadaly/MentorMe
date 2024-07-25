@@ -84,7 +84,7 @@ const MenteeProfile = () => {
                 {!editingProfilePicture ? (
                   <a href="#edit-profile-picture" onClick={handleProfilePictureEdit} className="text-blue-500">Edit profile picture</a>
                 ) : (
-                  <EditProfilePicture  onUpdate={handleFieldUpdate} setLoading={setLoading}/>
+                  <EditProfilePicture  onUpdate={handleFieldUpdate} />
                 )}
                 <p className="text-gray-500">signed up • 6 days ago</p>
               </div>
