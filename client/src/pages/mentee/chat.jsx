@@ -6,6 +6,8 @@ import { useChat } from '@/Context/chatContext';
 import Messages from '../mentor/chat/Mesage';
 import UserList from './chat/UserList';
 import { io } from 'socket.io-client';
+import ChatFeature from '@/pages/mentee/chat/Nochats';
+
 
 const socket = io('http://localhost:3000')
 
@@ -30,7 +32,16 @@ export default function Chat() {
     const handleSelectedChat = (chatId)=>{
         console.log("selectedChatId",chatId);
         setSelectedChatId(chatId);
+        markMessageAsRead(chatId)
         socket.emit('joinChat', chatId);
+    }
+
+    const markMessageAsRead = (chatId)=>{
+        setChats(prevChats => 
+            prevChats.map(chat => 
+                chat._id === chatId ? { ...chat, unreadCount: 0, latestMessage: { ...chat.latestMessage, isRead: true } } : chat
+            )
+        );
     }
 
     useEffect(() => {
@@ -38,16 +49,12 @@ export default function Chat() {
         fetchAllChats();
     }, [])
 
-
-
-
     return (
-        <div className="flex min-h-screen bg-gray-100 p-12 ml-3">
+        <div className=" min-h-screen bg-gray-100  ml-16 mt-14 mr-0  rounded-lg ">
             <div className="flex min-h-screen w-full">
                 <UserList chats={chats} setSelectedChatId={setSelectedChatId} selectedChatId={selectedChatId}/>
-                <Messages chatId={selectedChatId} />
+                { selectedChatId ? (<Messages chatId={selectedChatId} />) : (  <ChatFeature/> ) }
             </div>
         </div>
     );
 }
-

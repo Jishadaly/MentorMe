@@ -116,11 +116,11 @@ const MentorProfile = () => {
         setMentorDetails((prevMentor) => ({ ...prevMentor, [field]: newValue }));
     };
 
-      const handleProfilePictureEdit = () => {
+    const handleProfilePictureEdit = () => {
         setEditingProfilePicture(true);
-    
-        
-      };
+
+
+    };
 
     if (loading) return <div>Loading...</div>;
 
@@ -137,9 +137,9 @@ const MentorProfile = () => {
                                     <div className="flex flex-col">
                                         <h2 className="text-xl font-bold font-inter">{userName ? userName : "mentorDetails.userName"}</h2>
                                         {!editingProfilePicture ? (
-                                            <a  onClick={handleProfilePictureEdit} className="text-blue-500">Edit profile picture</a>
+                                            <a onClick={handleProfilePictureEdit} className="text-blue-500">Edit profile picture</a>
                                         ) : (
-                                            <EditProfilePicture onUpdate={handleFieldUpdate}  />
+                                            <EditProfilePicture onUpdate={handleFieldUpdate} />
                                         )}
                                         <p className="text-gray-500">signed up • 6 days ago</p>
                                     </div>

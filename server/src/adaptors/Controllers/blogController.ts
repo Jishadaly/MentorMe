@@ -4,6 +4,9 @@ import blogInteractor from "../../domain/usecases/blogInteractor";
 
 export default {
   addBlog: async (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.body);
+    console.log(req.file?.path);
+    
     
     const { title, summary, content , mentorId }: { title: string; summary: string; image: any; content: any , mentorId:string } = req.body;
     const parsedContent = JSON.parse(content);
@@ -30,9 +33,8 @@ export default {
   getBlog:async(req:Request ,res: Response, next: NextFunction)=>{
     try {
       console.log(req.query);
-      
       const blogId = req.query.blogId;
-      const blogID = blogId as string
+      const blogID = blogId as string;
       const blog  = await blogInteractor.getBlog(blogID);
       res.status(200).json(blog);
    } catch (error:any) {
@@ -64,7 +66,6 @@ export default {
       res.status(200).json({ message: 'Blog saved successfully', data });
     } catch (error:any) {
       res.status(400).json(error.message);
-      
     }
     
   },

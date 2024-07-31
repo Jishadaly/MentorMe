@@ -10,8 +10,8 @@ export default {
 
         return chat;
     },
-    sendMessage:async(chatId:string , message:string , senderId:string)=>{
-        const savedMssg = await chatRepository.saveMessage(chatId, message,senderId);
+    sendMessage:async(chatId:string , message:string , senderId:string , imageUrl:string)=>{
+        const savedMssg = await chatRepository.saveMessage(chatId, message,senderId,imageUrl);
         return savedMssg
         
     },
@@ -19,8 +19,8 @@ export default {
         const chats = await chatRepository.getAllChat(userId)
         return chats
     },
-    getMessages:async(chatId:string)=>{
-        const messages = await chatRepository.getMessages(chatId)
+    getMessages:async(chatId:string , userId:string)=>{
+        const messages = await chatRepository.getMessages(chatId , userId)
         return messages;
     }
 }

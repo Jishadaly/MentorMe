@@ -4,6 +4,8 @@ export interface messageDocument extends Document {
     sender: mongoose.Types.ObjectId;
     content: string;
     chat: mongoose.Types.ObjectId;
+    isRead:boolean;
+    imageUrl:string;
 }
 
 const messageSchema: Schema<messageDocument> = new Schema({
@@ -18,6 +20,13 @@ const messageSchema: Schema<messageDocument> = new Schema({
     chat: {
         type: mongoose.Schema.ObjectId,
         ref: 'Chat'
+    },
+    isRead:{
+        type:Boolean,
+        default:false
+    },
+    imageUrl:{
+        type:String
     },
 }, {
     timestamps: true

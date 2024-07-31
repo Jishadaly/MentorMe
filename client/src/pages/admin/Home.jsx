@@ -20,12 +20,11 @@ export function AdminHome() {
         return <Dashboard />;
       case "verificationRequests":
         return <VerificationRequests />;
-      // Add more cases as needed for other components
       case "users":
         return <Users />;
         case "slotManage":
         return <SlotManage />;
-      // Add more cases as needed for other components
+
       default:
         return <Dashboard />;
     }

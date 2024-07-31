@@ -211,7 +211,7 @@ export default {
       const mentorApplicationId = await MentorApplication.findOne({ user: mentorId })
       console.log(mentorApplicationId);
 
-      const bookAslot = await Availability.findByIdAndUpdate(slotId, { mentorId, isBooked: true, bookedBy: menteeId }, { new: true }).populate({path:'bookedBy' , select:'userName -_id' })
+      const bookAslot = await Availability.findByIdAndUpdate(slotId, { mentorId, isBooked: true, bookedBy: menteeId }, { new: true }).populate({path:'bookedBy mentorId' , select:'userName -_id' })
       return bookAslot
 
     } catch (error: any) {
@@ -240,7 +240,7 @@ export default {
     }
   },
   getNotifications:async(userId:string)=>{
-    const notifications = await Notification.find({userId:userId})
+    const notifications = await Notification.find({userId:userId , read:false})
     return notifications;
  },
  markAsReadNotification:async(notifyid:string)=>{

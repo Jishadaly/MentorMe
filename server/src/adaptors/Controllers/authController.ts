@@ -4,8 +4,6 @@ import { otpGeneratorFun } from "../../domain/utils/generateOtp";
 import sendMail from "../../domain/helper/sendMail";
 import authInteractor from "../../domain/usecases/auth/authInteractor";
 import { generateOtpEmailContent, generateResendOtpEmailContent } from "../../domain/helper/mailer/emailTempletes";
-// const session = require('express-session')
-// import session from 'express-session'
 import jwt from 'jsonwebtoken';
 import { generateToken } from "../../domain/helper/jwtHelper";
 
@@ -181,9 +179,4 @@ export default {
          next(error);
        }
    },
-
-
-
-
 }
-

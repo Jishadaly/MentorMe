@@ -37,8 +37,6 @@ export default function CallesPage() {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      <Header />
-      <Sidenav />
       <main className="ml-20 mt-16 p-6 flex-1 overflow-y-auto">
         <div className="flex flex-col space-y-6">
           {bookedSLotes < 0 && <h3 className="text-2xl font-extrabold font-inter mb-4">Upcoming Sessions</h3>  }
@@ -89,5 +87,3 @@ export default function CallesPage() {
     </div>
   );
 }
-
- 

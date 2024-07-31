@@ -4,7 +4,6 @@ import {
   createRoutesFromElements,
 } from 'react-router-dom'
 
-
 import Protected from './protected'
 import UserLogin from '../pages/mentee/userLogin'
 import Signup from '../pages/mentee/Signup'
@@ -55,6 +54,7 @@ const router = createBrowserRouter(
             <Route path='blogs' element={<BlogList/>}/>
             <Route path='blogView/:blogId' element={<BlogView/>}/>
             <Route path='chat' element={<Chat/>}/>
+            <Route path='notifications' element={<Notifications/>}/>
         </Route>
       </Route>
 
@@ -78,6 +78,7 @@ const router = createBrowserRouter(
           <Route path='blogs' element={<Blogs/>} />
           <Route path='editBlog/:blogId' element={<EditBlog/>}/>
           <Route path='chat' element={<MentorChat/>}/>
+          <Route path='chat' element={<Chat/>}/>
           <Route path='profile' element={<MentorProfile/>}/>
           <Route path='sessions' element= {<Sessions/>}/>
           <Route path='notifications' element={<Notifications/>}/>
@@ -96,7 +97,6 @@ const router = createBrowserRouter(
       <Route path="*" element={ <PageNotFound/>}/>
       <Route path='/meet/:roomId' element= {<Room/>} />
     </Route>
-    
   )
 )
 

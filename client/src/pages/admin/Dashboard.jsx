@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
 import {
   Typography,
   Card,
@@ -13,256 +14,259 @@ import {
   Tooltip,
   Progress,
 } from "@material-tailwind/react";
+
 import {
   EllipsisVerticalIcon,
   ArrowUpIcon,
 } from "@heroicons/react/24/outline";
-// import {
-//   statisticsCardsData,
-//   statisticsChartsData,
-//   projectsTableData,
-//   ordersOverviewData,
-// } from "./data";  // Corrected path
-import statisticsCardsData from "./data/statistics-cards-data";
-import statisticsChartsData from "./data/statistics-charts-data";
+
+import {
+  BanknotesIcon,
+  UserPlusIcon,
+  UsersIcon,
+  ChartBarIcon,
+} from "@heroicons/react/24/solid";
+
+import { CheckCircleIcon, ClockIcon } from "@heroicons/react/24/solid";
+import StatisticsCard from "./widgets/cards/statistics-card";
+import { fetchAllMentors, fetchSlotes, fetchAllUsers } from "@/Api/services/adminServices";
+import { BarChart, LineChart } from "@mui/x-charts";
+import { PieChart } from '@mui/x-charts/PieChart';
 import projectsTableData from "./data/projects-table-data";
 import ordersOverviewData from "./data/orders-overview-data";
-import { CheckCircleIcon, ClockIcon } from "@heroicons/react/24/solid";
+import ApexChartComponent from "@/componets/ApexChart";
 
-import Sidenav from "./widgets/layout/sidenav";
-
-import StatisticsCard from "./widgets/cards/statistics-card";
-import StatisticsChart from "./widgets/charts/statistics-chart";
-import Header from "./partials/Header";
+const chartsConfig = {
+  chart: {
+    height: 220,
+    type: 'line',
+    zoom: {
+      enabled: false
+    }
+  },
+  dataLabels: {
+    enabled: false
+  },
+  stroke: {
+    curve: 'smooth'
+  },
+  title: {
+    text: 'Dynamic Data',
+    align: 'left'
+  },
+  grid: {
+    row: {
+      colors: ['#5d5299', 'transparent'],
+      opacity: 0.5
+    },
+  },
+  xaxis: {
+    categories: []
+  }
+};
 
 function Dashboard() {
+  const [users, setUsers] = useState([]);
+  const [slots, setSlots] = useState([]);
+  const [mentors, setMentors] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [websiteViewsChart, setWebsiteViewsChart] = useState({});
+  const [dailySalesChart, setDailySalesChart] = useState({});
+  const [completedTasksChart, setCompletedTasksChart] = useState({});
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [usersResponse, slotsResponse, mentorsResponse] = await Promise.all([
+          fetchAllUsers('admin/getAllUsers'),
+          fetchSlotes('admin/ferchMentoSlots'),
+          fetchAllMentors('admin/getAllMentors')
+        ]);
+        console.log("11111111", slotsResponse.slots);
+        setUsers(usersResponse.data.users);
+        setSlots(slotsResponse.slots);
+        setMentors(mentorsResponse.data.Mentors);
+
+
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  
+
+  const generateMonthlyData = (data) => {
+    const monthlyData = Array(12).fill(0);
+    data.forEach(item => {
+      const month = new Date(item.createdAt).getMonth();
+      monthlyData[month] += 1;
+    });
+    return monthlyData;
+  };
+
+  const total = users.length + mentors.length;
+  const userPercentage = ((users.length / total) * 100).toFixed(2);
+  const mentorPercentage = ((mentors.length / total) * 100).toFixed(2);
+
+  const pieData = [
+    { id: 0, value: users.length, label: `Total Users (${userPercentage}%)`, color: '#5d5299' },
+    { id: 1, value: mentors.length, label: `Mentors (${mentorPercentage}%)` },
+  ];
+
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  const statisticsCardsData = [
+    {
+      color: "indigo",
+      icon: BanknotesIcon,
+      title: "Today's Money",
+      value: "$53k",
+      footer: {
+        color: "text-green-500",
+        value: "+55%",
+        label: "than last week",
+      },
+    },
+    {
+      color: "indigo",
+      icon: UsersIcon,
+      title: " Users",
+      value: users.length,
+      footer: {
+        color: "text-green-500",
+        value: "+3%",
+        label: "than last month",
+      },
+    },
+    {
+      color: "indigo",
+      icon: UserPlusIcon,
+      title: "Mentors",
+      value: mentors.length,
+      footer: {
+        color: "text-red-500",
+        value: "-2%",
+        label: "than yesterday",
+      },
+    },
+    {
+      color: "indigo",
+      icon: ChartBarIcon,
+      title: "Slots",
+      value: slots.length,
+      footer: {
+        color: "text-green-500",
+        value: "+5%",
+        label: "than yesterday",
+      },
+    },
+  ];
+
+
+  const userMonthlyData = generateMonthlyData(users);
+  const slotMonthlyData = generateMonthlyData(slots);
+  const mentorMonthlyData = generateMonthlyData(mentors);
+
+
+
   return (
     <div>
-      
-    <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
-      {statisticsCardsData.map(({ icon, title, footer, ...rest }) => (
-        <StatisticsCard
-          key={title}
-          {...rest}
-          title={title}
-          icon={React.createElement(icon, {
-            className: "w-6 h-6 text-white",
-          })}
-          footer={
-            <Typography className="font-normal text-blue-gray-600">
-              <strong className={footer.color}>{footer.value}</strong>
-              &nbsp;{footer.label}
-            </Typography>
-          }
-        />
-      ))}
-    </div>
-    <div className="mb-6 grid grid-cols-1 gap-y-12 gap-x-6 md:grid-cols-2 xl:grid-cols-3">
-      {statisticsChartsData.map((props) => (
-        <StatisticsChart
-          key={props.title}
-          {...props}
-          footer={
-            <Typography
-              variant="small"
-              className="flex items-center font-normal text-blue-gray-600"
-            >
-              <ClockIcon strokeWidth={2} className="h-4 w-4 text-blue-gray-400" />
-              &nbsp;{props.footer}
-            </Typography>
-          }
-        />
-      ))}
-    </div>
-    <div className="mb-4 grid grid-cols-1 gap-6 xl:grid-cols-3">
-      <Card className="overflow-hidden xl:col-span-2 border border-blue-gray-100 shadow-sm">
-        <CardHeader
-          floated={false}
-          shadow={false}
-          color="transparent"
-          className="m-0 flex items-center justify-between p-6"
-        >
-          <div>
-            <Typography variant="h6" color="blue-gray" className="mb-1">
-              Projects
-            </Typography>
-            <Typography
-              variant="small"
-              className="flex items-center gap-1 font-normal text-blue-gray-600"
-            >
-              <CheckCircleIcon strokeWidth={3} className="h-4 w-4 text-blue-gray-200" />
-              <strong>30 done</strong> this month
-            </Typography>
-          </div>
-          <Menu placement="left-start">
-            <MenuHandler>
-              <IconButton size="sm" variant="text" color="blue-gray">
-                <EllipsisVerticalIcon
-                  strokeWidth={3}
-                  fill="currenColor"
-                  className="h-6 w-6"
-                />
-              </IconButton>
-            </MenuHandler>
-            <MenuList>
-              <MenuItem>Action</MenuItem>
-              <MenuItem>Another Action</MenuItem>
-              <MenuItem>Something else here</MenuItem>
-            </MenuList>
-          </Menu>
-        </CardHeader>
-        <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
-          <table className="w-full min-w-[640px] table-auto">
-            <thead>
-              <tr>
-                {["companies", "members", "budget", "completion"].map(
-                  (el) => (
-                    <th
-                      key={el}
-                      className="border-b border-blue-gray-50 py-3 px-6 text-left"
-                    >
-                      <Typography
-                        variant="small"
-                        className="text-[11px] font-medium uppercase text-blue-gray-400"
-                      >
-                        {el}
-                      </Typography>
-                    </th>
-                  )
-                )}
-              </tr>
-            </thead>
-            <tbody>
-              {projectsTableData.map(
-                ({ img, name, members, budget, completion }, key) => {
-                  const className = `py-3 px-5 ${
-                    key === projectsTableData.length - 1
-                      ? ""
-                      : "border-b border-blue-gray-50"
-                  }`;
+      <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
+        {statisticsCardsData.map(({ icon, title, footer, ...rest }) => (
+          <StatisticsCard
+            key={title}
+            {...rest}
+            title={title}
+            icon={React.createElement(icon, {
+              className: "w-6 h-6 text-white",
+            })}
+            footer={
+              <Typography className="font-normal text-blue-gray-600">
+                <strong className={footer.color}>{footer.value}</strong> 
+                &nbsp;{footer.label}
+              </Typography>
+            }
+          />
+        ))}
+      </div>
 
-                  return (
-                    <tr key={name}>
-                      <td className={className}>
-                        <div className="flex items-center gap-4">
-                          <Avatar src={img} alt={name} size="sm" />
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-bold"
-                          >
-                            {name}
-                          </Typography>
-                        </div>
-                      </td>
-                      <td className={className}>
-                        {members.map(({ img, name }, key) => (
-                          <Tooltip key={name} content={name}>
-                            <Avatar
-                              src={img}
-                              alt={name}
-                              size="xs"
-                              variant="circular"
-                              className={`cursor-pointer border-2 border-white ${
-                                key === 0 ? "" : "-ml-2.5"
-                              }`}
-                            />
-                          </Tooltip>
-                        ))}
-                      </td>
-                      <td className={className}>
-                        <Typography
-                          variant="small"
-                          className="text-xs font-medium text-blue-gray-600"
-                        >
-                          {budget}
-                        </Typography>
-                      </td>
-                      <td className={className}>
-                        <div className="w-10/12">
-                          <Typography
-                            variant="small"
-                            className="mb-1 block text-xs font-medium text-blue-gray-600"
-                          >
-                            {completion}%
-                          </Typography>
-                          <Progress
-                            value={completion}
-                            variant="gradient"
-                            color={completion === 100 ? "green" : "blue"}
-                            className="h-1"
-                          />
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                }
-              )}
-            </tbody>
-          </table>
-        </CardBody>
-      </Card>
-      <Card className="border border-blue-gray-100 shadow-sm">
-        <CardHeader
-          floated={false}
-          shadow={false}
-          color="transparent"
-          className="m-0 p-6"
-        >
-          <Typography variant="h6" color="blue-gray" className="mb-2">
-            Orders Overview
-          </Typography>
-          <Typography
-            variant="small"
-            className="flex items-center gap-1 font-normal text-blue-gray-600"
-          >
-            <ArrowUpIcon
-              strokeWidth={3}
-              className="h-3.5 w-3.5 text-green-500"
-            />
-            <strong>24%</strong> this month
-          </Typography>
-        </CardHeader>
-        <CardBody className="pt-0">
-          {ordersOverviewData.map(
-            ({ icon, color, title, description }, key) => (
-              <div key={title} className="flex items-start gap-4 py-3">
-                <div
-                  className={`relative p-1 after:absolute after:-bottom-6 after:left-2/4 after:w-0.5 after:-translate-x-2/4 after:bg-blue-gray-50 after:content-[''] ${
-                    key === ordersOverviewData.length - 1
-                      ? "after:h-0"
-                      : "after:h-4/6"
-                  }`}
-                >
-                  {React.createElement(icon, {
-                    className: `!w-5 !h-5 ${color}`,
-                  })}
-                </div>
-                <div>
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="block font-medium"
-                  >
-                    {title}
-                  </Typography>
-                  <Typography
-                    as="span"
-                    variant="small"
-                    className="text-xs font-medium text-blue-gray-500"
-                  >
-                    {description}
-                  </Typography>
-                </div>
-              </div>
-            )
-          )}
-        </CardBody>
-      </Card>
+      {/* <h1 className=" mb-4 text-3xl font-inter font-extrabold text-gray-500" >Statitics</h1> */}
+
+      <div className="mb-8 grid grid-cols-1 gap-y-12 gap-x-6 md:grid-cols-1 xl:grid-cols-3 sm:grid-cols-1">
+        <div className="border border-blue-gray-100 shadow-sm rounded-lg">
+         <Typography className="m-4" variant="h4" color="blue-gray">
+          {"Users"}
+         </Typography>
+          <BarChart className=""
+
+
+            xAxis={[
+              {
+                id: 'barCategories',
+                data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                scaleType: 'band',
+              },
+            ]}
+            series={[
+              {
+                data: userMonthlyData,
+                color: '#5d5299'
+              },
+            ]}
+          
+            height={300}
+
+          />
+        </div>
+
+        <div className="border border-blue-gray-100 shadow-sm rounded-lg">
+        <ApexChartComponent />
+        </div>
+
+        <div className="border border-blue-gray-100 shadow-sm rounded-lg">
+          <PieChart
+            series={[
+              {
+                data: pieData,
+                innerRadius: 30,
+                outerRadius: 100,
+                paddingAngle: 5,
+                cornerRadius: 5,
+                startAngle: -90,
+                endAngle: 180,
+                cx: 150,
+                cy: 150,
+              }
+            ]}
+            label={({ dataEntry }) => `${dataEntry.label}`}
+          />
+        </div>
+      </div>
+
+      <div className="border border-blue-gray-100 shadow-sm rounded-lg">
+        <ApexChartComponent
+          userMonthlyData={userMonthlyData}
+          slotMonthlyData={slotMonthlyData}
+          mentorMonthlyData={mentorMonthlyData}
+          // blogMonthlyData={blogMonthlyData}
+        />
+      </div>
+
     </div>
-  </div>
-    
-  )
+  );
 }
 
-export default Dashboard
+export default Dashboard;

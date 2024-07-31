@@ -18,7 +18,7 @@ export default {
   },
   getBlogs: async (page:any) => {
     try {
-        let resultsPerPage = 2;
+        let resultsPerPage = 4;
         const blogs = await Blog.find().populate({
         path: 'mentor',
         select: '_id userName'

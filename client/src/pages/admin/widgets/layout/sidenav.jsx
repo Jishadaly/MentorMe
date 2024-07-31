@@ -18,8 +18,10 @@ export function Sidenav({setCurrentView}) {
   
   return (
     <div className=" w-64 flex flex-col">
+      
       <Sidebar aria-label="Default sidebar example" className="flex flex-col flex-grow">
         <Sidebar.Items className="flex-grow">
+        <h1 className="text-2xl font-extrabold text-black-600 font-inter">mentor me.</h1>
           <Sidebar.ItemGroup>
             <Sidebar.Item href="#" icon={HiChartPie} onClick = {()=>setCurrentView('dashboard') }>
               Dashboard

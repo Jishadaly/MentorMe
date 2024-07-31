@@ -77,8 +77,6 @@ const MenteeProfile = () => {
             <div className='bg-grey flex flex-row'>
               
                <img className="mr-2 rounded-full w-24 h-24 mb-4" src={mentee.profilePic} alt="Profile" />
-              
-              
               <div className='flex flex-col'>
                 <h2 className="text-xl font-bold font-inter">{mentee.userName}</h2>
                 {!editingProfilePicture ? (

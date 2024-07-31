@@ -110,6 +110,11 @@
       ref: 'Blog'
     }]
 
-  });
+  },
+  {
+    timestamps:true
+},
+
+);
 
   export const Users = mongoose.model<Iuser>('Users' , userSchema );

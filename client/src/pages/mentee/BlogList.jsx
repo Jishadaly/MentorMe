@@ -14,7 +14,7 @@ function BlogList() {
   const navigate = useNavigate();
   const [hasMore, setHasMore] = useState(true);
 
-  const expectedPageSize = 2;
+  const expectedPageSize = 4;
 
   const fetchBlogs = async (index) => {
     try {

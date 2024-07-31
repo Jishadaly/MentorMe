@@ -91,6 +91,7 @@ export default {
 
       const { menteeId, mentorId, slotId } = req.body
       // const slot = await mentorInteractor.slotBooking(menteeId , mentorId ,slotId );
+      
       res.status(200).json(await mentorInteractor.slotBooking(menteeId, mentorId, slotId));
     } catch (error: any) {
       res.status(400).status(error)
@@ -132,18 +133,6 @@ export default {
   webhook: async (req: Request, res: Response, next: NextFunction) => {
 
 
-    // const sig = req.headers['stripe-signature'];
-    // let event;
-
-    //   try {
-    //      event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
-    //      console.log("11111",{event});
-
-    //   } catch (err:any) {
-    //     console.log({err});
-    //     // return res.status(400).send(`Webhook Error: ${err.message}`);
-    //   }
-    //   console.log("22222",{event,type:event?.type});
 
     const event = req.body;
     console.log("webhook");

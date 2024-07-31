@@ -8,12 +8,11 @@ import {
 import PropTypes from "prop-types";
 import Chart from "react-apexcharts";
 
-
 export function StatisticsChart({ color, chart, title, description, footer }) {
   return (
     <Card className="border border-blue-gray-100 shadow-sm">
       <CardHeader variant="gradient" color={color} floated={false} shadow={false}>
-        <Chart {...chart} />
+        <Chart options={chart.options} series={chart.series} type={chart.type} height={chart.height} />
       </CardHeader>
       <CardBody className="px-6 pt-0">
         <Typography variant="h6" color="blue-gray">
@@ -60,7 +59,12 @@ StatisticsChart.propTypes = {
     "pink",
     "red",
   ]),
-  chart: PropTypes.object.isRequired,
+  chart: PropTypes.shape({
+    options: PropTypes.object.isRequired,
+    series: PropTypes.array.isRequired,
+    type: PropTypes.string.isRequired,
+    height: PropTypes.number,
+  }).isRequired,
   title: PropTypes.node.isRequired,
   description: PropTypes.node.isRequired,
   footer: PropTypes.node,

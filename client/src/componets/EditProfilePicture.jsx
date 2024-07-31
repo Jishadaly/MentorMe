@@ -33,11 +33,9 @@ const EditProfilePicture = ({ menteeId, onUpdate }) => {
         .then((data) => {
           console.log(data);
           resolve({ message: 'Profile picture updated successfully', data });
-          
         })
         .catch((error) => {
           reject(error);
-  
 
         });
     });

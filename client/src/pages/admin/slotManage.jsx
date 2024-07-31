@@ -54,7 +54,7 @@ function SlotManage() {
   return (
     <div className="flex flex-col h-full">
       <header className="bg-primary text-primary-foreground px-6 py-4 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Mentor Slots</h1>
+        <h1 className="text-2xl font-extrabold font-inter">Mentor Slots</h1>
         <div className="flex items-center gap-4">
           <input
             type="search"

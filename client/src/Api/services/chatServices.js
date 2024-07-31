@@ -11,10 +11,10 @@ export const  startChat = async(endPoint  , mentorId , menteeId )=>{
     }
   };
 
-  export const sendMessge = async (endPoint , chatId , message)=>{
+  export const sendMessge = async (endPoint,formData,config)=>{
       try {
-      console.log(chatId , message);
-      const response =await authInstanceAxios.post(`/${endPoint}` , {chatId , message});
+      console.log("1111",formData);
+      const response =await authInstanceAxios.post(`/${endPoint}` , formData,config);
       return response.data;
       } catch (error) {
         console.log(error);

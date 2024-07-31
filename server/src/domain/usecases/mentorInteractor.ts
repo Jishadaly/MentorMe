@@ -99,9 +99,6 @@ slotBooking:async(menteeId :string , mentorId:string ,slotId:string)=>{
        
       if (slot) {
          console.log("boooooooooked slot",slot);
-         // console.log("user",slot.bookedBy.userName);
-
-         
          const menteeName = slot.bookedBy
          const sessionDate = new Date(slot.date).toLocaleDateString('en-US', {
             year: 'numeric',
@@ -115,7 +112,15 @@ slotBooking:async(menteeId :string , mentorId:string ,slotId:string)=>{
             title:'New Booking',
             description,
          }
-         const notifyy = await generateNotification(notifiyMentor);
+         const  notifiyMentee = {
+            userId:menteeId,
+            type:'session_reminder',
+            title:'upcomming Session',
+            description:`you have session with${slot.mentorId} on ${sessionDate}`,
+         }
+         await generateNotification(notifiyMentor);
+         await generateNotification(notifiyMentee)
+         
       }
 
      

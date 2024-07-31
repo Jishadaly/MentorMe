@@ -40,11 +40,8 @@ export const mentorLogin = createAsyncThunk(
       // Save to localStorage
       localStorage.setItem('mentor', JSON.stringify(user));
       Cookies.set('token',token)
-      console.log("mentor",response);
-
-      return { user, token };
-
       
+      return { user, token };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
     }

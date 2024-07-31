@@ -43,7 +43,7 @@ export const updateMentorVerificationReject =async(id:string , userId:string)=>{
 
 export const getAllUsers = async()=>{
   try {
-     const data = await Users.find({verified:true , isMentor:false});
+     const data = await Users.find({verified:true});
      console.log(data);
      
      return data

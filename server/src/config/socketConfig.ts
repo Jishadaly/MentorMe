@@ -17,10 +17,10 @@ export const configureSocket = (server: HttpServer) => {
       console.log(`User joined chat: ${chatId}`);
     });
 
-    socket.on('sendMessage', (data: any) => {
-      console.log('Message received:', data);
-      io.to(data.chatId).emit('receiveMessage', data); 
-    });
+    // socket.on('sendMessage', (data: any) => {
+    //   console.log('Message received:', data);
+    //   io.to(data.chatId).emit('receiveMessage', data); 
+    // });
 
     socket.on('typing', (data:any) => {
       socket.to(data.chatId).emit('typing', data);

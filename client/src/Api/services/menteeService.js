@@ -32,7 +32,7 @@
       console.log(error);
     }
   }
-
+  
 
   export const fetchBookedSlotes = async (endPoint ,datas) =>{
     console.log(endPoint);
@@ -63,6 +63,7 @@
     }
 
   export const addPost =async (endPoint , datas , config)=>{
+    console.log(datas);
       const response = await authInstanceAxios.post(`/${endPoint}`,datas,config);
       return response.data
     

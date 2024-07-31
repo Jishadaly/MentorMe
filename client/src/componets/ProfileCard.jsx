@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function ProfileCard({ index , profilePicture,name , jobTitle , programmingLanguages , mentorAdditionalId , handleCardClick}) {
+export default function ProfileCard({ index , profilePicture,name , jobTitle ,company ,programmingLanguages , mentorAdditionalId , handleCardClick}) {
     return (
         <div key={index} className="bg-white p-6 rounded-lg shadow-sm flex flex-col items-center">
                     <img
@@ -10,18 +10,18 @@ export default function ProfileCard({ index , profilePicture,name , jobTitle , p
                     />
                     <h2 className="text-lg font-bold font-inter text-center mb-1">{name}</h2>
                     <div className="flex items-center">
-                      <p className="text-gray-500 mb-4 text-center">{jobTitle}</p>
+                      <p className="text-gray-500 mb-4 text-center font-inter">{jobTitle} at <span className='text-gray-800 font-inter'>{company}</span> </p>
                     </div>
-                    <p className="text-gray-700 mb-4 text-center">
+                    <p className="text-gray-700 mb-10 text-center">
                       {programmingLanguages.slice(0, 3).join(', ')}
                       {programmingLanguages > 3 ? ', etc.' : ''}
                     </p>
                     <button
                       onClick={() => handleCardClick(mentorAdditionalId)}
-                      className="px-4 py-2 bg-white text-indigo-500 border border-indigo-500 rounded-full shadow-md transition duration-300 ease-in-out hover:bg-indigo-500 hover:text-white"
+                      className="px-4 py-2 font-inter text-gray-200-500 border border-gray-300 rounded-full  transition duration-300 ease-in-out hover:border-indigo-400 hover:text-indigo-500"
                     >
-                      Explore
-                    </button>
-         </div>
+                      Learn more
+                    </button> 
+              </div>
     )
 }

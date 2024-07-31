@@ -25,6 +25,7 @@ const chatSchema:Schema<chatDocument> = new Schema(
     },{
         timestamps:true
     }
+    
 )
 
 const Chat = mongoose.model('Chat',chatSchema)

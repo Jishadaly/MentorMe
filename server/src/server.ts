@@ -23,24 +23,7 @@ app.use('/api/chat',chatRouter)
 const server = http.createServer(app);
 const io = configureSocket(server);
 
-
-// io.on('connection', (socket: any) => {
-//   console.log('A user connected');
-
-//   socket.on('joinChat', (chatId: any) => {
-//     socket.join(chatId); // Join the specific chat room
-//     console.log(`User joined chat: ${chatId}`);
-//   });
-
-//   socket.on('sendMessage', (data: any) => {
-//     console.log('Message received:', data);
-//     io.to(data.chatId).emit('receiveMessage', data); // Emit the message to the specific chat room;
-//   });
-
-//   socket.on('disconnect', () => {
-//     console.log('User disconnected');
-//   });
-// });
+app.set('socketio', io);
 
 server.listen(port, () => {
   console.log(`Backend server is running on http://localhost:${port}`);

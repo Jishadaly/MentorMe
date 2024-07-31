@@ -1,14 +1,8 @@
 import React from 'react';
 // import { BellIcon, TruckIcon } from './Icons';
-import ReactTimeAgo from 'react-time-ago'
-import TimeAgo from 'javascript-time-ago'
-
-import en from 'javascript-time-ago/locale/en'
-import hi from 'javascript-time-ago/locale/hi'
-
-TimeAgo.addDefaultLocale(en)
-TimeAgo.addLocale(hi)
 import { IconBase } from 'react-icons';
+import ReactTimeAgo from 'react-time-ago';
+
 
 const NotificationCard = ({ iconType, title, time, description, buttonText , markButton}) => {
   const Icon = iconType === 'bell' ? IconBase : '';

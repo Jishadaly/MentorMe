@@ -2,15 +2,15 @@
 import React, { useState, useEffect } from 'react';
 import { getMentors } from '@/Api/services/mentorServices';
 import { useNavigate } from 'react-router-dom';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
 import ProfileCard from '@/componets/ProfileCard';
-
+import SkeletonCard from './home/SkeletonCard';
 const MenteeHome = () => {
   const [mentors, setMentors] = useState([]);
   const [length , setLength] = useState([])
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  console.log(mentors);
 
   console.log("length",mentors.length);
 
@@ -59,16 +59,10 @@ const MenteeHome = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {loading
               ? Array.from({ length: length}).map((_, index) => (
-                <div key={index} className="bg-white p-6 rounded-lg shadow-sm flex flex-col items-center">
-                  <Skeleton circle={true} height={96} width={96} className="mb-4" />
-                  <Skeleton height={24} width={150} className="mb-1" />
-                  <Skeleton height={20} width={100} className="mb-4" />
-                  <Skeleton height={20} width={200} className="mb-4" />
-                  <Skeleton height={40} width={100} />
-                </div>
+                <SkeletonCard/>
               ))
               : mentors.map((mentor, index) => (
-                <ProfileCard profilePicture={mentor.profilePic} index={index} name={mentor.userName} jobTitle={mentor.mentorAdditional.jobTitle} programmingLanguages={mentor.mentorAdditional.programmingLanguages} mentorAdditionalId={mentor.mentorAdditional._id} handleCardClick={handleCardClick} />
+                <ProfileCard company = { mentor.mentorAdditional.company } profilePicture={mentor.profilePic} index={index} name={mentor.userName} jobTitle={mentor.mentorAdditional.jobTitle} programmingLanguages={mentor.mentorAdditional.programmingLanguages} mentorAdditionalId={mentor.mentorAdditional._id} handleCardClick={handleCardClick} />
               ))}
           </div>
         </section>

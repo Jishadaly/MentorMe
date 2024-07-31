@@ -27,12 +27,13 @@ export default {
             throw error
         }
     },
-    saveMessage: async (chatId: string, message: string, senderId: string) => {
+    saveMessage: async (chatId: string, message: string, senderId: string,imageUrl:string) => {
         try {
             const saveMssg = new Message({
                 sender: senderId,
                 content: message,
-                chat: chatId
+                chat: chatId,
+                imageUrl:imageUrl
             });
 
             const populatedMessage = await saveMssg.save()
@@ -67,16 +68,20 @@ export default {
                 select: "userName email",
             });
 
-            // console.log('Populated results:', results);
+         
+            results = await Promise.all(results.map(async (chat: any) => {
+                const unreadCount = await Message.countDocuments({
+                    chat: chat._id,
+                    isRead: false,
+                    sender: { $ne: userId }
+                });
 
-            // Add unreadCounts to each chat
-        //     results = results.map((chat:any) => {
-        //     const unreadCount = chat.unreadCounts[userId] || 0;
-        //     return {
-        //         ...chat.toObject(),
-        //         unreadCount,
-        //     };
-        // });
+                return {
+                    ...chat.toObject(),
+                    unreadCount,
+                };
+            }));
+
 
 
             return results;
@@ -86,9 +91,16 @@ export default {
             throw error
         }
     },
-    getMessages: async (chatId: string) => {
+    getMessages: async (chatId: string, userId: string) => {
         try {
-            const messages = await Message.find({ chat: chatId }).populate({ path: 'sender', select: 'profilePic ' })
+            // const messages = await Message.find({ chat: chatId }).populate({ path: 'sender', select: 'profilePic ' })
+            // return messages;
+            // Fetch messages by chatId and populate sender
+            const messages = await Message.find({ chat: chatId }).populate({ path: 'sender', select: 'profilePic' });
+
+            // Update isRead to true for messages not read by the current user
+            await Message.updateMany({ chat: chatId, isRead: false, readBy: { $ne: userId } }, { $set: { isRead: true }, $addToSet: { readBy: userId } });
+
             return messages;
         } catch (error) {
             throw error

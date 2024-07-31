@@ -11,7 +11,7 @@ function MenteeLayout() {
     <Header />
     <div className="flex flex-grow">
       <Sidenav />
-      <main className="flex-grow p-4">
+      <main className="flex-grow ">
         <Outlet />
       </main>
     </div>

@@ -27,16 +27,7 @@ import { Request, Response, NextFunction } from "express"
             public_id: (req:Request, file:any) => file.originalname.split('.')[0],
         },
     });
- 
-  
     
     const parser = multer({storage:storage})
     
-    
-
     module.exports = parser;
-
-
-
-
-
