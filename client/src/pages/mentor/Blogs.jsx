@@ -4,39 +4,74 @@ import { getMentorBlogs } from '@/Api/services/menteeService';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import BlogCard from '@/componets/BlogCard';
-
+import BlogCardSkelton from '../mentee/blog/BlogCardSkelton';
 
 function Blogs() {
   const [blogs, setBlogs] = useState([]);
-  const navigate = useNavigate()
+  const [loading , setLoading] = useState(true);
+  const [index, setIndex] = useState(0);
+  const navigate = useNavigate();
+  const [hasMore, setHasMore] = useState(true);
+
+  const expectedPageSize = 4;
+
+
   const user = useSelector((state) => state.auth.user)
-  console.log(blogs);
-  console.log(user);
 
   const fetchBlogs = async () => {
     try {
-      const Blogs = await getMentorBlogs('user/getmentorBlog',user.id);
-
-      setBlogs(Blogs);
-
+      const Blogs = await getMentorBlogs('user/getmentorBlog', user.id);
+      setTimeout(() => { 
+        setBlogs(Blogs);
+        setLoading(false);
+      }, 1000);
     } catch (error) {
       console.error('Error fetching blogs:', error);
+      setLoading(false);
     }
 
   };
 
+  // useEffect(() => {
+  //   fetchBlogs();
+  // }, []);
+
   useEffect(() => {
-    fetchBlogs();
+    const loadInitialBlogs = async () => {
+      const initialBlogs = await fetchBlogs(0);
+      setBlogs(initialBlogs);
+      setLoading(false);
+      if (initialBlogs.length === 0 || initialBlogs.length < expectedPageSize) {
+        setHasMore(false);
+      }
+    };
+
+    loadInitialBlogs();
   }, []);
 
+  useEffect(() => {
+    if (index !== 0) {
+      appendBlogs();
+    }
+  }, [index]);
 
-  const handlClick = (blogId)=>{
-     navigate(`/mentor/editBlog/${blogId}`);
+  const appendBlogs = async () => {
+    setLoading(true);
+    const newBlogs = await fetchBlogs(index);
+    if (newBlogs.length === 0 || newBlogs.length < expectedPageSize) {
+      setHasMore(false);
+    }
+    setBlogs((prevBlogs) => [...prevBlogs, ...newBlogs]);
+    setLoading(false);
+  };
+
+  const fetchData = () => {
+    setIndex((prevIndex) => prevIndex + 1);
+  };
+
+  const handlClick = (blogId) => {
+    navigate(`/mentor/editBlog/${blogId}`);
   }
-
- 
-
- 
 
   return (
     <div className="flex min-h-screen bg-gray-100">
@@ -47,18 +82,38 @@ function Blogs() {
             Boost expertise & Google ranking with niche blogs. Highlight your knowledge, get noticed, and rank higher. Publish to stand out!
           </p>
           <div className="mt-6">
-            <button onClick={()=> navigate('/mentor/createBlogs')} className="px-4 py-2 bg-black text-white rounded-sm font-inter">Create a Blog</button>
+            <button onClick={() => navigate('/mentor/createBlogs')} className="px-4 py-2 bg-black text-white rounded-sm font-inter">Create a Blog</button>
           </div>
         </section>
 
-        { blogs && blogs.length > 0 &&  ( 
+        {loading ? (
           <section className="mb-8">
-          <h2 className="text-2xl  font-semibold mb-4 font-inter ">Published Blogs</h2>
-          {blogs.map((blog , index) => (
-            <BlogCard  index={index} image={blog.image} title={blog.title} handleBlogClick={handlClick} date={blog.createdAt} summary={blog.summary} createrName={blog.mentor.userName} blogId={blog._id }  />
-          ))}
-        </section> ) }
-
+            <h2 className="text-2xl font-semibold mb-4 font-inter">Published Blogs</h2>
+            {[...Array(3)].map((_, index) => (
+                <BlogCardSkelton key={index} /> 
+            ))}
+          </section>
+        ) : (
+          blogs && blogs.length > 0 && (
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold mb-4 font-inter">Published Blogs</h2>
+              <div className="grid gap-4">
+                {blogs.map((blog, index) => (
+                  <BlogCard
+                    key={blog._id}
+                    index={index}
+                    image={blog.image}
+                    title={blog.title}
+                    handleBlogClick={handlClick}
+                    date={blog.createdAt}
+                    summary={blog.summary}
+                    createrName={blog.mentor.userName}
+                    blogId={blog._id} />
+                ))}
+              </div>
+            </section>
+          )
+        )}
       </main>
     </div>
   );

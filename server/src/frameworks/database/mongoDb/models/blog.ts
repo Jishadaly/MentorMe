@@ -29,6 +29,8 @@ export interface IBlog extends Document {
   image: string;
   content: IContent;
   mentor: mongoose.Types.ObjectId;
+  isBlocked:boolean;
+  
 }
 
 const blogSchema = new Schema<IBlog>({
@@ -76,7 +78,11 @@ const blogSchema = new Schema<IBlog>({
     ref: 'Users',
     required: true
   },
+  isBlocked:{
+    type:Boolean,
+    default:false
+  },
   
-}, { timestamps: true } );
+}, { timestamps: true } )
 
 export const Blog = model<IBlog>('Blog', blogSchema);

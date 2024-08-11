@@ -34,8 +34,8 @@ const MenteeProfile = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await getMentee('user/getMentee', user.id);
-        setMentee(response);
+        const menteeData = await getMentee('user/getMentee', user.id);
+        setMentee(menteeData);
       } catch (err) {
         console.error('Error fetching mentee:', err);
       } finally {
@@ -51,7 +51,6 @@ const MenteeProfile = () => {
   };
 
   const handleFieldUpdate = (field, newValue) => {
-    console.log('ffffffffffff',field,newValue);
     setMentee((prevMentee) => ({ ...prevMentee, [field]: newValue }));
     setLoading(false)
   }

@@ -11,6 +11,11 @@ export const checkExistingUser = async (email: string, userName: string) => {
   return existingUser;
 }
 
+export const checkExistingName = async (userName: string) => {
+  const existingUser = await Users.findOne( { userName: userName });
+  return existingUser;
+}
+
 
 export const createUser = async (userData: IUser , hashedPassword:string) => {
   try {
@@ -18,12 +23,21 @@ export const createUser = async (userData: IUser , hashedPassword:string) => {
       throw new Error("Email and name are required");
     }
     const existingUser = await checkExistingUser(userData.email, userData.name);
+    const existingUserName = await checkExistingName(userData.name);
+
+    if (existingUserName) {
+      if (existingUserName.verified === false) {
+        return existingUserName
+      }
+      throw new Error("A user with that username already exists.");
+    }
+    
+
     if (existingUser) {
-      
       if (existingUser.verified === false) {
           return existingUser
       }
-      throw new Error("A user with that email or username already exists.");
+      throw new Error("A user with that email already exists.");
     }
     const newUser = new Users({
       userName: userData.name,
@@ -93,7 +107,7 @@ export const saveGoogleUser =async(userData:IUser)=>{
 
 export const getBookdslotdb=async(userId:string)=>{
   
-  const slots = await Availability.find({ bookedBy: userId , isBooked:true})
+  const slots = await Availability.find({ bookedBy: userId , isBooked:true}).sort({ updated_at: -1 });
   // .populate('mentorId').populate({path:'mentorAdditional'})
   // .exec();
   // console.log("slotes",slots);

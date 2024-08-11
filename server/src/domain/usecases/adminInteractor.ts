@@ -1,5 +1,5 @@
 import {  getMentoresForVerification, updateBlockStatus ,updateMentorVerificationVerify , 
-   updateMentorVerificationReject, getAllUsers ,getAllMentors , getAllSlots} from "../repositories/adminReposetory"
+   updateMentorVerificationReject, getAllUsers ,getAllMentors , fetchChartData,getAllSlots , updateBlogStatus , getDashboardStatus} from "../repositories/adminReposetory"
 import { findAdmin } from "../repositories/adminReposetory";
 
 
@@ -77,4 +77,28 @@ export default {
          throw new Error(error)
       }
    },
+   fetchChartData:async()=>{
+      try {
+         const chartData  = await fetchChartData();
+         return chartData;
+      } catch (error:any) {
+         throw new Error(error)
+      }
+   },
+   updateBlogStatus:async(blogId : string,isBlocked:boolean)=>{
+      try {
+         const response  = await updateBlogStatus(blogId  , isBlocked);
+         return response;
+      } catch (error:any) {
+         throw new Error(error)
+      }
+   },
+   getStatus:async()=>{
+      try {
+         const datas = await getDashboardStatus()
+         return datas; 
+      } catch (error) {
+         throw error
+      }
+   }
 }

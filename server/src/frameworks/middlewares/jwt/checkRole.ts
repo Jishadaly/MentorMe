@@ -1,14 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 import { AuthenticatedRequest } from '../../../domain/entities/types/AuthenticatedRequest';
 
-const checkRole = (role: string) => {
+const checkRole = (roles: string[]) => {
   return (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    if (req.userRole === role || role === 'any') {
+    const userRole = req.userRole;
+    if (userRole && roles.includes(userRole)) {
       next();
-    }else{
+    } else {
       res.status(403).json({ error: 'Access denied: insufficient permissions' });
     }
-   
   };
 };
 

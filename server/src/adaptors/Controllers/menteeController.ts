@@ -1,10 +1,16 @@
 import { Request,Response,NextFunction,  } from "express";
 import menteeInteractor from "../../domain/usecases/menteeInteractor";
 
+declare module 'express-serve-static-core' {
+  interface Request {
+      userId?: string;
+  }
+}
+
 export default {
   getMentee: async (req:Request , res:Response ,  next: NextFunction)=>{
       console.log(req.query);
-      const { userId } = req.query;
+      const userId  = req.userId;
       const menteeId = userId as string;
       
       
@@ -36,4 +42,36 @@ export default {
     }
     
 },
+postFeedback:async(req:Request , res:Response ,  next: NextFunction)=>{
+
+  const { feedback , mentorId , sessionId , rating} :{ feedback:string ,  mentorId:string , sessionId:string , rating:string} = req.body;
+  
+  const userId =  req.userId as string;
+  console.log("mentee");
+  
+  console.log(req.body);
+  
+  try {
+    const feedBack = await menteeInteractor.postFeedback(userId , feedback , mentorId , sessionId , rating) ;
+    res.status(200).json({message:"feedback posted "});
+  } catch (error:any) {
+    res.status(400).json(error.message);
+  }
+
+},
+getMentorReviews:async(req:Request , res:Response ,  next: NextFunction)=>{
+  const {mentorId} = req.query;
+  console.log("//////// ",req.query);
+  
+  try {
+    const reviews = await menteeInteractor.getMentorReviews(mentorId as string) ;
+    console.log(reviews);
+    
+    res.status(200).json(reviews);
+  } catch (error:any) {
+    res.status(400).json(error.message);
+  }
+
+},
+
 }

@@ -115,6 +115,23 @@ export default {
    } catch (error) {
     throw error
    }  
-  }
+  },
+  reportBlog:async(reason:string , additionalDetails:string , userId:string ,  blogId:string)=>{
+    try {
+        
+        const report = await blogReposetory.saveReport(reason , additionalDetails , userId ,blogId);
+        return report
+    } catch (error) {
+      throw error
+    }
+  },
+  getReports:async()=>{
+    try {
+        const reports = await blogReposetory.getReports();
+        return reports
+    } catch (error) {
+      throw error
+    }
+  },
   
 }

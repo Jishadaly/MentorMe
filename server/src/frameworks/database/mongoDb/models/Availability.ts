@@ -7,7 +7,9 @@ export interface IAvailability extends Document {
   startTime: string;
   endTime: string;
   isBooked: boolean;
-  bookedBy:mongoose.Types.ObjectId;
+  bookedBy: mongoose.Types.ObjectId;
+  roomId: string;
+  status: 'Pending' | 'Completed';
 }
 
 // Mongoose schema for Availability
@@ -17,15 +19,21 @@ const AvailabilitySchema: Schema = new Schema({
   startTime: { type: String, required: true },
   endTime: { type: String, required: true },
   isBooked: { type: Boolean, default: false },
-  bookedBy: { type: Schema.Types.ObjectId, ref: 'Users' }
+  bookedBy: { type: Schema.Types.ObjectId, ref: 'Users' },
+  roomId: { type: String },
+  status: { 
+    type: String, 
+    enum: ['Pending', 'Completed'], 
+    default: 'Pending' 
+  }
 },
   {
-  timestamps: {
-    createdAt: 'created_at', 
-    updatedAt: 'updated_at' 
-  }
-  
-});
+    timestamps: {
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+    }
+
+  });
 
 const Availability = mongoose.model<IAvailability>('Availability', AvailabilitySchema);
 export default Availability;

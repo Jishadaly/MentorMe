@@ -21,7 +21,7 @@ function MentorLogin(){
       .unwrap()
       .then(() => {
         toast.success("mentor logged in successfully");
-        navigate('/mentor/home');
+        navigate('/mentor');
       })
       .catch((err) => {
         console.error("/////",err)

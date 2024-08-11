@@ -32,7 +32,7 @@ export function Sidenav({setCurrentView}) {
             <Sidebar.Item href="#" icon={HiClipboardCheck} onClick={() => setCurrentView("verificationRequests")} >
               Verification Requests
             </Sidebar.Item>
-            <Sidebar.Item href="#" icon={HiDocumentReport}>
+            <Sidebar.Item href="#" icon={HiDocumentReport} onClick={() => setCurrentView("reports")}>
               Reports
             </Sidebar.Item>
             <Sidebar.Item href="#" icon={HiCalendar} onClick={() => setCurrentView("slotManage")} >

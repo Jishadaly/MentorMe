@@ -20,7 +20,6 @@ export const loginUser = createAsyncThunk(
 
       return { user, token };
     } catch (error) {
-      console.log("////",error);
       return thunkAPI.rejectWithValue(error.response.data);
     }
   }
@@ -29,13 +28,13 @@ export const loginUser = createAsyncThunk(
 export const mentorLogin = createAsyncThunk(
   'auth/mentorLogin',
   async ({ endpoint, mentorData }, thunkAPI) => {
-    console.log(endpoint , mentorData);
+    
     try {
      
       const response = await authInstanceAxios.post(`/${endpoint}`, mentorData);
       console.log("responsddsds",response);
       const user = response.data.response.user;
-      const token = response.data.response.token;
+      const token = response.data.response.accessToken;
 
       // Save to localStorage
       localStorage.setItem('mentor', JSON.stringify(user));

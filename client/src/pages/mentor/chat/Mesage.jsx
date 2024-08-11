@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { SmileIcon, ReplyIcon, SendIcon, AttachmentIcon } from '@/componets/icons/chatIcons';
 import { io } from 'socket.io-client';
 import ReactLoading from 'react-loading';
-import DownloadButton from '@/componets/downloadBtn/DownloadButton';
+import DownloadButton from '@/componets/downloadButton/DownloadButton';
 import EmojiPicker from 'emoji-picker-react';
 
 const socket = io('http://localhost:3000', {
@@ -19,7 +19,7 @@ export default function Messages({ chatId }) {
   const [opositeUser, setOpositeuser] = useState('');
   const [attachment, setAttachment] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [messageLoading, setMessageLoading] = useState(false);
+  const [isSending, setIsSending] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const user = useSelector((state) => state.auth.user);
@@ -39,6 +39,7 @@ export default function Messages({ chatId }) {
 
   const handleSend = async () => {
     if (message.trim() === '' && !attachment) return;
+    setIsSending(true)
     try {
       const formData = new FormData();
       formData.append('chatId', chatId);
@@ -61,6 +62,8 @@ export default function Messages({ chatId }) {
       setAttachment(null);
     } catch (error) {
       console.error('Error sending message:', error);
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -155,8 +158,6 @@ export default function Messages({ chatId }) {
           <div
             className={`${msg.sender._id === currentUserId ? 'bg-indigo-500 text-white' : 'bg-white'
               } p-3 rounded-lg max-w-[75%]`}>
-
-            {/* {msg.imageUrl && <img src={msg.imageUrl} alt="Attachment" className="mt-2 max-h-60 object-cover" />} */}
             {msg.imageUrl && (
               <div>
                 <img
@@ -169,7 +170,6 @@ export default function Messages({ chatId }) {
               </div>
             )}
             <p className={`text-sm font-inter ${msg.imageUrl ? 'mt-4' : ''}`}>{msg.content}</p>
-
             <div className="flex items-center gap-2 mt-1">
               <p className="text-xs text-gray-500">{new Date(msg.createdAt).toLocaleTimeString()}</p>
             </div>
@@ -189,14 +189,11 @@ export default function Messages({ chatId }) {
         </div>
       )}
 
-
       {showEmojiPicker && (
         <div className=" bottom-full mb-2 left-1">
           <EmojiPicker open={showEmojiPicker} onEmojiClick={handleEmojiClick} />
         </div>
       )}
-
-
 
       <div className="  fixed bottom-4  flex items-center gap-2 bg-white p-3 rounded-lg w-[1000px]">
         <input
@@ -208,10 +205,15 @@ export default function Messages({ chatId }) {
             setIsTyping(false);
             socket.emit('stopTyping', { chatId, sender: currentUserId });
           }}
+          onKeyPress={(e) => {
+            if (e.key === 'Enter') {
+              handleSend();
+            }
+          }}
+
           className="flex-1 bg-transparent focus:outline-none bg-fixed "
         />
         <SmileIcon onClick={toggleEmojiPicker} className="w-4 h-4 text-gray-500 cursor-pointer" />
-
 
         <label className="cursor-pointer">
           <input type="file" className="hidden" onChange={handleAttachmentChange} />
@@ -222,7 +224,6 @@ export default function Messages({ chatId }) {
           <SendIcon className="w-5 h-5 text-indigo-500" />
           <span className="sr-only">Send</span>
         </button>
-        
       </div>
 
       {attachment && (
@@ -251,11 +252,8 @@ export default function Messages({ chatId }) {
             <img src={selectedImage} alt="Selected Attachment" className="max-w-full max-h-[80vh] object-contain" />
             <DownloadButton url={selectedImage} fileName="attachment" />
           </div>
-
         </div>
-
       )}
-
     </div>
   );
 }

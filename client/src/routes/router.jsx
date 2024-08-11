@@ -36,14 +36,16 @@ import MentorProfile from '@/pages/mentor/MentorProfile'
 import SlotManage from '@/pages/admin/slotManage'
 import CallesPage from '@/pages/mentee/Calles'
 import Sessions from '@/pages/mentor/sessions/Sessions'
-import Room from '@/pages/mentor/sessions/room'
+import Room from '@/pages/others/meeting/room'
 import Notifications from '@/pages/others/notifications/Notifications'
+import Feedback from '@/componets/modal/FeedbackModal'
+import MentorDashboard from '@/pages/mentor/MentorDashboard'
 
 const router = createBrowserRouter( 
   createRoutesFromElements(
     <Route path='/'>
       <Route index element={<LandingPage />} />
-
+ 
       <Route  element={<Protected/> }>
         <Route path='/mentee' element={<MenteeLayout/>}>
         <Route index element={<MenteeHome />} />
@@ -63,16 +65,13 @@ const router = createBrowserRouter(
         <Route index element={<AdminHome/>} />
          <Route path='home' element={<AdminHome/>}/>
          <Route path='slotManage' element={<SlotManage/>}/>
-         
-
-
         </Route>                                                          
       </Route>
 
       <Route  element={<MentorProtected/>}> 
         <Route path='/mentor' element={<MentorLayout/>}>
-          <Route index element={<MentorHome />} />
-          <Route path='home' element={<MentorHome/>}/>
+          <Route index element={<MentorDashboard />} />
+          {/* <Route path='home' element={<MentorDashboard/>}/> */}
           <Route path='availability' element={<MentorAvailability/>}/>
           <Route path='Createblogs' element={<CreateBlogs/>} />
           <Route path='blogs' element={<Blogs/>} />
@@ -82,6 +81,8 @@ const router = createBrowserRouter(
           <Route path='profile' element={<MentorProfile/>}/>
           <Route path='sessions' element= {<Sessions/>}/>
           <Route path='notifications' element={<Notifications/>}/>
+          <Route path='dashboard' element={<MentorDashboard/>}/>
+
            
         </Route>    
       </Route>
@@ -96,6 +97,7 @@ const router = createBrowserRouter(
       <Route path='/admin/login' element={<AdminLogin/>} />
       <Route path="*" element={ <PageNotFound/>}/>
       <Route path='/meet/:roomId' element= {<Room/>} />
+      
     </Route>
   )
 )

@@ -80,4 +80,38 @@ export default {
     }
   },
 
+  fetchChartData:async(req:Request ,res:Response , next:NextFunction)=>{
+    try {
+      const chartData = await adminInteractor.fetchChartData();
+      res.status(200).json(chartData)
+    } catch (error:any) {
+      res.status(500).json(error.message);
+    }
+  },
+  updateBlogStatus:async(req:Request ,res:Response , next:NextFunction)=>{
+    try {
+      console.log(req.query);
+      const { blogId  , isBlocked }  = req.query;
+      const id = blogId as string;
+      const blocked = isBlocked as any;
+      console.log(blocked);
+      
+      const response = await adminInteractor.updateBlogStatus(id,blocked)
+      res.status(200).json({message: "user blocked  successfully"});
+    } catch (error) {
+      res.status(500).json({error: error})
+    }
+  },
+
+  getDashboardStatus:async(req:Request , res:Response , next:NextFunction)=>{
+    try {
+       const datas = await adminInteractor.getStatus()
+       console.log(datas);
+       res.status(200).json(datas);
+    } catch (error:any) {
+      console.log(error);
+      res.status(500).json(error.message);
+      
+    }
+  }
 }

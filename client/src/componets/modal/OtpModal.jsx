@@ -79,12 +79,7 @@ export function OtpModal({ isOpen, onClose, email }) {
       toast.success(response.data.message)
       navigate(`/chooseRole/${userId}`);
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.error) {
-        toast.error(`Error: ${error.response.data.error}`);
-      } else {
-        toast.error("An unexpected error occurred");
-      }
-      console.log(error);
+      toast.error(error.response.data)
     }
   }
 

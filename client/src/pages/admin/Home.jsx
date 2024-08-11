@@ -7,7 +7,7 @@ import Dashboard from "./Dashboard";
 import VerificationRequests from "./VerificationRequests";
 import Users from "./Users";
 import SlotManage from "./slotManage";
-
+import Reports from "./blogReports";
 
 
 export function AdminHome() {
@@ -25,6 +25,9 @@ export function AdminHome() {
         case "slotManage":
         return <SlotManage />;
 
+        case "reports":
+        return <Reports />;
+      
       default:
         return <Dashboard />;
     }

@@ -5,6 +5,9 @@ import './index.css';
 import { ChatProvider } from './Context/chatContext';
 import './config/timeAgoConfig';
 
+
+
+
 // Get the root element
 const rootElement = document.getElementById('root');
 
@@ -13,11 +16,14 @@ if (rootElement) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     // <React.StrictMode>
-     <ChatProvider>
+    <ChatProvider>
+      
       <App />
     </ChatProvider>
-    // </React.StrictMode>
+    // </React.StrictMode> 
   );
 } else {
   console.error('Failed to find the root element. Please ensure there is an element with id="root" in your index.html.');
 }
+
+

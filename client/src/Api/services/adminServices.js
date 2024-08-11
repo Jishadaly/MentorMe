@@ -1,71 +1,61 @@
-
 import { authInstanceAxios } from "../axiosInstence";
 
-export const getApplicationMentores = async(endPoint) =>{
-  try {
-    const response = await authInstanceAxios.get(`/${endPoint}`)
-    return response.data;
-  } catch (error) {
-    console.log(error);
-  }
+export const getApplicationMentores = async (endPoint) => {
+  const response = await authInstanceAxios.get(`/${endPoint}`)
+  return response.data;
 }
 
-export const verifyApplication = async(endPoint , userData) =>{
-  try {
-    const response = await authInstanceAxios.post(`/${endPoint}`,{userData})
-      return response;
-
-  } catch (error) {
-    console.log(error);
-  }
+export const verifyApplication = async (endPoint, userData) => {
+  const response = await authInstanceAxios.post(`/${endPoint}`, { userData })
+  return response;
 }
 
-export const rejectApplication = async (endPoint , userData) => {
-
-  try {
-    const response = await authInstanceAxios.post(`/${endPoint}`,{userData})
-      return response;
-
-} catch (error) {
-  console.log(error);
+export const rejectApplication = async (endPoint, userData) => {
+  const response = await authInstanceAxios.post(`/${endPoint}`, { userData })
+  return response;
 }
 
+export const fetchAllUsers = async (endPoint) => {
+  const response = await authInstanceAxios.get(`/${endPoint}`);
+  return response
 }
 
-export const fetchAllUsers = async(endPoint)=>{
-  try {
-    const response =await authInstanceAxios.get(`/${endPoint}`);
-    return response
-  } catch (error) {
-    console.log(error);
-  }
+export const fetchAllMentors = async (endPoint) => {
+  const response = await authInstanceAxios.get(`/${endPoint}`);
+  return response
 }
 
-export const fetchAllMentors  = async(endPoint)=>{
-  try {
-    const response =await authInstanceAxios.get(`/${endPoint}`);
-    return response
-  } catch (error) {
-    console.log(error);
-  }
+export const updateBlockStatus = async (endPoint, id, isBlocked,) => {
+  const response = await authInstanceAxios.patch(`/${endPoint}?userId=${id}&isBlocked=${isBlocked}`);
+  return response
 }
 
-export const updateBlockStatus = async (endPoint , id , isBlocked , )=>{
-  try {
-    const response = await authInstanceAxios.patch(`/${endPoint}?userId=${id}&isBlocked=${isBlocked}`);
-    return response
-  } catch (error) {
-    console.log(error);
-  }
+export const fetchSlotes = async (endPoint) => {
+  const response = await authInstanceAxios.get(`/${endPoint}`);
+  return response.data;
 }
 
-
-export const fetchSlotes = async (endPoint )=>{
-
-  try {
-    const response = await authInstanceAxios.get(`/${endPoint}`);
-    return response.data;
-  } catch (error) {
-    throw error
-  }
+export const getChartData = async (endPoint) => {
+  const response = await authInstanceAxios.get(`/${endPoint}`);
+  return response.data;
 } 
+
+export const fetchAllReports = async(endPoint)=>{
+  const response  = await authInstanceAxios.get(`/${endPoint}`);
+  return response.data
+}
+
+export const updateBlogStatus = async (endPoint, id, isBlocked,) => {
+  const response = await authInstanceAxios.patch(`/${endPoint}?blogId=${id}&isBlocked=${isBlocked}`);
+  return response
+}
+
+export const getBlogsStatus = async(endPoint)=>{
+  const response  = await authInstanceAxios.get(`/${endPoint}`);
+  return response.data
+}
+
+export const getMentorDashboardData = async(endPoint)=>{
+  const response  = await authInstanceAxios.get(`/${endPoint}`);
+  return response.data
+}

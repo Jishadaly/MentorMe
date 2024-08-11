@@ -4,7 +4,9 @@ import Availability from "../../frameworks/database/mongoDb/models/Availability"
 import { Users } from "../../frameworks/database/mongoDb/models/user";
 import { checkExistingUser } from "./userRepository";
 import Notification from "../../frameworks/database/mongoDb/models/notification";
-
+import Feedback from "../../frameworks/database/mongoDb/feedback";
+import mongoose from "mongoose";
+import { Blog } from "../../frameworks/database/mongoDb/models/blog";
 
 interface DateRange {
   from: Date | string;
@@ -16,7 +18,6 @@ export default {
   saveApplicationForm: async (formData: ApplicationForm) => {
     try {
 
-      
       const newForm = new MentorApplication({
         ...formData
       });
@@ -27,44 +28,44 @@ export default {
       throw new Error(error);
     }
   },
-  
-  updateMentorData: async (formData: ApplicationForm, userId: string) => {
-      try {
-        console.log("///",formData);
-        
-        if (!formData.name || !formData.phone) throw Error('user or phone not there')
-          const userName: string = formData.name
-        const phone: string = String(formData.phone);
-          const existingUser = await checkExistingUser('null', userName);
-          if (existingUser) throw new Error('Entered name already exists. Try another one.');
-      
-          const user = await Users.findByIdAndUpdate(userId, { userName, phone }, { new: true });
-          if (!user) throw new Error('User not found');
-      
-          const mentorData = {
-            user: userId,
-            name: userName,
-            ...formData
-          };
-      
-          let mentorApplication = await MentorApplication.findOne({ user: userId });
-          if (mentorApplication) {
-            mentorApplication = Object.assign(mentorApplication, mentorData);
-          } else {
-            mentorApplication = new MentorApplication(mentorData);
-          }
-      
-          // Save both user and mentor application
-          await mentorApplication.save();
-          await user.save();
 
-          return user.userName;
-        } catch (error:any) {
-          console.log(error);
-          
-        throw error
+  updateMentorData: async (formData: ApplicationForm, userId: string) => {
+    try {
+      console.log("///", formData);
+
+      if (!formData.name || !formData.phone) throw Error('user or phone not there')
+      const userName: string = formData.name
+      const phone: string = String(formData.phone);
+      const existingUser = await checkExistingUser('null', userName);
+      if (existingUser) throw new Error('Entered name already exists. Try another one.');
+
+      const user = await Users.findByIdAndUpdate(userId, { userName, phone }, { new: true });
+      if (!user) throw new Error('User not found');
+
+      const mentorData = {
+        user: userId,
+        name: userName,
+        ...formData
+      };
+
+      let mentorApplication = await MentorApplication.findOne({ user: userId });
+      if (mentorApplication) {
+        mentorApplication = Object.assign(mentorApplication, mentorData);
+      } else {
+        mentorApplication = new MentorApplication(mentorData);
       }
-   
+
+      // Save both user and mentor application
+      await mentorApplication.save();
+      await user.save();
+
+      return user.userName;
+    } catch (error: any) {
+      console.log(error);
+
+      throw error
+    }
+
   },
 
   getMentors: async () => {
@@ -204,14 +205,14 @@ export default {
     return availableSlots;
   },
 
-  bookAslot: async (menteeId: string, mentorId: string, slotId: string) => {
+  bookAslot: async (menteeId: string, mentorId: string, slotId: string, roomId: string) => {
     try {
       console.log("222222 ", mentorId, menteeId, slotId);
 
       const mentorApplicationId = await MentorApplication.findOne({ user: mentorId })
       console.log(mentorApplicationId);
 
-      const bookAslot = await Availability.findByIdAndUpdate(slotId, { mentorId, isBooked: true, bookedBy: menteeId }, { new: true }).populate({path:'bookedBy mentorId' , select:'userName -_id' })
+      const bookAslot = await Availability.findByIdAndUpdate(slotId, { mentorId, isBooked: true, bookedBy: menteeId, roomId: roomId }, { new: true }).populate({ path: 'bookedBy mentorId', select: 'userName -_id' })
       return bookAslot
 
     } catch (error: any) {
@@ -224,28 +225,179 @@ export default {
     try {
       const mentorDetails = await Users.findById(mentorId).select('-password').populate({ path: "mentorAdditional" });
       console.log(mentorDetails);
-
       return mentorDetails;
     } catch (error: any) {
       console.error('Error booking slots:', error);
       throw new Error(error.message);
     }
   },
-  getSessions:async(mentorId:string)=>{
+  getSessions: async (mentorId: string) => {
     try {
-      const sessions = await Availability.find({mentorId:mentorId , isBooked:true}).populate({path:"bookedBy" , select:"userName -_id profilePic"})
+      const sessions = await Availability.find({ mentorId: mentorId, isBooked: true }).populate({ path: "bookedBy", select: "userName -_id profilePic" })
       return sessions
     } catch (error) {
       throw error
     }
   },
-  getNotifications:async(userId:string)=>{
-    const notifications = await Notification.find({userId:userId , read:false})
+  getNotifications: async (userId: string) => {
+    const notifications = await Notification.find({ userId: userId, read: false })
     return notifications;
- },
- markAsReadNotification:async(notifyid:string)=>{
-  const msrkRead = await Notification.findByIdAndUpdate(notifyid, { read:true ,  select:'_id'})
+  },
+  markAsReadNotification: async (notifyid: string) => {
+    const msrkRead = await Notification.findByIdAndUpdate(notifyid, { read: true, select: '_id' })
+    return msrkRead
+  },
+  updateSlotStatus: async (id: string, status: string) => {
+    try {
+      const updatedStatus = await Availability.findByIdAndUpdate(
+        id,
+        { status },
+        { new: true, select: '_id status' }
+      );
 
-  return msrkRead
- }
+      return updatedStatus
+    } catch (error) {
+      throw error
+    }
+
+  },
+  saveFeedback: async (userId: string, feedback: string, mentorId: string, sessionId: string, rating: string) => {
+    try {
+
+      const newFeedback = new Feedback({
+        sessionId,
+        mentorId,
+        menteeId: userId,
+        rating,
+        comments: feedback,
+      });
+
+      // Save the feedback document to the database
+      const savedFeedback = await newFeedback.save();
+      console.log('Feedback saved successfully');
+      return savedFeedback;
+
+    } catch (error) {
+      console.error('Error saving feedback:', error);
+      throw new Error('Unable to save feedback');
+    }
+  },
+
+  getReviews: async (mentorId: string) => {
+    try {
+      if (!mongoose.Types.ObjectId.isValid(mentorId)) {
+        throw new Error('Invalid mentorId');
+      }
+      const user = await Users.findOne({ mentorAdditional: mentorId });
+
+      if (!user) {
+        throw new Error('User not found');
+      }
+      const reviews = await Feedback.find({ mentorId: user._id }).populate('menteeId', 'userName');
+
+      return reviews;
+    } catch (error: any) {
+      console.error('Error fetching reviews:', error.message);
+      throw error;
+    }
+  },
+
+  getDashboardStatus: async (mentorId: string) => {
+    try {
+      const availableSessionStats = await Availability.aggregate([
+        { $match: { mentorId: new mongoose.Types.ObjectId(mentorId), isBooked: false } },
+        {
+          $group: {
+            _id: { $dateToString: { format: "%Y-%m", date: "$created_at" } },
+            availableSessionCount: { $sum: 1 }
+          }
+        },
+        { $sort: { _id: 1 } }
+      ]);
+      console.log({ availableSessionStats });
+
+      const bookedSessionStats = await Availability.aggregate([
+        { $match: { mentorId: new mongoose.Types.ObjectId(mentorId), isBooked: true } },
+        {
+          $group: {
+            _id: { $dateToString: { format: "%Y-%m", date: "$created_at" } },
+            bookedSessionCount: { $sum: 1 }
+          }
+        },
+        { $sort: { _id: 1 } }
+      ]);
+      console.log({ bookedSessionStats });
+
+      const completedSessionStats = await Availability.aggregate([
+        { $match: { mentorId: new mongoose.Types.ObjectId(mentorId), status: 'Completed' } },
+        {
+          $group: {
+            _id: { $dateToString: { format: "%Y-%m", date: "$created_at" } },
+            completedSessionCount: { $sum: 1 }
+          }
+        },
+        { $sort: { _id: 1 } }
+      ]);
+      console.log({ completedSessionStats });
+
+      const blogCreationStats = await Blog.aggregate([
+        { $match: { mentor: new mongoose.Types.ObjectId(mentorId) } },
+        {
+          $group: {
+            _id: { $dateToString: { format: "%Y-%m", date: "$created_at" } },
+            blogCount: { $sum: 1 }
+          }
+        },
+        { $sort: { _id: 1 } }
+      ]);
+      
+      const chartData = {
+        availableSessionStats,
+        bookedSessionStats,
+        completedSessionStats,
+        blogCreationStats,
+      };
+
+      const mentorSessionCount = await Availability.countDocuments({
+        mentorId: mentorId,
+      });
+      const mentorBookedSessionCount = await Availability.countDocuments({
+        mentorId: mentorId, isBooked: true
+      });
+      const mentorCompletedSessionCount = await Availability.countDocuments({
+        mentorId: mentorId, status: 'Completed'
+      });
+      const blogCount = await Blog.countDocuments({
+        mentor: mentorId,
+      });
+
+      const recentSessions = await Availability.find({ mentorId: mentorId , isBooked:true })
+        .populate({
+          path: 'bookedBy',
+          select: 'userName profilePic', // Select only userName and profilePic fields
+        })
+      const recentBlogs = await Blog.find({ mentor: mentorId })
+        .sort({ created_at: -1 })
+        .limit(3);
+
+      const dashboardStatus = {
+        chartData,
+        stats: {
+          mentorSessionCount,
+          blogCount,
+          mentorBookedSessionCount,
+          mentorCompletedSessionCount
+        },
+        recentSessions,
+        recentBlogs
+      };
+
+      return dashboardStatus;
+
+    } catch (error) {
+      throw error
+    }
+  }
+
+
 }

@@ -4,23 +4,22 @@ import Cookies from 'js-cookie';
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "@/redux/slice/userAuthSlice";
+import { toast } from "sonner";
 
 const baseUrl = CONFIG_KEYS.API_BASE_URI
-
 
 export const authInstanceAxios = axios.create({
   baseURL: CONFIG_KEYS.API_BASE_URI,
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials:true,
+  withCredentials: true,
 })
-
 
 authInstanceAxios.interceptors.request.use(
   (config) => {
-   
     const token = Cookies.get('token')
+    console.log(!token ? "notoken" : 'token');
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
@@ -31,62 +30,67 @@ authInstanceAxios.interceptors.request.use(
   }
 );
 
-export const setupInterceptors = () => {
-
-
+export const setupInterceptors = (navigate, dispatch) => {
   authInstanceAxios.interceptors.response.use(
     (response) => {
-      // Handle successful responses (status code 2xx)
+      console.log({ response });
       return response;
     },
     async (error) => {
-      // Handle errors
+      console.log({ error });
       const originalRequest = error.config;
       if (error.response) {
+        console.log({ error });
         const status = error.response.status;
         const message = error.response.data.message || error.message;
 
         switch (status) {
-          case 401:
-           
-            if (message === "token expired" && !originalRequest._retry ) {
+          case 403:
+            if (message === "token expired" && !originalRequest._retry) {
               console.log("token expired ");
               originalRequest._retry = true;
 
               try {
-                      const response = await axios.post(`${baseUrl}/user/refreshToken`, {}, { withCredentials: true });
-                      console.log("axios respoon dtatatata",);
+                const response = await axios.post(`${baseUrl}/user/refreshToken`, {}, { withCredentials: true });
+                console.log("response", response);
 
-                      const accessToken = response.data.accessToken
-                      Cookies.set('token',accessToken);
-                      console.log("refresh token added ");
+                const accessToken = response.data.accessToken
+                Cookies.set('token', accessToken);
+                console.log("new access token added token added ", accessToken);
 
-                      authInstanceAxios.defaults.headers.Authorization = `Bearer ${accessToken}`;
-                      originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+                authInstanceAxios.defaults.headers.Authorization = `Bearer ${accessToken}`;
+                originalRequest.headers.Authorization = `Bearer ${accessToken}`;
 
-                      return authInstanceAxios(originalRequest);
+                return authInstanceAxios(originalRequest);
 
               } catch (refreshError) {
-
-                      // dispatch(logout());
-                      // toast.error('Session expired. Please log in again.');
-                      // navigate('/mentee/login');
+                
+                toast.error('Session expired. Please log in again.');
+                navigate('/mentee/login');
               }
             }
-           
-            Cookies.remove('token');
-            window.location.href = '/';
+            
+            if (message === 'Access denied: User is blocked') {
+              toast.error('Your account has been blocked. Please contact support.');
+
+              setTimeout(() => {
+                Cookies.remove('token');
+                window.location.href = '/mentee/login';
+              }, 3000);
+            }
 
             break;
-          case 403:
+          case 401:
             console.error("Access denied - you don't have permission to access this resource");
             break;
+
           case 404:
-            console.error("Resource not found");
+            console.error("Resource not found", message);
             break;
           default:
             console.error(`Error: ${message}`);
-        }
+        } 
+
       } else if (error.request) {
         console.error("No response received", error.request);
       } else {
@@ -96,3 +100,5 @@ export const setupInterceptors = () => {
     }
   );
 };
+
+setupInterceptors();

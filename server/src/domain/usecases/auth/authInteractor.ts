@@ -61,9 +61,10 @@ export default {
     
     loginUser : async (email:string , password:string )=> {
 
-        const existingUser = await getUserbyEMail(email);
+        try {
+            const existingUser = await getUserbyEMail(email);
         if(!existingUser){
-            throw new Error('User not fount');
+            throw new Error('No account found with this email address.');
         }
         console.log(password);
         
@@ -80,11 +81,15 @@ export default {
             id:existingUser.id,
             name:existingUser.userName,
             email:existingUser.email,
-            phone:existingUser.phone
+            phone:existingUser.phone,
+            isMentor:existingUser.isMentor
     }
         const accessToken = token.accessToken;
         const refreshToken = token.refreshToken;
         return { accessToken,refreshToken , user };
+        } catch (error:any) {
+            throw error
+        }
     },
 
 loginMentor : async (email:string , password:string )=> {
@@ -110,17 +115,18 @@ loginMentor : async (email:string , password:string )=> {
             throw new Error('Account is Blocked')
         }
         const role = 'mentor'
-        const { accessToken } = await generateToken(existingUser.id , email , role)
+        const { accessToken  , refreshToken} = await generateToken(existingUser.id , email , role)
         const user={ 
             id:existingUser.id,
             name:existingUser.userName,
             email:existingUser.email,
-            phone:existingUser.phone
+            phone:existingUser.phone,
+            isMentor:existingUser.isMentor
         }
 
         
 
-        return { token:accessToken , user }
+        return { accessToken ,refreshToken ,user }
     },
 
     adminLogger :async(cred:{email:string , password:string})=>{

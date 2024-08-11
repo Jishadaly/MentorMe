@@ -29,99 +29,67 @@ import {
 
 import { CheckCircleIcon, ClockIcon } from "@heroicons/react/24/solid";
 import StatisticsCard from "./widgets/cards/statistics-card";
-import { fetchAllMentors, fetchSlotes, fetchAllUsers } from "@/Api/services/adminServices";
+import { fetchAllMentors, fetchSlotes, fetchAllUsers, getChartData, getBlogsStatus } from "@/Api/services/adminServices";
 import { BarChart, LineChart } from "@mui/x-charts";
 import { PieChart } from '@mui/x-charts/PieChart';
 import projectsTableData from "./data/projects-table-data";
 import ordersOverviewData from "./data/orders-overview-data";
-import ApexChartComponent from "@/componets/ApexChart";
+import ApexChart from "@/componets/ApexChart";
+import { getBlogs } from "@/Api/services/menteeService";
+import ReactLoading from 'react-loading';
 
-const chartsConfig = {
-  chart: {
-    height: 220,
-    type: 'line',
-    zoom: {
-      enabled: false
-    }
-  },
-  dataLabels: {
-    enabled: false
-  },
-  stroke: {
-    curve: 'smooth'
-  },
-  title: {
-    text: 'Dynamic Data',
-    align: 'left'
-  },
-  grid: {
-    row: {
-      colors: ['#5d5299', 'transparent'],
-      opacity: 0.5
-    },
-  },
-  xaxis: {
-    categories: []
-  }
-};
 
 function Dashboard() {
+
   const [users, setUsers] = useState([]);
   const [slots, setSlots] = useState([]);
   const [mentors, setMentors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [websiteViewsChart, setWebsiteViewsChart] = useState({});
-  const [dailySalesChart, setDailySalesChart] = useState({});
-  const [completedTasksChart, setCompletedTasksChart] = useState({});
+  const [userData, setUserData] = useState([])
+  const [blogData, setBlogData] = useState(null)
+  const [slotData, setSlotData] = useState([])
+
+
+
+  const fetchChartData = async () => {
+    const response = await getChartData('admin/fetchChartData');
+    console.log(response);
+  }
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const [usersResponse, slotsResponse, mentorsResponse] = await Promise.all([
+        const [usersResponse, slotsResponse, mentorsResponse, blogsResponse] = await Promise.all([
           fetchAllUsers('admin/getAllUsers'),
           fetchSlotes('admin/ferchMentoSlots'),
-          fetchAllMentors('admin/getAllMentors')
+          fetchAllMentors('admin/getAllMentors'),
+          getBlogsStatus('admin/getDashboardStatus'),
         ]);
-        console.log("11111111", slotsResponse.slots);
+        console.log("Blogs:", blogsResponse);
         setUsers(usersResponse.data.users);
         setSlots(slotsResponse.slots);
         setMentors(mentorsResponse.data.Mentors);
+        setBlogData(blogsResponse.totalBlogs);
 
-
+        // console.log(blogResponse); 
+        setLoading(false);
       } catch (err) {
         setError(err);
+        console.log(err);
       } finally {
         setLoading(false);
       }
     }
 
     fetchData();
+    fetchChartData()
+
   }, []);
-
-  
-
-  const generateMonthlyData = (data) => {
-    const monthlyData = Array(12).fill(0);
-    data.forEach(item => {
-      const month = new Date(item.createdAt).getMonth();
-      monthlyData[month] += 1;
-    });
-    return monthlyData;
-  };
-
-  const total = users.length + mentors.length;
-  const userPercentage = ((users.length / total) * 100).toFixed(2);
-  const mentorPercentage = ((mentors.length / total) * 100).toFixed(2);
-
-  const pieData = [
-    { id: 0, value: users.length, label: `Total Users (${userPercentage}%)`, color: '#5d5299' },
-    { id: 1, value: mentors.length, label: `Mentors (${mentorPercentage}%)` },
-  ];
 
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div> <ReactLoading type="cylon" color="#4338CA" height={100} width={100} /></div>;
   }
 
   if (error) {
@@ -132,8 +100,8 @@ function Dashboard() {
     {
       color: "indigo",
       icon: BanknotesIcon,
-      title: "Today's Money",
-      value: "$53k",
+      title: "Blog created",
+      value: blogData,
       footer: {
         color: "text-green-500",
         value: "+55%",
@@ -176,9 +144,7 @@ function Dashboard() {
   ];
 
 
-  const userMonthlyData = generateMonthlyData(users);
-  const slotMonthlyData = generateMonthlyData(slots);
-  const mentorMonthlyData = generateMonthlyData(mentors);
+
 
 
 
@@ -195,7 +161,7 @@ function Dashboard() {
             })}
             footer={
               <Typography className="font-normal text-blue-gray-600">
-                <strong className={footer.color}>{footer.value}</strong> 
+                <strong className={footer.color}>{footer.value}</strong>
                 &nbsp;{footer.label}
               </Typography>
             }
@@ -203,66 +169,8 @@ function Dashboard() {
         ))}
       </div>
 
-      {/* <h1 className=" mb-4 text-3xl font-inter font-extrabold text-gray-500" >Statitics</h1> */}
-
-      <div className="mb-8 grid grid-cols-1 gap-y-12 gap-x-6 md:grid-cols-1 xl:grid-cols-3 sm:grid-cols-1">
-        <div className="border border-blue-gray-100 shadow-sm rounded-lg">
-         <Typography className="m-4" variant="h4" color="blue-gray">
-          {"Users"}
-         </Typography>
-          <BarChart className=""
-
-
-            xAxis={[
-              {
-                id: 'barCategories',
-                data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                scaleType: 'band',
-              },
-            ]}
-            series={[
-              {
-                data: userMonthlyData,
-                color: '#5d5299'
-              },
-            ]}
-          
-            height={300}
-
-          />
-        </div>
-
-        <div className="border border-blue-gray-100 shadow-sm rounded-lg">
-        <ApexChartComponent />
-        </div>
-
-        <div className="border border-blue-gray-100 shadow-sm rounded-lg">
-          <PieChart
-            series={[
-              {
-                data: pieData,
-                innerRadius: 30,
-                outerRadius: 100,
-                paddingAngle: 5,
-                cornerRadius: 5,
-                startAngle: -90,
-                endAngle: 180,
-                cx: 150,
-                cy: 150,
-              }
-            ]}
-            label={({ dataEntry }) => `${dataEntry.label}`}
-          />
-        </div>
-      </div>
-
       <div className="border border-blue-gray-100 shadow-sm rounded-lg">
-        <ApexChartComponent
-          userMonthlyData={userMonthlyData}
-          slotMonthlyData={slotMonthlyData}
-          mentorMonthlyData={mentorMonthlyData}
-          // blogMonthlyData={blogMonthlyData}
-        />
+        <ApexChart />
       </div>
 
     </div>

@@ -13,7 +13,6 @@ declare module 'express-serve-static-core' {
    }
 }
 
-
 export default {
    userRegistration: async (req: Request, res: Response, next: NextFunction) => {
       try {
@@ -35,30 +34,33 @@ export default {
          res.status(200).json({ message: "user authenticated successfully", user })
       } catch (error: any) {
          console.error(error.message);
-         res.status(400).json({ error: error.message });
-         next(error)
+         res.status(400).json( error.message );
       }
 
    },
+
    refreshToken: async (req: Request, res: Response, next: NextFunction) => {
       try {
-         
-
-         const refreshToken = req.cookies.refreshToken;
-         console.log(req.cookies);
-         if(!refreshToken){
+         const storedRefreshToken = req.cookies.refreshToken;
+         console.log({storedRefreshToken});
+         if(!storedRefreshToken){
             return res.status(401).json({ message: "Refresh token not provided" });
          }
+         console.log("herererere",process.env.JWT_SECRET);
+         const decoded = jwt.verify(storedRefreshToken, process.env.JWT_SECRET_REFRESH!) as jwt.JwtPayload;
+         console.log("here" , decoded);
+         
+         const { accessToken, refreshToken } = generateToken(decoded.userId, decoded.email , decoded.userRole);
 
-         const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET!) as { user:string ,email:string , userRole:string };
-         const { accessToken: newAccessToken, refreshToken: newRefreshToken } = generateToken(decoded.user, decoded.email , decoded.userRole);
-         console.log(newRefreshToken);
+         console.log({accessToken});
          
-         res.cookie('refreshToken', newRefreshToken, { httpOnly: true, secure: true, sameSite: 'strict' });
-         res.json({ accessToken: newAccessToken })
          
-      } catch (error) {
-         res.status(500).json({ error: (error as Error).message });
+         res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'strict' });
+         res.json({ accessToken});
+         
+      } catch (error:any) {
+         console.log(error);
+         res.status(500).json(error.message);
       }
    },
 
@@ -68,8 +70,7 @@ export default {
          res.status(200).json({ message: "verify success", response });
       } catch (error: any) {
          console.error(error.message);
-         res.status(500).json({ error: error.message });
-         next(error)
+         res.status(500).json( error.message );
       }
    },
 
@@ -79,36 +80,32 @@ export default {
          const { email, password } = req.body
          const response = await userInteractor.loginUser(email, password);
          const {  refreshToken } = response
+         console.log({refreshToken});
+         
          res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'strict' });
          res.status(200).json({ message: "user login success", response })
       } catch (error: any) {
-         console.log(error.message);
-         res.status(500).json({ error: error.message });
-         next(error);
+         res.status(500).json( error.message );
       }
    },
 
    mentorLogin: async (req: Request, res: Response, next: NextFunction) => {
-
-      console.log("mentor login");
-      
       try {
-
          const { email, password } = req.body
          const response = await userInteractor.loginMentor(email, password);
-
+         const {  refreshToken } = response
+         console.log({refreshToken});
+         
+         res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'strict' });
          res.status(200).json({ message: "Mentro login success", response });
       } catch (error: any) {
          console.log(error.message);
          res.status(500).json({ error: error.message });
-         next(error);
       }
    },
 
    adminLogin: async (req: Request, res: Response, next: NextFunction) => {
       try {
-
-
          const { email, password } = req.body
          if (!email && !password) {
             throw new Error("user credentials not there")
@@ -126,7 +123,6 @@ export default {
 
    googleAuth: async (req: Request, res: Response, next: NextFunction) => {
       try {
-
          const response = await authInteractor.googleAuth(req.body)
          res.status(200).json({ message: "google authentication success", response });
       } catch (error) {

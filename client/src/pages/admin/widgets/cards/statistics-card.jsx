@@ -1,3 +1,4 @@
+import ApexChart from "@/componets/ApexChart";
 import {
   Card,
   CardHeader,
@@ -6,6 +7,8 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import PropTypes from "prop-types";
+
+
 
 export function StatisticsCard({ color, icon, title, value, footer }) {
   return (
@@ -27,11 +30,7 @@ export function StatisticsCard({ color, icon, title, value, footer }) {
           {value}
         </Typography>
       </CardBody>
-      {footer && (
-        <CardFooter className="border-t border-blue-gray-50 p-4">
-          {footer}
-        </CardFooter>
-      )}
+      
     </Card>
   );
 }

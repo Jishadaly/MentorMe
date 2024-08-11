@@ -1,5 +1,7 @@
+
 import { Blog } from "../../frameworks/database/mongoDb/models/blog";
 import { Users } from "../../frameworks/database/mongoDb/models/user";
+import Report from "../../frameworks/database/mongoDb/models/report";
 
 export default {
   saveBlog: async (blog: { title: string, summary: string, content: any }) => {
@@ -19,9 +21,9 @@ export default {
   getBlogs: async (page:any) => {
     try {
         let resultsPerPage = 4;
-        const blogs = await Blog.find().populate({
+        const blogs = await Blog.find({isBlocked:false}).populate({
         path: 'mentor',
-        select: '_id userName'
+        select: '_id userName profilePic'
       }).sort({ createdAt: -1 })
         .lean()
         .limit(resultsPerPage)
@@ -91,5 +93,44 @@ export default {
       console.error('Error deleting blog:', error);
       throw error;
     }
+  },
+  saveReport:async(reason:string , additionalDetails:string , userId:string , blogId:string)=>{
+    try {
+      
+      const report = new Report({
+          userId,
+          blogId,
+          reason,
+          additionalDetails
+      })
+
+      await report.save();
+      
+      const reportCount = await Report.countDocuments({ blogId });
+
+      if (reportCount >= 3) {
+        await Blog.findByIdAndUpdate(blogId, { isBlocked: true });
+      }
+
+      return report
+    } catch (error) {
+      console.error('Error saving report:', error);
+      throw error;
+    }
+  },
+
+  getReports:async()=>{
+      try {
+        const reports = await Report.find().populate({
+          path:'userId',
+          select:'userId userName',
+        }).populate({
+          path:'blogId',
+          select:"title isBlocked"
+        })
+        return reports
+      } catch (error) {
+        throw error
+      }
   }
 }

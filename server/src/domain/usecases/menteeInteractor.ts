@@ -1,3 +1,4 @@
+import mentorRepository from "../repositories/mentorRepository";
 import { getUserbyId , updateUserName ,updateUserPhone } from "../repositories/userRepository"
 import authInteractor from "./auth/authInteractor";
 
@@ -40,5 +41,21 @@ export default {
      throw error
     }
   },
+  postFeedback:async(userId:string , feedback:string , mentorId:string , sessionId:string , rating:string)=>{
+    try {
+      const feedBack = await mentorRepository.saveFeedback(userId , feedback , mentorId , sessionId , rating);
+      return feedBack
+    } catch (error) {
+      throw error
+    }
+  },
+  getMentorReviews:async(mentorId:string)=>{
+    try {
+      const reviews = await mentorRepository.getReviews(mentorId)
+      return reviews
+    } catch (error) {
+      throw error
+    }
+  }
   
 }

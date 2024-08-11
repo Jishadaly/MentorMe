@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { FiStar, FiCalendar as FiCalendarIcon ,FiDollarSign } from 'react-icons/fi';
+import { FiStar, FiCalendar as FiCalendarIcon, FiDollarSign } from 'react-icons/fi';
 import Header from './partials/Header';
-import Sidenav from './partials/Sidenav'; 
+import Sidenav from './partials/Sidenav';
 import { useParams } from 'react-router-dom';
-import { fetchMentorData } from '@/Api/services/menteeService';
+import { fetchMentorData, getMentorReviwes } from '@/Api/services/menteeService';
 import CustomDatePicker from '@/componets/DatePicker';
 import { useSelector } from 'react-redux';
 import BookingConfirmModal from '@/componets/modal/BookingConfrimModal';
@@ -11,16 +11,26 @@ import BookingConfirmModal from '@/componets/modal/BookingConfrimModal';
 
 const MentorDetails = () => {
 
-  const {mentorId} = useParams();
-  const [mentor1 , setMentor] = useState(null);
-  const [selectedDate , setSelectedDate] = useState(new Date());
-  const [slots , setSlots          ] = useState([]);
-  const [clickedSLot , setClickedSlot] = useState(null);
+  const { mentorId } = useParams();
+  const [mentor1, setMentor] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [slots, setSlots] = useState([]);
+  const [clickedSLot, setClickedSlot] = useState(null);
   const user = useSelector((state) => state.auth.user);
-  const [isModalvisible , setIsmodalVisble] = useState(false);
+  const [isModalvisible, setIsmodalVisble] = useState(false);
+  const [reviews, setReviews] = useState([]);
 
-  
   console.log(mentor1);
+
+  const fetchReviwes = async () => {
+    try {
+      const fetchedReviews = await getMentorReviwes('user/getMentorReview', mentorId);
+      setReviews(fetchedReviews);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     const getMentor = async () => {
       try {
@@ -28,31 +38,31 @@ const MentorDetails = () => {
         setMentor(response.data.mentor);
         setSlots(response.data.mentor.availabilities);
         console.log(response.data.mentor);
-        
+
       } catch (error) {
-        console.error(error); 
+        console.error({ error });
       }
     }
-    getMentor()
+    getMentor();
+    fetchReviwes();
   }, [mentorId]);
   if (!mentor1) {
-    
     return console.log("mentor is comming");
   }
 
   const filterSlotsByDate = (date) => {
-    return slots.filter((slot)=> new Date(slot.date).toDateString() === date.toDateString())
+    return slots.filter((slot) => new Date(slot.date).toDateString() === date.toDateString())
   };
 
   const availableSlots = filterSlotsByDate(selectedDate);
 
-  const handleButtonClick = (slotId)=>{
+  const handleButtonClick = (slotId) => {
     setClickedSlot(slotId)
     setIsmodalVisble(true);
   }
 
-  const handleModalClose = ()=>{
-     setIsmodalVisble(false)
+  const handleModalClose = () => {
+    setIsmodalVisble(false)
   }
 
   const mentor = {
@@ -72,12 +82,11 @@ const MentorDetails = () => {
     rate: '$252',
     availableTimes: ['6:30pm', '7:00pm', '7:30pm']
   };
-  
+
   return (
     <div className="flex min-h-screen bg-gray-100">
       <main className="ml-20 mt-16 p-6 flex-1 overflow-y-auto">
         <section className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
-          
           <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-md">
             <div className="flex items-center space-x-4 mb-6">
               <img src={mentor1.user.profilePic} alt="profile" className="w-24 h-24 rounded-full" />
@@ -111,26 +120,36 @@ const MentorDetails = () => {
               <h3 className="text-xl font-bold mb-2 font-inter ">language preference</h3>
               <p className="text-gray-700 font-inter">{mentor1.languagePreference.join(', ')}</p>
             </div>
+
+
             <div>
               <h3 className="text-xl font-bold mb-2 font-inter">Reviews</h3>
-              {mentor.reviews.map((review, index) => (
+              {reviews && reviews.map((review, index) => (
                 <div key={index} className="mb-4">
-                  <p className="font-bold font-inter">{review.name}</p>
+                  <p className="font-bold font-inter">{review.menteeId.userName}</p>
                   <div className="flex items-center text-green-500">
                     <FiStar size={20} />
                     <span className="ml-1 font-inter">{review.rating}</span>
                   </div>
-                  <p className="text-gray-700 font-inter">{review.comment}</p>
+                  <p className="text-gray-700 font-inter">{review.comments}</p>
                 </div>
               ))}
-              <button className="px-4 py-2 bg-white text-indigo-500 border border-indigo-500 rounded-full shadow-md transition duration-300 ease-in-out hover:bg-indigo-500 hover:text-white">
-                Read all reviews
-              </button>
+
+              {reviews.length > 0 ? (
+                <button className="px-4 py-2 bg-white text-indigo-500 border border-indigo-500 rounded-full shadow-md transition duration-300 ease-in-out hover:bg-indigo-500 hover:text-white">
+                  Read all reviews
+                </button>
+              ) : (
+                <div className="text-gray-500 ">
+                  <p className='font-inter'>No reviews yet. Be the first to leave a review!</p>
+                </div>
+              )}
+
             </div>
           </div>
 
-           {/* Booking Calendar */}
-           <div className="bg-gray-900 p-6 rounded-lg shadow-md h-auto sticky top-16">
+          {/* Booking Calendar */}
+          <div className="bg-gray-900 p-6 rounded-lg shadow-md h-auto sticky top-16">
             <h3 className="text-xl font-bold mb-4 text-white font-inter">Book with {mentor1.name.split(' ')[0]}</h3>
             <div className="text-gray-300 mb-4">
               <p>Times in GMT+5:30 (current time {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })})</p>
@@ -151,23 +170,23 @@ const MentorDetails = () => {
               <h4 className="text-lg font-semibold mb-2  text-white font-inter">Available time</h4>
               <div className="flex space-x-2 overflow-x-auto scrollbar-hide">
                 {availableSlots.length > 0 ? (
-                  availableSlots.filter(slot=> !slot.isBooked)
-                  .map((slot, index) => (
-                    <button onClick={()=>handleButtonClick(slot) } key={index} className="flex-shrink-0 font-inter px-4 py-2 bg-indigo-500 text-white rounded-full shadow-md transition duration-300 ease-in-out hover:bg-indigo-600">
-                      {`${new Date(slot.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
-                    </button>
-                  ))
+                  availableSlots.filter(slot => !slot.isBooked)
+                    .map((slot, index) => (
+                      <button onClick={() => handleButtonClick(slot)} key={index} className="flex-shrink-0 font-inter px-4 py-2 bg-indigo-500 text-white rounded-full shadow-md transition duration-300 ease-in-out hover:bg-indigo-600">
+                        {`${new Date(slot.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
+                      </button>
+                    ))
                 ) : (
                   <p className="text-gray-500 font-inter">No available slots for this date.</p>
                 )}
 
-               
+
               </div>
             </div>
           </div>
         </section>
       </main>
-      { isModalvisible && <BookingConfirmModal onClose = {handleModalClose} mentorData={mentor1}  mentee={user.id}  slot={clickedSLot} price={2000} /> }
+      {isModalvisible && <BookingConfirmModal onClose={handleModalClose} mentorData={mentor1} mentee={user.id} slot={clickedSLot} price={2000} />}
     </div>
   );
 };

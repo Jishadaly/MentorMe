@@ -1,102 +1,57 @@
 import { authInstanceAxios } from "../axiosInstence";
 
-export const  getMentors = async(endPoint )=>{
-  console.log(endPoint);
-  try {
-    const response = await authInstanceAxios.get(`/${endPoint}`);
-      return response;
-  } catch (error) {
-    console.log(error);
-  }
+export const getMentors = async (endPoint) => {
+  const response = await authInstanceAxios.get(`/${endPoint}`);
+  return response;
 }
 
-export const addSlots = async(endPoint , slots)=>{
-  console.log("jijijijiji",slots);
- 
-  
-    const response  = await authInstanceAxios.post(`/${endPoint}`,slots);
-    return response.data;
-  
+export const addSlots = async (endPoint, slots) => {
+  const response = await authInstanceAxios.post(`/${endPoint}`, slots);
+  return response.data;
 }
 
-export const deleteSlot = async(endPoint , slotId)=>{
-  
-    const response  = await authInstanceAxios.delete(`/${endPoint}?slotId=${slotId}`);
-    return response.data;
- 
+export const deleteSlot = async (endPoint, slotId) => {
+  const response = await authInstanceAxios.delete(`/${endPoint}?slotId=${slotId}`);
+  return response.data;
 }
 
-
-
-export const getMentorApplication = async (endPoint , mentorId)=>{
-  try {
-    const response = await authInstanceAxios.get(`/${endPoint}`, {
-      params:{
-        mentorId:mentorId
-      }
-    });
-    console.log("mentri service",response);
-    return response;
-
-  } catch (error) {
-    console.log(error);
-  }
+export const getMentorApplication = async (endPoint, mentorId) => {
+  const response = await authInstanceAxios.get(`/${endPoint}?mentorId=${mentorId}`);
+  return response;
 }
 
-export const getMentorAvalableSlots = async (endPoint)=>{
-  try {
-    const response = await authInstanceAxios.get(`${endPoint}`);
-    console.log("mentri service",response);
-    return response;
+export const getMentorAvalableSlots = async (endPoint) => {
 
-  } catch (error) {
-    console.log(error);
-  }
-}  
-
-export const getMentorData = async(endPoint , userId)=>{
-  try {
-    const response = await authInstanceAxios.get(`/${endPoint}?userId=${userId}`);
-    return response.data;
-  } catch (error) {
-    console.log(error);
-  }
+  const response = await authInstanceAxios.get(`${endPoint}`);
+  return response;
 }
 
-export const updateMentorProfile = async (endPoint , datas)=>{
-
-  try {
-    const response = await authInstanceAxios.put(`/${endPoint}`,datas);
-    return response.data;
-  } catch (error) {
-    throw error
-  }
+export const getMentorData = async (endPoint, userId) => {
+  const response = await authInstanceAxios.get(`/${endPoint}?userId=${userId}`);
+  return response.data;
 }
 
-export const getSessions = async (endPoint)=>{
-
-  try {
-    const response = await authInstanceAxios.get(`/${endPoint}`);
-    return response.data;
-  } catch (error) {
-    throw error
-  }
+export const updateMentorProfile = async (endPoint, datas) => {
+  const response = await authInstanceAxios.put(`/${endPoint}`, datas);
+  return response.data;
 }
 
-export const getNotifications = async(endPoint)=>{
-  try {
-    const response = await authInstanceAxios.get(`/${endPoint}`);
-    return response.data;
-  } catch (error) {
-    throw error
-  }
+export const getSessions = async (endPoint) => {
+  const response = await authInstanceAxios.get(`/${endPoint}`);
+  return response.data;
 }
 
-export const markRead = async(endPoint, notifyId)=>{
-  try {
-    const response = await authInstanceAxios.patch(`/${endPoint}?notificationId=${notifyId}`);
-    return response.data._id
-  } catch (error) {
-    throw error
-  }
+export const getNotifications = async (endPoint) => {
+  const response = await authInstanceAxios.get(`/${endPoint}`);
+  return response.data;
+}
+
+export const markRead = async (endPoint, notifyId) => {
+  const response = await authInstanceAxios.patch(`/${endPoint}?notificationId=${notifyId}`);
+  return response.data._id
+}
+
+export const updateSessionStatus = async (endPoint, status , sessionId) => {
+  const response = await authInstanceAxios.patch(`/${endPoint}?id=${sessionId}&status=${status}`);
+  return response.data;
 }

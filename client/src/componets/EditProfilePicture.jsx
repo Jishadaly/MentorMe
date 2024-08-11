@@ -16,11 +16,10 @@ const EditProfilePicture = ({ menteeId, onUpdate }) => {
     }
 
     const formData = new FormData();
-    formData.append('testField', 'testValue'); // Add static data
+    formData.append('testField', 'testValue'); 
     formData.append('profilePicture', selectedFile);
 
     for (let pair of formData.entries()) {
-      console.log(pair[0] + ':', pair[1]); // Check this output
     }
 
     const uploadProfilePicturePromise = new Promise((resolve, reject) => {

@@ -27,9 +27,6 @@ export default {
     },
     sendMessage: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            console.log("body",req.body);
-            console.log("file",req.file?.path);
-            
             
             const { chatId, message } = req.body;
             const id: string = chatId;

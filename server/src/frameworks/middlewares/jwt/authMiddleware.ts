@@ -9,11 +9,9 @@ const secretKey = process.env.JWT_SECRET;
 if (!secretKey) {
   throw new Error('JWT secret key is not defined');
 }
-
-
-  const protect = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    
+  const  protect = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const authHeader = req.headers['authorization'];
+  
   if (!authHeader) {
     return res.status(401).json({ error: 'Access denied, no token provided' });
   }
@@ -25,13 +23,11 @@ if (!secretKey) {
   
   const token = tokenParts[1];
   try {
-    const decoded = jwt.verify(token, secretKey) as jwt.JwtPayload;
-    
+    const decoded = jwt.verify(token, secretKey) as jwt.JwtPayload;   
     req.userId = decoded.userId;
     req.userRole = decoded.userRole
-    
+  
     next();
-
   } catch (error) {
     if (error instanceof jwt.TokenExpiredError) {
       res.status(403).json({ message: "token expired" });

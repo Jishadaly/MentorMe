@@ -46,19 +46,23 @@ export default {
     }
   },
 
-
   getMentor: async (req: Request, res: Response, next: NextFunction) => {
+    const { mentorId } = req.query
+   
     try {
-      const { mentorId } = req.query
+     
       if (!mentorId) throw new Error("mentor id id not there");
       const mentorIdString = mentorId as string;
       const mentor = await mentorInteractor.getMentor(mentorIdString);
+     
+      
       res.status(200).json({ message: "fetched a mentor succecfully", mentor });
     } catch (error) {
+      console.log({error});
+      
       res.status(500).json(error)
     }
   },
-
 
   addSlots: async (req: Request, res: Response, next: NextFunction) => {
     console.log(req.body);
@@ -131,12 +135,8 @@ export default {
   },
 
   webhook: async (req: Request, res: Response, next: NextFunction) => {
-
-
-
     const event = req.body;
-    console.log("webhook");
-
+    
     switch (event.type) {
       case 'checkout.session.completed':
         const metaData = event?.data?.object?.metadata;
@@ -227,8 +227,7 @@ export default {
   },
   editNotification:async(req:Request , res:Response, next:NextFunction)=>{
      try {
-    
-      
+       
        const notificationId  = req.query.notificationId as string
        console.log(notificationId);
        const id = await mentorInteractor.editNotification(notificationId)
@@ -237,5 +236,30 @@ export default {
      } catch (error:any) {
       res.status(400).json(error.message)
      }
+  },
+  updateSessionStatus:async(req:Request , res:Response, next:NextFunction)=>{
+    console.log(req.query);
+    try {
+      
+      const {status ,  id }  = req.query
+     
+      const response = await mentorInteractor.updateStatus( id  as string, status as string);
+      console.log("succs",response);
+      res.status(200).json(response);
+    } catch (error:any) {
+     res.status(400).json(error.message)
+    }
+  },
+  getMentorDashboard:async(req:Request ,  res:Response , next:NextFunction)=>{
+    console.log("heeeeeeeeeeeeeeeeere");
+    
+    try {
+      const userId = req.userId as string
+      const datas = await mentorInteractor.getDashboardStatus(userId);
+      res.status(200).json(datas)
+    } catch (error:any) {
+      console.log(error);
+      res.status(400).json(error.message)
+    }
   }
 }
