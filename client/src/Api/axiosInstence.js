@@ -9,7 +9,7 @@ import { toast } from "sonner";
 const baseUrl = CONFIG_KEYS.API_BASE_URI
 
 export const authInstanceAxios = axios.create({
-  baseURL: CONFIG_KEYS.API_BASE_URI,
+  baseURL: baseUrl,
   headers: {
     'Content-Type': 'application/json',
   },
