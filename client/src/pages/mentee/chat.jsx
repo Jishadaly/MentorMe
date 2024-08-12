@@ -5,11 +5,7 @@ import { useSelector } from 'react-redux';
 import { useChat } from '@/Context/chatContext';
 import Messages from '../mentor/chat/Mesage';
 import UserList from './chat/UserList';
-import { io } from 'socket.io-client';
 import ChatFeature from '@/pages/mentee/chat/Nochats';
-
-
-const socket = io('http://localhost:3000')
 
 export default function Chat() {
 

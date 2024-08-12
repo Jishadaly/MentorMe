@@ -7,9 +7,7 @@ import ReactLoading from 'react-loading';
 import DownloadButton from '@/componets/downloadButton/DownloadButton';
 import EmojiPicker from 'emoji-picker-react';
 
-const socket = io('http://localhost:3000', {
-  autoConnect: false,
-});
+const socket = io(import.meta.env.VITE_SOCKET_SERVER_URL);
 
 export default function Messages({ chatId }) {
   const [messages, setMessages] = useState([]);

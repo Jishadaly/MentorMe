@@ -6,7 +6,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
 const corsOption = {
-   origin: 'http://localhost:5173', // Replace with your client's origin
+   origin: process.env.CLIENT_URL, // Replace with your client's origin
    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
    credentials: true, // Enable credentials
    exposedHeaders: ['x-auth-token']
