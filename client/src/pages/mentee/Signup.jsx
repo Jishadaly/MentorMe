@@ -10,6 +10,8 @@ import { auth, provider } from '@/utils/fireBase/config';
 import { googleAuth } from '@/redux/services/userAuthServices';
 import { useDispatch } from 'react-redux';
 import GoogleLoginButton from '@/componets/GoogleLoginButton';
+import ReactLoading from 'react-loading';
+
 
 const Signup = () => {
 
@@ -163,8 +165,9 @@ const Signup = () => {
                 </div>
                 <button type="submit"
                   disabled={isSubmitting}
-                  className="block w-full bg-[rgb(68,64,203)] mt-4 py-2 rounded-2xl text-white font-semibold mb-2">
-                  {isSubmitting ? 'Submitting...' : 'Signup'}
+                  className="block w-full bg-gradient-to-r from-indigo-600 to-purple-700 mt-4 py-2 rounded-2xl text-white font-semibold mb-2 font-inter"
+                  >
+                  {isSubmitting ? <ReactLoading type="spokes" color="#fff" height={20} width={20}  />  : 'Signup'}
                 </button>
                 <div className="flex items-center my-4">
                   <hr className="flex-grow border-gray-300" />

@@ -7,7 +7,8 @@ export const fetchMentorData = async (endPoint, mentorId) => {
 }
 
 export const slotBookingbyMentee = async (endPoint, datas) => {
-  return await authInstanceAxios.post(`${endPoint}`, datas);
+   const response =  await authInstanceAxios.post(`${endPoint}`, datas);
+  return response;
 }
 
 export const createCheckoutSession = async (endPoint, datas) => {

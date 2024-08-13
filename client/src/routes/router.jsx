@@ -40,6 +40,8 @@ import Room from '@/pages/others/meeting/room'
 import Notifications from '@/pages/others/notifications/Notifications'
 import Feedback from '@/componets/modal/FeedbackModal'
 import MentorDashboard from '@/pages/mentor/MentorDashboard'
+import ForgotPassword from '../pages/others/forgotPassword'
+import ResetPassword from '../pages/others/resetPasswordPage'
 
 const router = createBrowserRouter( 
   createRoutesFromElements(
@@ -88,6 +90,7 @@ const router = createBrowserRouter(
       </Route>
 
       <Route path="/mentee/login" element={<UserLogin />} />
+      <Route path="/forgotPassword" element={<ForgotPassword />} />
       <Route path="/mentor/login" element={<MentorLogin />}/>
       <Route path="/signup" element={<Signup />}/>                      
       <Route path='/chooseRole/:userId' element={<RoleSelectorCard/>} />
@@ -97,6 +100,8 @@ const router = createBrowserRouter(
       <Route path='/admin/login' element={<AdminLogin/>} />
       <Route path="*" element={ <PageNotFound/>}/>
       <Route path='/meet/:roomId' element= {<Room/>} />
+      <Route path='/resetPassword' element={<ResetPassword/>} />
+
       
     </Route>
   )

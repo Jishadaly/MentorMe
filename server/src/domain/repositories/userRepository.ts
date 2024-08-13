@@ -4,7 +4,7 @@ import { generatePassword } from '../utils/generatePassword';
 import { Encrypt } from '../helper/hashPassword';
 import Availability from '../../frameworks/database/mongoDb/models/Availability';
 import MentorApplication from '../../frameworks/database/mongoDb/models/mentorApplicationModel';
-
+import ResetToken from '../../frameworks/database/mongoDb/models/resetToken';
 
 export const checkExistingUser = async (email: string, userName: string) => {
   const existingUser = await Users.findOne({ $or: [{ email: email }, { userName: userName }] });
@@ -62,6 +62,20 @@ export const verifyUserdb = async (email: string) => {
   return userData;
 }
 
+export const saveResetToken = async(userId:string,token:string , expires:number)=>{
+  try {
+   const data =   await ResetToken.create({
+      userId: userId,
+      token: token,
+      expiresAt: new Date(expires),
+    });
+
+    return data
+  } catch (error) {
+    throw error
+  }
+}
+
 export const getUserbyEMail = async (email:string)=> {
     return await Users.findOne({email:email})
 }
@@ -77,6 +91,10 @@ export const sameUser = async(user:string)=>{
 export const checkIsmentor = async(email:string)=>{ 
   return await Users.findOne({email:email} , {isMentor:true})
 }
+
+export const checkResetToken = async(token:string)=>{
+  return  await ResetToken.findOne({ token });
+} 
 
 export const saveGoogleUser =async(userData:IUser)=>{
 

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useDispatch , useSelector } from 'react-redux';
 import { loginUser } from '@/redux/services/userAuthServices';
+import ReactLoading from 'react-loading';
 
 
 function UserLogin(){
@@ -94,9 +95,9 @@ function UserLogin(){
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2"
+                 className="block w-full bg-gradient-to-r from-indigo-600 to-purple-700 mt-4 py-2 rounded-2xl text-white font-semibold mb-2 font-inter"
               >
-                {isSubmitting ? 'Submitting...' : 'Login'}
+                {isSubmitting ? <ReactLoading type="spokes" color="#fff" height={20} width={20}/> : 'Login'}
               </button>
               <div className="flex items-center my-4">
                 <hr className="flex-grow border-gray-300" />
@@ -118,6 +119,11 @@ function UserLogin(){
               <div className="mt-4">
                 <span onClick={() => navigate('/signup')} className="text-sm font-sans">
                   Don't have an account? <a className="text-blue-500">Sign up</a>
+                </span>
+              </div>
+              <div className="mt-4">
+                <span onClick={() => navigate('/forgotPassword')} className="text-sm font-sans">
+                  Don't know the password? <a className="text-blue-500">forgot password</a>
                 </span>
               </div>
               <div className="mt-4">

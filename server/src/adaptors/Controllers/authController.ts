@@ -25,7 +25,7 @@ export default {
             sessionStore.otp = otp;
             sessionStore.otpGeneratedAt = Date.now()
             console.log("OTP", otp);
-            const emailContent = await generateOtpEmailContent(name, otp)
+            const emailContent = await generateOtpEmailContent(name, otp);
             sendMail(email, emailContent);
 
          } else {
@@ -154,6 +154,19 @@ export default {
       }
    },
 
+   fogotPasswordLinkSend:async(req:Request, res:Response, next:NextFunction)=>{
+      console.log(req.body);
+      try {
+         
+         const email = req.body.email as string; 
+         const response = await authInteractor.sendForgotPasswordLink(email);
+         res.status(200).json({message:'forgot password link sended'});
+      } catch (error:any) {
+         console.log(error.message)
+         res.status(400).json(error.message)
+      }
+   },
+
    uploadProfile:async (req: Request, res: Response, next: NextFunction) => {
       try {
          
@@ -163,7 +176,6 @@ export default {
          if (!path) throw Error('image not found')
 
          const imageUrl  = await authInteractor.uploadProfile(path , userId);
-         console.log(imageUrl);
          
          res.status(200).json({
             profilePic: imageUrl,
@@ -175,4 +187,18 @@ export default {
          next(error);
        }
    },
+   resetPassword:async(req:Request , res:Response , next:NextFunction)=>{
+      const { token , password } : { token:string , password:string } = req.body;
+      console.log(req.body);
+      
+     try {
+      const response = await authInteractor.forgotResetPassword(token , password);
+      res.status(200).json({message : 'password reseted successfully'})
+     } catch (error:any) {
+      console.log(error);
+      res.status(400).json(error.message);
+      
+     }
+      
+   }
 }

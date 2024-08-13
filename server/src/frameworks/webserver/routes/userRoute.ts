@@ -18,6 +18,8 @@ userRouter.post('/mentorLogin',authController.mentorLogin);
 userRouter.post('/mentorAppicationForm',mentorController.mentorApplicationFormSub);
 userRouter.post('/refreshToken',authController.refreshToken)
 userRouter.post('/uploadProfilePicture',protect,checkRole(['mentee','mentor']),parser.single("profilePicture"),authController.uploadProfile);
+userRouter.post('/sendForgotPasswordLink' ,authController.fogotPasswordLinkSend )
+userRouter.post('/resetPassword',authController.resetPassword)
 
 //mentor?
 userRouter.get('/getMentor' ,protect,checkBlocked, mentorController.getMentor);
