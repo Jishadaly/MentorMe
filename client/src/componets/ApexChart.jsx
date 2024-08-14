@@ -110,9 +110,9 @@ const ApexChart = () => {
   };
 
   console.log(blogSeries);
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
 
 
   // Debugging the series data

@@ -2,23 +2,8 @@ import React, { useEffect, useState } from "react";
 
 import {
   Typography,
-  Card,
-  CardHeader,
-  CardBody,
-  IconButton,
-  Menu,
-  MenuHandler,
-  MenuList,
-  MenuItem,
-  Avatar,
-  Tooltip,
-  Progress,
 } from "@material-tailwind/react";
 
-import {
-  EllipsisVerticalIcon,
-  ArrowUpIcon,
-} from "@heroicons/react/24/outline";
 
 import {
   BanknotesIcon,
@@ -38,7 +23,6 @@ import ApexChart from "@/componets/ApexChart";
 import { getBlogs } from "@/Api/services/menteeService";
 import ReactLoading from 'react-loading';
 
-
 function Dashboard() {
 
   const [users, setUsers] = useState([]);
@@ -49,8 +33,6 @@ function Dashboard() {
   const [userData, setUserData] = useState([])
   const [blogData, setBlogData] = useState(null)
   const [slotData, setSlotData] = useState([])
-
-
 
   const fetchChartData = async () => {
     const response = await getChartData('admin/fetchChartData');
@@ -145,11 +127,8 @@ function Dashboard() {
 
 
 
-
-
-
   return (
-    <div>
+    <>
       <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
         {statisticsCardsData.map(({ icon, title, footer, ...rest }) => (
           <StatisticsCard
@@ -173,7 +152,7 @@ function Dashboard() {
         <ApexChart />
       </div>
 
-    </div>
+    </>
   );
 }
 

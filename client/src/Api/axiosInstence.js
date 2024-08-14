@@ -1,9 +1,6 @@
 import axios from "axios";
 import { CONFIG_KEYS } from "@/config";
 import Cookies from 'js-cookie';
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { logout } from "@/redux/slice/userAuthSlice";
 import { toast } from "sonner";
 
 
@@ -21,7 +18,6 @@ export const authInstanceAxios = axios.create({
 authInstanceAxios.interceptors.request.use(
   (config) => {
     const token = Cookies.get('token')
-    console.log(!token ? "notoken" : 'token');
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }

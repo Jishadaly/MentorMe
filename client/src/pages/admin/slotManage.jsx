@@ -63,7 +63,7 @@ function SlotManage() {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="bg-primary-foreground text-primary rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-foreground focus:ring-opacity-50"
           />
-          <div className="relative">
+          {/* <div className="relative">
             <button className="flex items-center gap-2 px-3 py-2 bg-gray-200 rounded-md" onClick={() => handleSort(sortBy)}>
               <ListOrderedIcon className="w-5 h-5" />
               <span>Sort by</span>
@@ -81,7 +81,7 @@ function SlotManage() {
                 ))}
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </header>
       <main className="flex-1 overflow-auto p-6">
