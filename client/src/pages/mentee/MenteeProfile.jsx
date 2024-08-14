@@ -21,7 +21,7 @@ const MenteeProfile = () => {
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   const navigate = useNavigate()
-  
+
 
 
   const handleLogout = () => {
@@ -36,6 +36,7 @@ const MenteeProfile = () => {
       try {
         const menteeData = await getMentee('user/getMentee', user.id);
         setMentee(menteeData);
+        console.log(menteeData);
       } catch (err) {
         console.error('Error fetching mentee:', err);
       } finally {
@@ -58,7 +59,7 @@ const MenteeProfile = () => {
   const handleProfilePictureEdit = () => {
     setEditingProfilePicture(true);
 
-    
+
   };
 
   if (mentee) console.log(mentee.phone);
@@ -74,14 +75,13 @@ const MenteeProfile = () => {
         <section className="max-w-7xl mx-auto items-center">
           <div className="flex flex-col justify-center flex-start p-5 ">
             <div className='bg-grey flex flex-row'>
-              
-               <img className="mr-2 rounded-full w-24 h-24 mb-4" src={mentee.profilePic} alt="Profile" />
+              <img className="mr-2 rounded-full w-24 h-24 mb-4" src={mentee?.profilePic || "path/to/fallback-image.png"} alt="Profile" />
               <div className='flex flex-col'>
                 <h2 className="text-xl font-bold font-inter">{mentee.userName}</h2>
                 {!editingProfilePicture ? (
                   <a href="#edit-profile-picture" onClick={handleProfilePictureEdit} className="text-blue-500">Edit profile picture</a>
                 ) : (
-                  <EditProfilePicture  onUpdate={handleFieldUpdate} />
+                  <EditProfilePicture onUpdate={handleFieldUpdate} />
                 )}
                 <p className="text-gray-500">signed up • 6 days ago</p>
               </div>
@@ -110,7 +110,7 @@ const MenteeProfile = () => {
                     <span className="w-8 text-center">🔑</span>
                     <span className='font-inter font-bold'>Password</span>
                   </div>
-                  
+
                   <div className="flex items-center py-2 cursor-pointer">
                     <span className="w-8 text-center">🚪</span>
                     <span className='font-inter font-bold' onClick={handleLogout}>Log out</span>
@@ -118,7 +118,7 @@ const MenteeProfile = () => {
                 </div>
               </div>
               <div className="  rounded-3xl   md:w-2/3">
-              
+
                 {activeField === 'name' && <EditNameCard name={mentee.userName} menteeId={mentee._id} onUpdate={handleFieldUpdate} />}
                 {activeField === 'email' && <Email email={mentee.email} />}
                 {activeField === 'phone' && <Phone phoneNo={mentee.phone} menteeId={mentee._id} onUpdate={handleFieldUpdate} />}
