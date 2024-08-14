@@ -1,16 +1,16 @@
 
 import { IUser } from "../../entities/types/user/user";
-import { createUser, verifyUserdb, getUserbyEMail, checkIsmentor, updateUserPass, getUserbyId } from "../../repositories/userRepository";
-import { Request } from "express";
+import { createUser, verifyUserdb, getUserbyEMail, checkIsmentor, updateUserPass, getUserbyId, createOtp } from "../../repositories/userRepository";
+import { NextFunction, Request } from "express";
 import { Encrypt } from "../../helper/hashPassword";
 import { generateToken } from "../../helper/jwtHelper";
 import { findAdmin } from "../../repositories/adminReposetory";
-import { checkExistingUser, saveGoogleUser, saveProfilePicture, saveResetToken, checkResetToken } from "../../repositories/userRepository";
+import { checkExistingUser, saveGoogleUser, saveProfilePicture, saveResetToken, checkResetToken , getStoredOtp , deleteAllOtp , updateOtp} from "../../repositories/userRepository";
 import sendMail from "../../helper/sendMail";
-import { generatePasswordResetEmailContent } from "../../helper/mailer/emailTempletes";
+import { generateOtpEmailContent, generatePasswordResetEmailContent, generateResendOtpEmailContent } from "../../helper/mailer/emailTempletes";
 import { generateRandomToken } from "../../utils/generateRandomToken";
 import { ObjectId } from 'mongodb';
-
+import { otpGeneratorFun } from "../../utils/generateOtp";
 
 export default {
 
@@ -21,7 +21,15 @@ export default {
             }
             const hashedPassword = await Encrypt.cryptPassword(userData.password)
             const savedUser = await createUser(userData, hashedPassword)
-            console.log("user Usestate", savedUser);
+            if (savedUser) {
+                const otp = otpGeneratorFun();
+                await createOtp(savedUser.email, otp)
+                const emailContent = await generateOtpEmailContent(savedUser.userName, otp);
+                sendMail(savedUser.email, emailContent);
+             } else {
+                throw Error( "User registration failed" );
+             }
+
             return savedUser;
         } catch (error) {
             console.log(error);
@@ -29,36 +37,45 @@ export default {
         }
 
     },
+    
 
-    verifyUser: async (req: Request, data: { otp: string, email: string }) => {
-        const storedOTP = req.session.otp;
-        console.log('stored otp ' , storedOTP);
+    verifyUser: async ( data: { otp: string, email: string }) => {
+        const otpRecord = await getStoredOtp(data.email)
+        console.log('stored otp ' , otpRecord);
         
-        if (!storedOTP || storedOTP !== data.otp) {
-            throw Error("Invalid OTP vv");
+        if (!otpRecord || otpRecord.otp !== data.otp) {
+            throw Error("Invalid OTP");
         }
 
-        const otpGeneratedAt = req.session.otpGeneratedAt;
-        const currentTime = Date.now();
-        const otpAge = currentTime - otpGeneratedAt!;
+        const otpAge = Date.now() - otpRecord.createdAt.getTime();
         const expireOTP = 1 * 60 * 1000;
-
+    
         if (otpAge > expireOTP) {
-            delete req.session.otp;
-            delete req.session.otpGeneratedAt;
-            throw new Error('otp expired');
+             await deleteAllOtp(otpRecord.email);
+            throw new Error('OTP expired');
         }
 
-        // Clear OTP from session after successful verification  
-        delete req.session.otp;
-        delete req.session.otpGeneratedAt;
+        // Clear OTP from db after successful verification  
+        await deleteAllOtp(otpRecord.email);
 
         return await verifyUserdb(data.email);
     },
 
     resendOtp: async (email: string) => {
-        return await getUserbyEMail(email);
-
+        try {
+            const user =  await getUserbyEMail(email);
+            if (!user) {
+                throw Error( "User not found" );
+             }
+             const otp = otpGeneratorFun();
+             console.log("RESENT OTP", otp);
+             await updateOtp(email , otp);
+             const emailContent = generateResendOtpEmailContent(user.userName, otp);
+             await sendMail(user.email, emailContent);
+             return user
+        } catch (error) {
+            throw error
+        }
     },
 
     loginUser: async (email: string, password: string) => {

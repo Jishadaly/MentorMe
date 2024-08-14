@@ -18,19 +18,7 @@ export default {
       try {
          const { name, email } = req.body;
          const user = await userInteractor.registerUser(req.body);
-         if (user) {
-            const otp = otpGeneratorFun();
-            const sessionStore = req.session;
-            sessionStore.otp = otp;
-            sessionStore.otpGeneratedAt = Date.now()
-            console.log("OTP", otp);
-            const emailContent = await generateOtpEmailContent(name, otp);
-            sendMail(email, emailContent);
-
-         } else {
-            res.status(400).json({ message: "User registration failed" });
-         }
-         res.status(200).json({ message: "user authenticated successfully", user })
+         res.status(200).json({ message: "user created successfully"});
       } catch (error: any) {
          console.error(error.message);
          res.status(400).json( error.message );
@@ -64,10 +52,9 @@ export default {
    },
 
    verifyOTP: async (req: Request, res: Response, next: NextFunction) => {
-      console.log(req.body);
       
       try {
-         const response = await userInteractor.verifyUser(req, req.body);
+         const response = await userInteractor.verifyUser(req.body);
          res.status(200).json({ message: "verify success", response });
       } catch (error: any) {
          console.error("errro",error.message);
@@ -137,18 +124,8 @@ export default {
          const { email } = req.query;
          const userEmail = email as string
          const user = await authInteractor.resendOtp(userEmail);
-         if (!user) {
-            return res.status(400).json({ message: "User not found" });
-         }
-         const otp = otpGeneratorFun();
-         const sessionStore = req.session;
-         sessionStore.otp = otp;
-         sessionStore.otpGeneratedAt = Date.now()
-         console.log("RESENT OTP", otp);
-         const emailContent = generateResendOtpEmailContent(user.userName, otp);
-         await sendMail(userEmail, emailContent);
-         res.status(200).json({ message: "resend Otp sended succesfully", user });
          
+         res.status(200).json({ message: "resend Otp sended succesfully", user});
       } catch (error) {
          console.log(error);
          res.status(500).json(error);
