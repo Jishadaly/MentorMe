@@ -32,8 +32,10 @@ export default {
 
     verifyUser: async (req: Request, data: { otp: string, email: string }) => {
         const storedOTP = req.session.otp;
+        console.log('stored otp ' , storedOTP);
+        
         if (!storedOTP || storedOTP !== data.otp) {
-            throw new Error("Invalid OTP")
+            throw Error("Invalid OTP vv");
         }
 
         const otpGeneratedAt = req.session.otpGeneratedAt;

@@ -15,7 +15,6 @@ import AdminLogin from '@/pages/admin/AdminLogin'
 import AdminHome from '@/pages/admin/Home'
 import AdminProtected from './adminProtected'
 import ConfirmationPage from '@/pages/mentor/requestLoadingPage'
-import MentorHome from '@/pages/mentor/MentorHome'
 import MentorLogin from '@/pages/mentor/MentorLogin'
 import MentorProtected from './mentorProtected'
 import LandingPage from '@/pages/others/LandingPage'
@@ -38,7 +37,6 @@ import CallesPage from '@/pages/mentee/Calles'
 import Sessions from '@/pages/mentor/sessions/Sessions'
 import Room from '@/pages/others/meeting/room'
 import Notifications from '@/pages/others/notifications/Notifications'
-import Feedback from '@/componets/modal/FeedbackModal'
 import MentorDashboard from '@/pages/mentor/MentorDashboard'
 import ForgotPassword from '../pages/others/forgotPassword'
 import ResetPassword from '../pages/others/resetPasswordPage'
@@ -102,9 +100,8 @@ const router = createBrowserRouter(
       <Route path='/meet/:roomId' element= {<Room/>} />
       <Route path='/resetPassword' element={<ResetPassword/>} />
 
-      
     </Route>
   )
 )
 
-export default router 
+export default router;

@@ -20,7 +20,6 @@ export default {
          const user = await userInteractor.registerUser(req.body);
          if (user) {
             const otp = otpGeneratorFun();
-            console.log(req.session)
             const sessionStore = req.session;
             sessionStore.otp = otp;
             sessionStore.otpGeneratedAt = Date.now()
@@ -65,11 +64,13 @@ export default {
    },
 
    verifyOTP: async (req: Request, res: Response, next: NextFunction) => {
+      console.log(req.body);
+      
       try {
          const response = await userInteractor.verifyUser(req, req.body);
          res.status(200).json({ message: "verify success", response });
       } catch (error: any) {
-         console.error(error.message);
+         console.error("errro",error.message);
          res.status(500).json( error.message );
       }
    },

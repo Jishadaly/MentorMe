@@ -16,12 +16,7 @@ export const configureSocket = (server: HttpServer) => {
       socket.join(chatId); 
       console.log(`User joined chat: ${chatId}`);
     });
-
-    // socket.on('sendMessage', (data: any) => {
-    //   console.log('Message received:', data);
-    //   io.to(data.chatId).emit('receiveMessage', data); 
-    // });
-
+    
     socket.on('typing', (data:any) => {
       socket.to(data.chatId).emit('typing', data);
     });
