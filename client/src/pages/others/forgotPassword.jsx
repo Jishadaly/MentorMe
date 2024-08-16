@@ -4,8 +4,10 @@ import * as Yup from 'yup';
 import { sendForgotLink } from '../../redux/services/userAuthServices';
 import { toast } from 'sonner';
 import ReactLoading from 'react-loading';
+import { useNavigate } from 'react-router-dom';
 
 function ForgotPassword() {
+    const navigate = useNavigate('');
 
     const initialValues = {
         email: '',
@@ -18,12 +20,12 @@ function ForgotPassword() {
             .matches(
                 /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                 'Please enter a valid email address'
-            ) // Regex pattern to ensure a valid email format
+            ) 
             .test(
                 'is-not-temporary',
                 'Temporary email addresses are not allowed',
                 (value) => !/(mailinator|temp-mail|yopmail)/i.test(value)
-            ) // Custom test to disallow temporary email domains
+            )
     });
 
 
@@ -32,7 +34,6 @@ function ForgotPassword() {
             const { email } = values;
             const response = await sendForgotLink('user/sendForgotPasswordLink', values);
             toast.success('resend password sended in your mail , check your mail');
-
             setSubmitting(false)
             resetForm()
         } catch (error) {
@@ -47,8 +48,8 @@ function ForgotPassword() {
                 <div>
                     <h1 className="text-white font-extrabold text-4xl font-inter">Forgot Password</h1>
                     <p className="text-white mt-1 font-inter">Enter your email to reset your password</p>
-                    <button type="button" className="block w-28 bg-white text-indigo-800 mt-4 py-2 rounded-2xl font-bold mb-2">
-                        Read More
+                    <button type="button" onClick={() => navigate('/')} className="block w-28 bg-white text-indigo-800 mt-4 py-2 rounded-2xl font-bold mb-2">
+                        Go home
                     </button>
                 </div>
                 <div className="absolute -bottom-32 -left-40 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
@@ -83,8 +84,7 @@ function ForgotPassword() {
                                     <div className="text-red-500 text-sm mt-1">{errors.email}</div>
                                 )}
                             </div>
-
-
+                            
                             <button
                                 type="submit"
                                 disabled={isSubmitting}

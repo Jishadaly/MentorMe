@@ -190,8 +190,8 @@ export default function MentorDashboard() {
     },
     {
       color: "indigo",
-      icon: DollarSignIcon,
-      title: "Earnings",
+      icon: BookOpenIcon,
+      title: "blogs",
       value: blogCreationCount,
       footer: {
         color: "text-green-500",
