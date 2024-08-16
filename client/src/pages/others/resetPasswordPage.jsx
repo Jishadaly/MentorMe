@@ -4,13 +4,14 @@ import * as Yup from 'yup';
 import { resetPassword } from '../../redux/services/userAuthServices'; // Import your password reset service
 import { toast } from 'sonner';
 import ReactLoading from 'react-loading';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 function ResetPassword() {
     const { search } = useLocation();
     const queryParams = new URLSearchParams(search);
     const token = queryParams.get('token'); // Get the token from query parameters
+    const navigate = useNavigate();
 
     useEffect(() => {
         // Handle token validation or display an error if token is invalid/expired
@@ -49,6 +50,7 @@ function ResetPassword() {
             }
             await resetPassword('user/resetPassword', data);
             toast.success('Password has been reset successfully');
+            navigate('/mentee/login');
         } catch (error) {
             toast.error(error.message);
         } finally {

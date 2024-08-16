@@ -12,24 +12,23 @@ import { useDispatch } from 'react-redux';
 import GoogleLoginButton from '@/componets/GoogleLoginButton';
 import ReactLoading from 'react-loading';
 
-
 const Signup = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userEmail, setUserEmail] = useState('');
-  const [userGoogleData, setuserGoogleData] = useState('')
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const [userGoogleData, setuserGoogleData] = useState('');
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (values, { setSubmitting }) => {
     setUserEmail(values.email);
     setSubmitting(true);
 
     try {
-
       const response = await userRegister('user/signup', values);
       const user = response.data.user;
       setIsModalOpen(true);
+      
     } catch (error) {
       console.log(error);
       toast.error(error.response.data)

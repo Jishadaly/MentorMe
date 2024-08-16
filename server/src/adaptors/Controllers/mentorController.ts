@@ -225,6 +225,7 @@ export default {
       res.status(400).json(error.message);
     }
   },
+  
   editNotification:async(req:Request , res:Response, next:NextFunction)=>{
      try {
        
@@ -237,6 +238,7 @@ export default {
       res.status(400).json(error.message)
      }
   },
+
   updateSessionStatus:async(req:Request , res:Response, next:NextFunction)=>{
     console.log(req.query);
     try {
@@ -250,8 +252,8 @@ export default {
      res.status(400).json(error.message)
     }
   },
+
   getMentorDashboard:async(req:Request ,  res:Response , next:NextFunction)=>{
-    console.log("heeeeeeeeeeeeeeeeere");
     
     try {
       const userId = req.userId as string

@@ -43,7 +43,6 @@ export default {
     
 },
 postFeedback:async(req:Request , res:Response ,  next: NextFunction)=>{
-
   const { feedback , mentorId , sessionId , rating} :{ feedback:string ,  mentorId:string , sessionId:string , rating:string} = req.body;
   
   const userId =  req.userId as string;

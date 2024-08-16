@@ -53,7 +53,6 @@ export const googleAuth = createAsyncThunk(
 
     try {
       const response = await authInstanceAxios.post(`/${endpoint}`, userData);
-
       const user = response.data.response.user;
       const token = response.data.response.token;
 
@@ -63,6 +62,7 @@ export const googleAuth = createAsyncThunk(
 
       return { user, token };
     } catch (error) {
+      console.log(error);
       return thunkAPI.rejectWithValue(error.response.data);
     }
   }

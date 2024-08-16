@@ -1,7 +1,5 @@
-
 import { IUser } from "../../entities/types/user/user";
 import { createUser, verifyUserdb, getUserbyEMail, checkIsmentor, updateUserPass, getUserbyId, createOtp } from "../../repositories/userRepository";
-import { NextFunction, Request } from "express";
 import { Encrypt } from "../../helper/hashPassword";
 import { generateToken } from "../../helper/jwtHelper";
 import { findAdmin } from "../../repositories/adminReposetory";
@@ -9,7 +7,6 @@ import { checkExistingUser, saveGoogleUser, saveProfilePicture, saveResetToken, 
 import sendMail from "../../helper/sendMail";
 import { generateOtpEmailContent, generatePasswordResetEmailContent, generateResendOtpEmailContent } from "../../helper/mailer/emailTempletes";
 import { generateRandomToken } from "../../utils/generateRandomToken";
-import { ObjectId } from 'mongodb';
 import { otpGeneratorFun } from "../../utils/generateOtp";
 
 export default {
@@ -23,6 +20,8 @@ export default {
             const savedUser = await createUser(userData, hashedPassword)
             if (savedUser) {
                 const otp = otpGeneratorFun();
+                console.log("OTP : " ,otp);
+                
                 await createOtp(savedUser.email, otp)
                 const emailContent = await generateOtpEmailContent(savedUser.userName, otp);
                 sendMail(savedUser.email, emailContent);
@@ -38,10 +37,8 @@ export default {
 
     },
     
-
     verifyUser: async ( data: { otp: string, email: string }) => {
         const otpRecord = await getStoredOtp(data.email)
-        console.log('stored otp ' , otpRecord);
         
         if (!otpRecord || otpRecord.otp !== data.otp) {
             throw Error("Invalid OTP");
@@ -188,22 +185,18 @@ export default {
     googleAuth: async (userData: IUser) => {
 
         try {
-
             const savedUser = await saveGoogleUser(userData);
             if (savedUser) {
-
                 const user = {
                     id: savedUser._id,
                     name: savedUser.userName,
                     email: savedUser.email,
                     phone: savedUser.phone,
-
                 }
                 const role = 'mentee';
                 let token = generateToken(savedUser.id, savedUser.email, role);
                 return { user, token };
             }
-
         } catch (error: any) {
             console.error(`Error: ${error.message}`);
             throw error;
@@ -212,12 +205,9 @@ export default {
 
     resetPassword: async (userId: string, newPass: string) => {
         try {
-            console.log("////////", userId, newPass);
-            const hashedPassword = await Encrypt.cryptPassword(newPass);
-            console.log(hashedPassword);
 
-            const pass = updateUserPass(userId, hashedPassword);
-            return pass
+            const hashedPassword = await Encrypt.cryptPassword(newPass);
+            return updateUserPass(userId, hashedPassword);
 
         } catch (error) {
             throw error

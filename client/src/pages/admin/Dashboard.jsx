@@ -70,9 +70,7 @@ function Dashboard() {
   }, []);
 
 
-  if (loading) {
-    return <div> <ReactLoading type="cylon" color="#4338CA" height={100} width={100} /></div>;
-  }
+  
 
   if (error) {
     return <div>Error: {error.message}</div>;
@@ -128,7 +126,8 @@ function Dashboard() {
 
 
   return (
-    <>
+   
+    <div>
       <div className="mb-12 grid gap-y-10 gap-x-6 md:grid-cols-2 xl:grid-cols-4">
         {statisticsCardsData.map(({ icon, title, footer, ...rest }) => (
           <StatisticsCard
@@ -152,7 +151,7 @@ function Dashboard() {
         <ApexChart />
       </div>
 
-    </>
+      </div>
   );
 }
 
