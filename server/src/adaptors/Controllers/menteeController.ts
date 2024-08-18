@@ -58,10 +58,9 @@ postFeedback:async(req:Request , res:Response ,  next: NextFunction)=>{
   }
 
 },
+
 getMentorReviews:async(req:Request , res:Response ,  next: NextFunction)=>{
   const {mentorId} = req.query;
-  console.log("//////// ",req.query);
-  
   try {
     const reviews = await menteeInteractor.getMentorReviews(mentorId as string) ;
     console.log(reviews);
@@ -72,5 +71,17 @@ getMentorReviews:async(req:Request , res:Response ,  next: NextFunction)=>{
   }
 
 },
+
+searchMentor:async(req:Request , res:Response , next:NextFunction)=>{
+  console.log(req.query);
+  const query = req.query.search as string;
+
+  try {
+      const mentors = await menteeInteractor.searchMentors(query);
+      res.status(200).json(mentors);
+  } catch (error:any) {
+      res.status(400).json(error.message);
+  }
+}
 
 }

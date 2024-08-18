@@ -36,6 +36,8 @@ userRouter.get('/getMentee' , protect ,checkBlocked,checkRole(['mentee']), mente
 userRouter.post('/editProfile',protect,menteeController.editProfile);
 userRouter.post('/postFeedback' , protect , checkBlocked , checkRole(['mentee']), menteeController.postFeedback);
 userRouter.get('/getMentorReview',protect,checkBlocked,checkRole(['mentee']),menteeController.getMentorReviews);
+userRouter.get('/searchMentors',protect,checkBlocked ,checkRole(['mentee']),menteeController.searchMentor);
+
 //slot ?
 userRouter.post('/addSlots' ,protect, mentorController.addSlots);
 userRouter.delete('/deleteSlot' , protect,mentorController.deleteSlot);

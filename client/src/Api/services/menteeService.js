@@ -1,5 +1,4 @@
 import { authInstanceAxios } from "../axiosInstence";
-import axios from 'axios';
 
 export const fetchMentorData = async (endPoint, mentorId) => {
   const response = await authInstanceAxios.get(`${endPoint}?mentorId=${mentorId}`);
@@ -81,3 +80,8 @@ export const reportBlog = async (endPoint, data) => {
   const response = await authInstanceAxios.post(`/${endPoint}` , data);
   return response.data
 };
+
+export const searchMentors = async(endPoint , query)=>{
+   const response = await authInstanceAxios.get(`/${endPoint}?search=${query}`);
+   return response.data;
+}

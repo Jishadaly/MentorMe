@@ -14,8 +14,8 @@ const LandingPage = () => {
             MentorMe
           </a>
           <div className="block lg:hidden">
-            <button  className="flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-gray-800 hover:border-teal-500 appearance-none focus:outline-none">
-            <svg xmlns="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" ></svg>
+            <button className="flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-gray-800 hover:border-teal-500 appearance-none focus:outline-none">
+              <svg xmlns="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" ></svg>
 
             </button>
           </div>
@@ -44,10 +44,10 @@ const LandingPage = () => {
             Find your programming mentor or mentee and level up your skills.
           </h3>
           <div className="flex justify-center">
-            <button onClick={()=> navigate('/mentor')} className="bg-white font-bold rounded-full py-4 px-8 shadow-lg uppercase tracking-wider mr-4">
+            <button onClick={() => navigate('/mentor')} className="bg-white font-bold rounded-full py-4 px-8 shadow-lg uppercase tracking-wider mr-4">
               Mentor
             </button>
-            <button onClick={()=> navigate('/mentee/home')} className="bg-white font-bold rounded-full py-4 px-8 shadow-lg uppercase tracking-wider">
+            <button onClick={() => navigate('/mentee/home')} className="bg-white font-bold rounded-full py-4 px-8 shadow-lg uppercase tracking-wider">
               Mentee
             </button>
           </div>
@@ -59,8 +59,8 @@ const LandingPage = () => {
           Key Features
         </h2>
         <div className="flex items-center flex-wrap mb-20">
-          
-          <InfiniteMovingCardsDemo/>
+
+          <InfiniteMovingCardsDemo />
         </div>
       </section>
       {/* Mentor Profiles */}
@@ -103,7 +103,7 @@ const LandingPage = () => {
                 </button>
               </div>
             </div>
-            
+
             {/* Add more mentor profile cards here */}
           </div>
         </div>
@@ -151,7 +151,7 @@ const LandingPage = () => {
           <h3 className="my-4 text-2xl text-white">
             Join MentorMe today and accelerate your programming journey!
           </h3>
-          <button onClick={()=> navigate('/signup')} className="bg-white font-bold rounded-full mt-6 py-4 px-8 shadow-lg uppercase tracking-wider">
+          <button onClick={() => navigate('/signup')} className="bg-white font-bold rounded-full mt-6 py-4 px-8 shadow-lg uppercase tracking-wider">
             Sign Up Now
           </button>
         </div>

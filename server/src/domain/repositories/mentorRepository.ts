@@ -397,6 +397,36 @@ export default {
     } catch (error) {
       throw error
     }
+  },
+
+  getSearchedMentors:async(query:string)=>{
+    try {
+      
+      const mentors = await Users.find({
+        isMentor: true, 
+      })
+        .populate({
+          path: 'mentorAdditional',
+          match: {
+            $or: [
+              { name: { $regex: query, $options: 'i' } }, 
+              { programmingLanguages: { $regex: query, $options: 'i' } },
+              { jobTitle: { $regex: query, $options: 'i' } }, 
+              { company: { $regex: query, $options: 'i' } }, 
+            ],
+          },
+        })
+        .select('-password') 
+  
+     
+      const filteredMentors = mentors.filter(mentor => mentor.mentorAdditional);
+      console.log({filteredMentors})
+      
+      return filteredMentors;
+    } catch (error) {
+      console.error('Error searching mentors:', error);
+      throw error;
+    }
   }
 
 

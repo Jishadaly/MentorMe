@@ -56,6 +56,14 @@ export default {
     } catch (error) {
       throw error
     }
+  },
+  searchMentors:async(query:string)=>{
+    try {
+      const mentors = await mentorRepository.getSearchedMentors(query);
+      return mentors;
+    } catch (error) {
+      
+    }
   }
   
 }
