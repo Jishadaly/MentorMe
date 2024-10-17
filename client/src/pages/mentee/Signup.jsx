@@ -13,10 +13,13 @@ import GoogleLoginButton from '@/componets/GoogleLoginButton';
 import ReactLoading from 'react-loading';
 
 const Signup = () => {
-
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userEmail, setUserEmail] = useState('');
   const [userGoogleData, setuserGoogleData] = useState('');
+  const [showPassword , setShowPassword] = useState(false);
+  const [showConfirmPassword , setShowConfirmPassword] = useState(false);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -28,7 +31,7 @@ const Signup = () => {
       const response = await userRegister('user/signup', values);
       const user = response.data.user;
       setIsModalOpen(true);
-      
+
     } catch (error) {
       console.log(error);
       toast.error(error.response.data)
@@ -99,7 +102,7 @@ const Signup = () => {
                 <h1 className="text-4xl font-black mb-4 font-sans ">Register</h1>
                 <p className="text-sm font-normal text-gray-600 mb-7">Welcome Back</p>
 
-                { touched.name && errors.name && <div className="text-red-400 font-inter text-sm ">{errors.name}</div> }
+                {touched.name && errors.name && <div className="text-red-400 font-inter text-sm ">{errors.name}</div>}
                 <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
@@ -143,11 +146,26 @@ const Signup = () => {
                     <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
                   </svg>
                   <input className="pl-2 outline-none border-none"
-                    type="text"
+                    type={showPassword ? "text" : 'password'}
                     placeholder="Password"
                     name='password'
                     onChange={handleChange}
                     value={values.password} />
+
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-gray-400 cursor-pointer"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A9.003 9.003 0 013.06 9.06m0 0A9.003 9.003 0 0118.825 13.875M12 4.5c3.196 0 6.035 1.527 7.875 4m0 0a9.003 9.003 0 01-13.75 0m7.875 4c-1.44 0-2.88-.56-3.975-1.875M9 9l.016-.011A5.978 5.978 0 0112 7.5c1.5 0 2.879.562 3.984 1.487M15 15l-.016.011A5.978 5.978 0 0112 16.5c-1.5 0-2.879-.562-3.984-1.487" />
+                    ) : (
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3.06 9.06a9.003 9.003 0 0115.765 4.814m0 0A9.003 9.003 0 013.06 9.06m0 0a9.003 9.003 0 0115.765 4.814M12 4.5c3.196 0 6.035 1.527 7.875 4m0 0a9.003 9.003 0 01-13.75 0m7.875 4c-1.44 0-2.88-.56-3.975-1.875M9 9l.016-.011A5.978 5.978 0 0112 7.5c1.5 0 2.879.562 3.984 1.487M15 15l-.016.011A5.978 5.978 0 0112 16.5c-1.5 0-2.879-.562-3.984-1.487" />
+                    )}
+                  </svg>
 
                 </div>
 
@@ -157,16 +175,32 @@ const Signup = () => {
                     <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
                   </svg>
                   <input className="pl-2 outline-none border-none"
-                    type="text" placeholder="Confrm Password"
+                    type={ showConfirmPassword ?"text" : 'password'} 
+                    placeholder="Confrm Password"
                     name='confirmPassword'
                     onChange={handleChange}
                     value={values.confirmPassword} />
+
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-gray-400 cursor-pointer"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    {showPassword ? (
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A9.003 9.003 0 013.06 9.06m0 0A9.003 9.003 0 0118.825 13.875M12 4.5c3.196 0 6.035 1.527 7.875 4m0 0a9.003 9.003 0 01-13.75 0m7.875 4c-1.44 0-2.88-.56-3.975-1.875M9 9l.016-.011A5.978 5.978 0 0112 7.5c1.5 0 2.879.562 3.984 1.487M15 15l-.016.011A5.978 5.978 0 0112 16.5c-1.5 0-2.879-.562-3.984-1.487" />
+                    ) : (
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3.06 9.06a9.003 9.003 0 0115.765 4.814m0 0A9.003 9.003 0 013.06 9.06m0 0a9.003 9.003 0 0115.765 4.814M12 4.5c3.196 0 6.035 1.527 7.875 4m0 0a9.003 9.003 0 01-13.75 0m7.875 4c-1.44 0-2.88-.56-3.975-1.875M9 9l.016-.011A5.978 5.978 0 0112 7.5c1.5 0 2.879.562 3.984 1.487M15 15l-.016.011A5.978 5.978 0 0112 16.5c-1.5 0-2.879-.562-3.984-1.487" />
+                    )}
+                  </svg>
                 </div>
                 <button type="submit"
                   disabled={isSubmitting}
                   className="block w-full bg-gradient-to-r from-indigo-600 to-purple-700 mt-4 py-2 rounded-2xl text-white font-semibold mb-2 font-inter"
-                  >
-                  {isSubmitting ? <ReactLoading type="spokes" color="#fff" height={20} width={20}  />  : 'Signup'}
+                >
+                  {isSubmitting ? <ReactLoading type="spokes" color="#fff" height={20} width={20} /> : 'Signup'}
                 </button>
                 <div className="flex items-center my-4">
                   <hr className="flex-grow border-gray-300" />

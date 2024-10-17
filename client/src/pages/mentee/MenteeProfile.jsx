@@ -12,7 +12,6 @@ import { useNavigate } from 'react-router-dom';
 import EditProfilePicture from '@/componets/EditProfilePicture';
 import ReactLoading from 'react-loading';
 
-
 const MenteeProfile = () => {
   const [mentee, setMentee] = useState(null);
   const [loading, setLoading] = useState(true);

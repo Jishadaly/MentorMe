@@ -31,7 +31,7 @@
 //   )
 // }
 
-// export default Header
+// export default Header;
 
 import React, { useState, useEffect } from 'react';
 import { FiBell } from 'react-icons/fi';

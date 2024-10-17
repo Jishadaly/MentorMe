@@ -47,6 +47,7 @@ const router = createBrowserRouter(
       <Route index element={<LandingPage />} />
  
       <Route  element={<Protected/> }>
+      
         <Route path='/mentee' element={<MenteeLayout/>}>
         <Route index element={<MenteeHome />} />
             <Route path='home' element={<MenteeHome/>}/>
@@ -82,8 +83,7 @@ const router = createBrowserRouter(
           <Route path='sessions' element= {<Sessions/>}/>
           <Route path='notifications' element={<Notifications/>}/>
           <Route path='dashboard' element={<MentorDashboard/>}/>
-
-           
+          
         </Route>    
       </Route>
 

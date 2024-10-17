@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form } from 'formik';
 import { validationShema , initialValue } from '@/utils/validations/loginValidation';
 import { useNavigate } from 'react-router-dom';
@@ -13,7 +13,8 @@ function MentorLogin(){
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.auth);
-  
+  const [showPassword , setShowPassword ] = useState(false);
+
   const handleSubmit = async (values, { setSubmitting }) => {
     
     setSubmitting(true);
@@ -65,7 +66,7 @@ function MentorLogin(){
                 </svg>
                 <input
                   className="pl-2 outline-none border-none"
-                  type="text"
+                  type='text'
                   placeholder="Email Address"
                   name="email"
                   onChange={handleChange}
@@ -81,12 +82,26 @@ function MentorLogin(){
                 </svg>
                 <input
                   className="pl-2 outline-none border-none"
-                  type="password"
+                  type={showPassword ?"text" : 'password'}
                   placeholder="Password"
                   name="password"
                   onChange={handleChange}
                   value={values.password}
                 />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 text-gray-400 cursor-pointer"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A9.003 9.003 0 013.06 9.06m0 0A9.003 9.003 0 0118.825 13.875M12 4.5c3.196 0 6.035 1.527 7.875 4m0 0a9.003 9.003 0 01-13.75 0m7.875 4c-1.44 0-2.88-.56-3.975-1.875M9 9l.016-.011A5.978 5.978 0 0112 7.5c1.5 0 2.879.562 3.984 1.487M15 15l-.016.011A5.978 5.978 0 0112 16.5c-1.5 0-2.879-.562-3.984-1.487" />
+                  ) : (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3.06 9.06a9.003 9.003 0 0115.765 4.814m0 0A9.003 9.003 0 013.06 9.06m0 0a9.003 9.003 0 0115.765 4.814M12 4.5c3.196 0 6.035 1.527 7.875 4m0 0a9.003 9.003 0 01-13.75 0m7.875 4c-1.44 0-2.88-.56-3.975-1.875M9 9l.016-.011A5.978 5.978 0 0112 7.5c1.5 0 2.879.562 3.984 1.487M15 15l-.016.011A5.978 5.978 0 0112 16.5c-1.5 0-2.879-.562-3.984-1.487" />
+                  )}
+                </svg>
                 
               </div>
               {touched.password && errors.password && <div className="text-red-500">{errors.password}</div>}

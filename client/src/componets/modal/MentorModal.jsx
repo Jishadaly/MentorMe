@@ -1,7 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function MentorModal({ isVisible, onClose, mentors }) {
   if (!isVisible || mentors.length === 0) return null;
+  const navigate = useNavigate();
+  
 
   const mentors1 = [
     {
@@ -71,6 +74,10 @@ function MentorModal({ isVisible, onClose, mentors }) {
     
   ];
 
+  const handleView = (id)=>{
+    navigate(`/mentee/mentorDetails/${id}`)
+    onClose()
+  }
 
   return (
     <div className="bg-white rounded-lg p-4 shadow-lg w-full max-h-64 overflow-y-auto border border-gray-300">
@@ -97,7 +104,7 @@ function MentorModal({ isVisible, onClose, mentors }) {
               </div>
             </div>
             <button
-              onClick={() => alert(`Viewing ${mentor.userName}`)}
+              onClick={ ()=> handleView(mentor.mentorAdditional._id)}
               className="text-indigo-500 hover:text-indigo-700 text-sm"
             >
               View
@@ -106,7 +113,7 @@ function MentorModal({ isVisible, onClose, mentors }) {
         ))}
       </div>
 
-      <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
+      {/* <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
           <div className="bg-white w-[800px] max-h-[600px] overflow-auto rounded-lg shadow-lg p-6">
             <div className="flex items-center justify-between mb-4">
               <input
@@ -153,7 +160,7 @@ function MentorModal({ isVisible, onClose, mentors }) {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
     </div>
   );
 }
