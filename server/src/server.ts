@@ -1,6 +1,5 @@
 import express, { Application} from 'express';
 import http from 'http';
-import { Server } from 'socket.io';
 import { configureExpress } from './config/expressConfig';
 import userRouter from './frameworks/webserver/routes/userRoute';
 import adminRouter from './frameworks/webserver/routes/adminRoute';

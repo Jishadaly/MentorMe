@@ -6,6 +6,7 @@ import authInteractor from "../../domain/usecases/auth/authInteractor";
 import { generateOtpEmailContent, generateResendOtpEmailContent } from "../../domain/helper/mailer/emailTempletes";
 import jwt from 'jsonwebtoken';
 import { generateToken } from "../../domain/helper/jwtHelper";
+import { Multer } from 'multer'; // Import Multer types
 
 declare module 'express-serve-static-core' {
    interface Request {
@@ -148,7 +149,7 @@ export default {
    uploadProfile:async (req: Request, res: Response, next: NextFunction) => {
       try {
          
-         const path = req.file?.path;
+         const path = (req.file as Express.Multer.File)?.path;
          const userId = req.userId;
          if(!userId) throw Error('user not authorised')
          if (!path) throw Error('image not found')
@@ -165,6 +166,7 @@ export default {
          next(error);
        }
    },
+
    resetPassword:async(req:Request , res:Response , next:NextFunction)=>{
       const { token , password } : { token:string , password:string } = req.body;
       console.log(req.body);

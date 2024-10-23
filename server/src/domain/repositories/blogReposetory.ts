@@ -1,7 +1,6 @@
-
 import { Blog } from "../../frameworks/database/mongoDb/models/blog";
-import { Users } from "../../frameworks/database/mongoDb/models/user";
 import Report from "../../frameworks/database/mongoDb/models/report";
+
 
 export default {
   saveBlog: async (blog: { title: string, summary: string, content: any }) => {

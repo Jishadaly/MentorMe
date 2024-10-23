@@ -21,11 +21,10 @@ export default {
   getAllBlogs:async( req:Request ,res: Response, next: NextFunction)=>{
     try {
        const page : any = req.query.page;
-       console.log(page);
        
        if(!page) throw Error('page not provided')
        const blogs  = await blogInteractor.getAllBlogs(page);
-      console.log(blogs);
+      console.log('blooogs',blogs);
       
        res.status(200).json(blogs);
     } catch (error:any) {
