@@ -52,8 +52,6 @@ export const googleAuth = createAsyncThunk(
       const response = await authInstanceAxios.post(`/${endpoint}`, userData);
       const user = response.data.response.user;
       const token = response.data.response.token;
-      console.log('google auth response : ',response);
-      console.log('google auth token : ',token);
 
       Cookies.set('token', token)
 
