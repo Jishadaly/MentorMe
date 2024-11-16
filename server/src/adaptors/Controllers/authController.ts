@@ -34,14 +34,9 @@ export default {
          if(!storedRefreshToken){
             return res.status(401).json({ message: "Refresh token not provided" });
          }
-         console.log("herererere",process.env.JWT_SECRET);
-         const decoded = jwt.verify(storedRefreshToken, process.env.JWT_SECRET_REFRESH!) as jwt.JwtPayload;
-         console.log("here" , decoded);
-         
-         const { accessToken, refreshToken } = generateToken(decoded.userId, decoded.email , decoded.userRole);
 
-         console.log({accessToken});
-         
+         const decoded = jwt.verify(storedRefreshToken, process.env.JWT_SECRET_REFRESH!) as jwt.JwtPayload;
+         const { accessToken, refreshToken } = generateToken(decoded.userId, decoded.email , decoded.userRole);
          
          res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'strict' });
          res.json({ accessToken});
@@ -84,7 +79,6 @@ export default {
          const response = await userInteractor.loginMentor(email, password);
          const {  refreshToken } = response
          console.log({refreshToken});
-         
          res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'strict' });
          res.status(200).json({ message: "Mentro login success", response });
       } catch (error: any) {

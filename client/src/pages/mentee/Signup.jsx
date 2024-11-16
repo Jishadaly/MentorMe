@@ -13,12 +13,11 @@ import GoogleLoginButton from '@/componets/GoogleLoginButton';
 import ReactLoading from 'react-loading';
 
 const Signup = () => {
-  
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userEmail, setUserEmail] = useState('');
-  const [userGoogleData, setuserGoogleData] = useState('');
-  const [showPassword , setShowPassword] = useState(false);
-  const [showConfirmPassword , setShowConfirmPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -47,9 +46,9 @@ const Signup = () => {
   }
 
 
-  const handleGoogleAuthClick = () => {
+  const handleGoogleAuthClick = async () => {
 
-    signInWithPopup(auth, provider).then((data) => {
+   await signInWithPopup(auth, provider).then((data) => {
 
       const userData = {
         name: data.user.displayName,
@@ -57,8 +56,7 @@ const Signup = () => {
         profilePic: data.user.photoURL
       }
 
-      setuserGoogleData(userData);
-      dispatch(googleAuth({ endpoint: "user/googleLogin", userData: userGoogleData }))
+      dispatch(googleAuth({ endpoint: "user/googleLogin", userData: userData }))
         .unwrap()
         .then(() => {
           toast.success("User logged in successfully");
@@ -66,11 +64,10 @@ const Signup = () => {
         })
         .catch((err) => {
           console.error(err)
-          toast.error(err.error)
+          toast.error("google authentication failed please try again")
         }
         );
     });
-
   }
 
   return (
@@ -90,7 +87,7 @@ const Signup = () => {
       </div>
       <div className="flex md:w-1/2 justify-center py-10 items-center bg-white">
         <Formik
-          initialValues={initialValue} // Correct prop name
+          initialValues={initialValue}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
@@ -110,7 +107,6 @@ const Signup = () => {
                   <input className="pl-2 outline-none border-none" type="text" placeholder="Full name" name='name' onChange={handleChange} value={values.name} />
                 </div>
 
-
                 {touched.email && errors.email && <div className="text-red-400 font-inter text-sm">{errors.email}</div>}
                 <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -123,7 +119,6 @@ const Signup = () => {
                     name='email'
                     onChange={handleChange}
                     value={values.email} />
-
                 </div>
 
                 {touched.phone && errors.phone && <div className="text-red-400 font-inter text-sm">{errors.phone}</div>}
@@ -174,8 +169,9 @@ const Signup = () => {
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
                   </svg>
+                  
                   <input className="pl-2 outline-none border-none"
-                    type={ showConfirmPassword ?"text" : 'password'} 
+                    type={showConfirmPassword ? "text" : 'password'}
                     placeholder="Confrm Password"
                     name='confirmPassword'
                     onChange={handleChange}
@@ -209,6 +205,7 @@ const Signup = () => {
                 </div>
 
                 <GoogleLoginButton handleGoogleAuthClick={handleGoogleAuthClick} />
+
                 <div className="mt-4">
                   <span onClick={() => navigate('/mentee/login')} className="text-sm font-sans " >Already have an account? <a className="text-blue-500">Sign in</a></span>
                 </div>

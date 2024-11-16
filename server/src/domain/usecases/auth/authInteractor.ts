@@ -195,7 +195,7 @@ export default {
                 }
                 const role = 'mentee';
                 let token = generateToken(savedUser.id, savedUser.email, role);
-                return { user, token };
+                return { user, token : token.accessToken };
             }
         } catch (error: any) {
             console.error(`Error: ${error.message}`);

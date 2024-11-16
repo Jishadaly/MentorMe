@@ -7,25 +7,17 @@ import { store, persister } from './redux/store'
 import { PersistGate } from 'redux-persist/integration/react'
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
-import io from 'socket.io-client'
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIP_PUBLISHED_KEY);
-// const socket = io(import.meta.env.VITE_SOCKET_SERVER_URL);
 
 const App = () => {
-  // useEffect(() => {
-  //   socket.connect();
-  //   return () => {
-  //     socket.disconnect();
-  //     console.log('Socket disconnected');
-  //   };
-  // }, []);
+
 
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persister}>
         <Elements stripe={stripePromise}>
-          <Toaster position="top-center"/>
+          <Toaster position="bottom-right"/>
             <RouterProvider router={router}/>
         </Elements>
       </PersistGate>

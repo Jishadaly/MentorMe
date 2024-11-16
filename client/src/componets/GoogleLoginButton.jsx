@@ -5,7 +5,7 @@ export default function GoogleLoginButton({ navigateTo , handleGoogleAuthClick }
    
     return (
         <div>
-            <button onClick={handleGoogleAuthClick} type="button" className="flex items-center justify-center w-full border-2 border-gray-300 bg-white py-2 rounded-2xl text-gray-600 font-semibold mb-4">
+            <button onClick={handleGoogleAuthClick} type="button" className="flex items-center justify-center w-full border-2 border-gray-300 bg-white py-2 rounded-2xl text-gray-600 font-semibold mb-4 cursor-pointer">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M21.35 11.1h-9.1v2.73h5.27c-.23 1.37-.92 2.53-1.94 3.3v2.75h3.12c1.83-1.69 2.88-4.19 2.88-7.03 0-.66-.07-1.3-.2-1.92z" fill="#4285F4" />
                     <path d="M12.25 22c2.47 0 4.54-.82 6.06-2.22l-3.12-2.75c-.88.6-2.01.96-3.23.96-2.48 0-4.58-1.68-5.33-3.94H3.34v2.77C4.88 19.74 8.28 22 12.25 22z" fill="#34A853" />

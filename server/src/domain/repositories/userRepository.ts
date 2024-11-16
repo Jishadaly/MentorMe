@@ -1,9 +1,7 @@
-import { Users, Iuser } from '../../frameworks/database/mongoDb/models/user';
+import { Users  } from '../../frameworks/database/mongoDb/models/user';
 import { IUser } from '../entities/types/user/user';
-import { generatePassword } from '../utils/generatePassword';
 import { Encrypt } from '../helper/hashPassword';
 import Availability from '../../frameworks/database/mongoDb/models/Availability';
-import MentorApplication from '../../frameworks/database/mongoDb/models/mentorApplicationModel';
 import ResetToken from '../../frameworks/database/mongoDb/models/resetToken';
 import OTP from '../../frameworks/database/mongoDb/models/otpModel';
 
@@ -100,12 +98,15 @@ export const checkResetToken = async (token: string) => {
 export const createOtp = async (email: string, otp: string) => {
   return await OTP.create({ email, otp });
 }
+
 export const getStoredOtp = async (email: string) => {
   return await OTP.findOne({ email: email }).sort({ createdAt: -1 }).exec();
 }
+
 export const deleteAllOtp = async (email: string) => {
   return await OTP.deleteMany({ email: email });
 }
+
 export const updateOtp = async (email: string, otp: string) => {
   return await OTP.findOneAndUpdate({ email }, { otp, createdAt: new Date() }, { upsert: true });
 }
@@ -140,9 +141,6 @@ export const saveGoogleUser = async (userData: IUser) => {
 export const getBookdslotdb = async (userId: string) => {
 
   const slots = await Availability.find({ bookedBy: userId, isBooked: true }).sort({ updated_at: -1 });
-  // .populate('mentorId').populate({path:'mentorAdditional'})
-  // .exec();
-  // console.log("slotes",slots);
 
   if (!slots) {
     throw new Error("there is no booked slotes")

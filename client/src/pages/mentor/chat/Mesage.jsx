@@ -203,6 +203,7 @@ export default function Messages({ chatId }) {
             setIsTyping(false);
             socket.emit('stopTyping', { chatId, sender: currentUserId });
           }}
+          
           onKeyPress={(e) => {
             if (e.key === 'Enter') {
               handleSend();

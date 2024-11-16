@@ -13,9 +13,7 @@ export const loginUser = createAsyncThunk(
       const token = response.data.response.accessToken;
       console.log(token);
 
-      // Save to localStorage
-      localStorage.setItem('user', JSON.stringify(user));
-      localStorage.setItem('token', token);
+
       Cookies.set('token', token)
 
       return { user, token };
@@ -32,13 +30,12 @@ export const mentorLogin = createAsyncThunk(
     try {
 
       const response = await authInstanceAxios.post(`/${endpoint}`, mentorData);
-      console.log("responsddsds", response);
       const user = response.data.response.user;
       const token = response.data.response.accessToken;
 
-      // Save to localStorage
-      localStorage.setItem('mentor', JSON.stringify(user));
-      Cookies.set('token', token)
+      Cookies.set('token', token);
+
+      
 
       return { user, token };
     } catch (error) {
@@ -55,9 +52,9 @@ export const googleAuth = createAsyncThunk(
       const response = await authInstanceAxios.post(`/${endpoint}`, userData);
       const user = response.data.response.user;
       const token = response.data.response.token;
+      console.log('google auth response : ',response);
+      console.log('google auth token : ',token);
 
-      // Save to localStorage
-      localStorage.setItem('token', JSON.stringify(user));
       Cookies.set('token', token)
 
       return { user, token };
