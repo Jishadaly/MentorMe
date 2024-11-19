@@ -17,7 +17,7 @@ const App = () => {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persister}>
         <Elements stripe={stripePromise}>
-          <Toaster position="bottom-right"/>
+          <Toaster position="bottom-right" theme='dark'/>
             <RouterProvider router={router}/>
         </Elements>
       </PersistGate>

@@ -15,7 +15,6 @@ export const checkExistingName = async (userName: string) => {
   return existingUser;
 }
 
-
 export const createUser = async (userData: IUser, hashedPassword: string) => {
   try {
     if (!userData.email || !userData.name) {
@@ -30,7 +29,6 @@ export const createUser = async (userData: IUser, hashedPassword: string) => {
       }
       throw new Error("A user with that username already exists.");
     }
-
 
     if (existingUser) {
       if (existingUser.verified === false) {
@@ -50,7 +48,6 @@ export const createUser = async (userData: IUser, hashedPassword: string) => {
     throw error
   }
 }
-
 
 export const verifyUserdb = async (email: string) => {
   const userData = await Users.findOneAndUpdate(
@@ -134,14 +131,11 @@ export const saveGoogleUser = async (userData: IUser) => {
   });
 
   return await newUser.save();
-
-
 }
 
 export const getBookdslotdb = async (userId: string) => {
 
   const slots = await Availability.find({ bookedBy: userId, isBooked: true }).sort({ updated_at: -1 });
-
   if (!slots) {
     throw new Error("there is no booked slotes")
   }
@@ -164,12 +158,10 @@ export const updateUserName = async (userId: string, newField: string) => {
 }
 
 export const updateUserPhone = async (userId: string, newField: string) => {
-  console.log("herer");
-
+  
   const updated = await Users.findByIdAndUpdate(userId, { phone: newField }, { new: true, fields: { phone: 1 } })
   return updated
 }
-
 
 export const updateUserPass = async (userId: string, newField: string) => {
 
@@ -182,6 +174,6 @@ export const saveProfilePicture = async (imageUrl: string, userId: string) => {
     const image = await Users.findByIdAndUpdate(userId, { profilePic: imageUrl })
     return image?.profilePic;
   } catch (error) {
-    throw error
+    throw error;
   }
-}
+} 

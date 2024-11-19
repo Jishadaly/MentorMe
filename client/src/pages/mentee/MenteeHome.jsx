@@ -15,12 +15,9 @@ const MenteeHome = () => {
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const token  = await Cookies.get('token')
-        console.log('token : ',token);
-        
+        const token = Cookies.get('token');
         const response = await getMentors('user/getMentors');
-        
-        
+
         setTimeout(() => {
           setMentors(response.data.mentors);
           setLoading(false);
@@ -31,12 +28,11 @@ const MenteeHome = () => {
       }
     };
     getUsers();
-  }, [mentors]);
+  }, []);
 
   const handleCardClick = (mentorId) => {
     navigate(`/mentee/mentorDetails/${mentorId}`);
   };
-
 
   const filteredMentors = mentors.filter((mentor) => {
     const { userName, mentorAdditional } = mentor;
@@ -75,12 +71,12 @@ const MenteeHome = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {loading
-              ? Array.from({ length: mentors ? mentors.length : 3 }).map((_, index) => (
+              ? Array.from({ length: mentors.length ? mentors.length : 3 }).map((_, index) => (
                 <SkeletonCard key={index} />
               ))
               : filteredMentors.map((mentor, index) => (
                 <ProfileCard
-                  key={mentor.mentorAdditional._id} 
+                  key={mentor.mentorAdditional._id}
                   company={mentor.mentorAdditional.company}
                   profilePicture={mentor.profilePic}
                   index={index}

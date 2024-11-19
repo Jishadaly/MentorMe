@@ -7,7 +7,8 @@ import { fetchMentorData, getMentorReviwes } from '@/Api/services/menteeService'
 import CustomDatePicker from '@/componets/DatePicker';
 import { useSelector } from 'react-redux';
 import BookingConfirmModal from '@/componets/modal/BookingConfrimModal';
-
+import { FaCode } from 'react-icons/fa';
+import { FaBriefcase , FaGlobe} from 'react-icons/fa';
 
 const MentorDetails = () => {
 
@@ -19,8 +20,6 @@ const MentorDetails = () => {
   const user = useSelector((state) => state.auth.user);
   const [isModalvisible, setIsmodalVisble] = useState(false);
   const [reviews, setReviews] = useState([]);
-
-  console.log(mentor1);
 
   const fetchReviwes = async () => {
     try {
@@ -84,10 +83,10 @@ const MentorDetails = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      <main className="ml-20 mt-16 p-6 flex-1 overflow-y-auto">
-        <section className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-md">
+    <div className="flex min-h-screen ">
+      <main className="sm:ml-20  md:mt-36    flex-1 overflow-y-auto">
+        <section className="  max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 ">
             <div className="flex items-center space-x-4 mb-6">
               <img src={mentor1.user.profilePic} alt="profile" className="w-24 h-24 rounded-full" />
               <div>
@@ -99,38 +98,57 @@ const MentorDetails = () => {
                 </div>
               </div>
             </div>
-            <div>
+
+            <div className='mt-10'>
               <h3 className="text-xl font-bold mb-2 font-inter">About</h3>
               <p className="text-gray-700 mb-4 whitespace-pre-wrap font-inter">{mentor1.bio}</p>
             </div>
-            <div>
-              <h3 className="text-xl font-bold mb-2 font-inter">Experience</h3>
+
+            <div className='mt-10'>
+              <h3 className="text-xl font-extrabold mb-2 font-inter">Experience</h3>
               {mentor.experience.map((item, index) => (
-                <div key={index} className="mb-4">
-                  <p className="font-bold font-inter">{item.title}</p>
-                  <p className="text-gray-700 font-inter">{item.description}</p>
+                <div key={index} className="mb-4 flex items-start">
+                  <div className="p-4 rounded-lg bg-gray-900 flex items-center justify-center mr-3">
+                    <FaBriefcase className="text-indigo-500" size={20} /> 
+                  </div>
+                  <div>
+                    <p className="font-bold font-inter">{item.title}</p>
+                    <p className="text-gray-700 font-inter">{item.description}</p>
+                  </div>
                 </div>
               ))}
             </div>
-            <div>
-              <h3 className="text-xl font-bold mb-2 font-inter ">Skills</h3>
-              <p className="text-gray-700 font-inter">{mentor1.programmingLanguages.join(', ')}</p>
-            </div>
-            <div>
-              <h3 className="text-xl font-bold mb-2 font-inter ">language preference</h3>
-              <p className="text-gray-700 font-inter">{mentor1.languagePreference.join(', ')}</p>
+
+            <div className='mt-10'>
+              <h3 className="text-xl font-bold mb-2 font-inter">Skills</h3>
+              <div className="text-gray-700 font-inter flex items-center">
+                <div className="p-4 rounded-lg bg-gray-900 flex items-center justify-center mr-3">
+                  <FaBriefcase className="text-indigo-500" size={20} />
+                </div>
+                <p>{mentor1.programmingLanguages.join(', ')}</p>
+              </div>
             </div>
 
+            <div className='mt-10'>
+              <h3 className="text-xl font-bold mb-2 font-inter">language preference</h3>
+              <div className="text-gray-700 font-inter flex items-center">
+                <div className="p-4 rounded-lg bg-gray-900 flex items-center justify-center mr-3">
+                  <FaGlobe className="text-indigo-500" size={20} />
+                </div>
+                <p className="text-gray-700 font-inter">{mentor1.languagePreference.join(', ')}</p>
+              </div>
+            </div>
 
-            <div>
+            <div className='mt-10'>
               <h3 className="text-xl font-bold mb-2 font-inter">Reviews</h3>
               {reviews && reviews.map((review, index) => (
                 <div key={index} className="mb-4">
-                  <p className="font-bold font-inter">{review.menteeId.userName}</p>
-                  <div className="flex items-center text-green-500">
-                    <FiStar size={20} />
-                    <span className="ml-1 font-inter">{review.rating}</span>
+                  <div className="flex items-center text-gray-900 text-4xl h-16">
+                  
+                    <span className="ml-1 font-inter font-bold ">{review.rating}</span>
                   </div>
+                  <p className=" font-inter text-gray-800">{review.menteeId.userName}</p>
+                  
                   <p className="text-gray-700 font-inter">{review.comments}</p>
                 </div>
               ))}
@@ -148,7 +166,7 @@ const MentorDetails = () => {
             </div>
           </div>
 
-          {/* Booking Calendar */}
+         
           <div className="bg-gray-900 p-6 rounded-lg shadow-md h-auto sticky top-16">
             <h3 className="text-xl font-bold mb-4 text-white font-inter">Book with {mentor1.name.split(' ')[0]}</h3>
             <div className="text-gray-300 mb-4">

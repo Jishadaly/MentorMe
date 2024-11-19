@@ -56,7 +56,7 @@ function MentorLogin(){
           
           {({ handleChange, values, touched, errors, isSubmitting }) => (
             <Form className="bg-white">
-              <h1 className="text-4xl font-black mb-4 font-inter">Mentor Login</h1>
+              <h1 className="text-4xl font-black  font-inter">Mentor Login</h1>
               {error && <p>{error.message}</p>}
               <p className="text-sm font-normal text-gray-600 mb-7">login as a Mentor</p>
 
@@ -74,7 +74,7 @@ function MentorLogin(){
                 />
                
               </div>
-              {touched.email && errors.email && <div className="text-red-500">{errors.email}</div>}
+              { touched.email && errors.email && <div className="text-red-500 p-0 m-0">{errors.email}</div> }
 
               <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -109,7 +109,7 @@ function MentorLogin(){
               <button
                 type="submit"
                 disabled={isSubmitting}
-                 className="block w-full bg-gradient-to-r from-indigo-600 to-purple-700 mt-4 py-2 rounded-2xl text-white font-semibold mb-2 font-inter"
+                 className="block w-full bg-gradient-to-r from-indigo-600 to-purple-700 mt-2 py-2 rounded-2xl text-white font-semibold mb-2 font-inter"
               >
                 {isSubmitting ? <ReactLoading type="spokes" color="#fff" height={20} width={20}/> : 'Login'}
               </button>
@@ -135,11 +135,18 @@ function MentorLogin(){
                   Don't have an account? <a className="text-blue-500">Sign up</a>
                 </span>
               </div>
-              <div className="mt-4">
-                <span  onClick={() => navigate('/mentee/login')} className="text-sm font-inter cursor-pointer">
-                   <a className="text-blue-500">login as a Mentee</a>
+              <div >
+              <span onClick={() => navigate('/mentee/login')} className="text-sm font-sans cursor-pointer">
+                login as a Mentee? <a className="text-blue-500">Mentee login</a>
                 </span>
               </div>
+
+              <div >
+                <span onClick={() => navigate('/forgotPassword')} className="text-sm font-sans">
+                  Don't know the password? <a className="text-blue-500">forgot password</a>
+                </span>
+              </div>
+
             </Form>
           )}
         </Formik>

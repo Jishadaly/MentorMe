@@ -20,7 +20,7 @@ function ForgotPassword() {
             .matches(
                 /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                 'Please enter a valid email address'
-            ) 
+            )
             .test(
                 'is-not-temporary',
                 'Temporary email addresses are not allowed',
@@ -75,7 +75,7 @@ function ForgotPassword() {
                                 <input
                                     className="pl-2 outline-none border-none font-inter"
                                     type="email"
-                                    placeholder="Email Address"
+                                    placeholder="email"
                                     name="email"
                                     onChange={handleChange}
                                     value={values.email}
@@ -84,18 +84,29 @@ function ForgotPassword() {
                                     <div className="text-red-500 text-sm mt-1">{errors.email}</div>
                                 )}
                             </div>
-                            
+
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
                                 className="block w-full bg-gradient-to-r from-indigo-600 to-purple-700 mt-4 py-2 rounded-2xl text-white font-semibold mb-2 font-inter"
                             >
-                                {isSubmitting ? <ReactLoading type="cylon" color="#4338CA" height={10} width={10} /> : 'Send'}
+                                {isSubmitting ? <ReactLoading type="cylon" color="#4338CA" height={10} width={10} /> : 'send password reset link'}
                             </button>
+
+                            <div className="mt-4">
+                                <span onClick={() => navigate('/signup')} className="text-sm font-inter">
+                                    Don't have an account? <a className="text-blue-500">Sign up</a>
+                                </span>
+                            </div>
+
                         </Form>
                     )}
                 </Formik>
+
+
+
             </div>
+
         </div>
     );
 }

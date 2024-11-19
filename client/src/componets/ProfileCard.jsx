@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function ProfileCard({ index , profilePicture,name , jobTitle ,company ,programmingLanguages , mentorAdditionalId , handleCardClick}) {
     return (
-        <div key={index} className="bg-white p-6 rounded-lg shadow-sm flex flex-col items-center">
+        <div key={index} className="bg-white p-6 rounded-3xl shadow-sm flex flex-col items-center ">
                     <img
                       src={profilePicture}
                       alt="profile"

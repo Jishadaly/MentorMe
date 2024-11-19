@@ -80,6 +80,7 @@ function UserLogin() {
         <div className="absolute -top-20 -right-20 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
       </div>
       <div className="flex md:w-1/2 justify-center py-10 items-center bg-white">
+
         <Formik
           initialValues={initialValue}
           validationSchema={validationShema}
@@ -151,28 +152,28 @@ function UserLogin() {
                 <span className="px-4 text-gray-500">or</span>
                 <hr className="flex-grow border-gray-300" />
               </div>
-
-
               <GoogleLoginButton handleGoogleAuthClick={handleGoogleAuthClick }  />
-
               <div className="mt-4">
-                <span onClick={() => navigate('/signup')} className="text-sm font-sans">
+                <span onClick={() => navigate('/signup')} className="text-sm font-sans ">
                   Don't have an account? <a className="text-blue-500">Sign up</a>
                 </span>
               </div>
-              <div className="mt-4">
+              <div >
+              <span onClick={() => navigate('/mentor/login')} className="text-sm font-sans cursor-pointer">
+                login as a Mentor? <a className="text-blue-500">mentor login</a>
+                </span>
+              </div>
+              
+              <div >
                 <span onClick={() => navigate('/forgotPassword')} className="text-sm font-sans">
                   Don't know the password? <a className="text-blue-500">forgot password</a>
                 </span>
               </div>
-              <div className="mt-4">
-                <span onClick={() => navigate('/mentor/login')} className="text-sm font-sans cursor-pointer">
-                  <a className="text-blue-500">login as a Mentor</a>
-                </span>
-              </div>
+              
             </Form>
           )}
         </Formik>
+
       </div>
     </div>
   );
