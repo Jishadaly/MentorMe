@@ -11,8 +11,7 @@ import { loadStripe } from '@stripe/stripe-js'
 const stripePromise = loadStripe(import.meta.env.VITE_STRIP_PUBLISHED_KEY);
 
 const App = () => {
-
-
+  
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persister}>
