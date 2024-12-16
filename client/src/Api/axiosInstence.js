@@ -4,7 +4,7 @@ import { toast } from "sonner";
 
 
 
-const baseUrl = 'http://localhost:3000'
+const baseUrl = import.meta.env.VITE_API_BASE_URL
 
 export const authInstanceAxios = axios.create({
   baseURL: baseUrl,
