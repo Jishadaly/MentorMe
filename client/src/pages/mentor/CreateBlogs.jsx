@@ -80,13 +80,14 @@ function CreateBlogs() {
             addPost('user/addBlog', formData ,config) 
             .then((data) => {
               resolve({ message: "Your Blog is Published" });
+              
             }).catch((error) => {
               reject(error);
             });
           }, 1500);
         });
 
-        await toast.promise(addedPost, {
+         toast.promise(addedPost, {
           loading: 'Blog publishing..',
           success: (data) =>{
             navigate('/mentor/blogs');

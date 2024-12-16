@@ -103,7 +103,7 @@ export function OtpModal({ isOpen, onClose, email }) {
     }, 1000);
 
     new Promise((resolve, reject) => {
-      resendOtp('user/resendOtp', email)
+      resendOtp('/resendOtp', email)
         .then(response => {
           resolve(response)
         })

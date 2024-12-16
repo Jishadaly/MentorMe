@@ -23,7 +23,7 @@ export default {
                 console.log("OTP : " ,otp);
                 
                 await createOtp(savedUser.email, otp)
-                const emailContent = await generateOtpEmailContent(savedUser.userName, otp);
+                const emailContent =  generateOtpEmailContent(savedUser.userName, otp);
                 sendMail(savedUser.email, emailContent);
              } else {
                 throw Error( "User registration failed" );

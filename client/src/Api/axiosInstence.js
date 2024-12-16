@@ -1,11 +1,10 @@
 import axios from "axios";
-import { CONFIG_KEYS } from "@/config";
 import Cookies from 'js-cookie';
 import { toast } from "sonner";
 
 
 
-const baseUrl = CONFIG_KEYS.API_BASE_URI
+const baseUrl = 'http://localhost:3000'
 
 export const authInstanceAxios = axios.create({
   baseURL: baseUrl,

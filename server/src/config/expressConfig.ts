@@ -1,4 +1,5 @@
-import { Application, Request, Response, NextFunction, ErrorRequestHandler } from 'express'; import bodyParser from 'express';
+import { Application, Request, Response, NextFunction, ErrorRequestHandler } from 'express';
+ import bodyParser from 'express';
 import { connectToDb } from "./dbConfig";
 import session from 'express-session';
 const cors = require('cors');

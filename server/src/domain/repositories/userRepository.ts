@@ -25,7 +25,7 @@ export const createUser = async (userData: IUser, hashedPassword: string) => {
 
     if (existingUserName) {
       if (existingUserName.verified === false) {
-        return existingUserName
+        return existingUserName;
       }
       throw new Error("A user with that username already exists.");
     }

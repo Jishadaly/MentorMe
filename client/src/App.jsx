@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react'
 import { RouterProvider, useNavigate } from 'react-router-dom'
 import { Toaster, } from 'sonner'
 import router from './routes/router'
@@ -10,7 +9,7 @@ import { loadStripe } from '@stripe/stripe-js'
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIP_PUBLISHED_KEY);
 
-const App = () => {
+const App = () => { 
   
   return (
     <Provider store={store}>

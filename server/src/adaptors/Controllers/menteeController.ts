@@ -13,7 +13,6 @@ export default {
       const userId  = req.userId;
       const menteeId = userId as string;
       
-      
       try {
         const mentee = await menteeInteractor.getMentee(menteeId)
         console.log(mentee);

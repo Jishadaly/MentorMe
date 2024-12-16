@@ -17,7 +17,7 @@ app.use('/api/user',userRouter)
 app.use('/api/admin',adminRouter)
 app.use('/api/user',blogRouter)
 app.use('/api/chat',chatRouter)
-
+  
 
 const server = http.createServer(app);
 const io = configureSocket(server);

@@ -33,7 +33,7 @@ const MenteeProfile = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const menteeData = await getMentee('user/getMentee', user.id);
+        const menteeData = await getMentee('user/getMentee', user.id);  
         setMentee(menteeData);
         console.log(menteeData);
       } catch (err) {

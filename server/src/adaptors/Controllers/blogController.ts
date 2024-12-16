@@ -9,13 +9,17 @@ declare module 'express-serve-static-core' {
 
 export default {
   addBlog: async (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.body);
+    try {
+      console.log(req.body);
     console.log(req.file?.path);
     const { title, summary, content , mentorId }: { title: string; summary: string; image: any; content: any , mentorId:string } = req.body;
     const parsedContent = JSON.parse(content);
     const image = req.file?.path;
     const data = await blogInteractor.addBlog(title, summary, image, parsedContent,mentorId);
     res.status(200).json({ message: 'Blog saved successfully', data });
+    } catch (error) {
+      res.status(500).json(error);
+    }
   },
 
   getAllBlogs:async( req:Request ,res: Response, next: NextFunction)=>{
