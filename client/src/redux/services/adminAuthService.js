@@ -12,11 +12,11 @@ export const loginAdmin = createAsyncThunk(
       console.log(response);
       const admin = response.data.admin;
       const token = response.data.response.token.accessToken;
-      console.log(response);
+      console.log('tokeeeeeeeeeeeeeeeeeeeeen',token);
       
       localStorage.setItem('admin', JSON.stringify(admin));
-      localStorage.setItem('token', token);
-      Cookies.set('token',token)
+      // localStorage.setItem('token', token);
+      Cookies.set('Admintoken',token) 
       return { admin, token };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
