@@ -4,7 +4,6 @@ import Cookies from 'js-cookie';
 
 
 const AdminProtected = () => {
-  // const adminToken = localStorage.getItem("Admintoken");
   const adminToken = Cookies.get('Admintoken')
   console.log(adminToken);
   return adminToken ? <Outlet /> : <Navigate to="/admin/login"/>;

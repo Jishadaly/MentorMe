@@ -10,7 +10,6 @@ import ChatFeature from '@/pages/mentee/chat/Nochats';
 export default function Chat() {
 
     const user = useSelector((state) => state.auth.user)
-    // const [message , setMessage] = useState('');
     const [selectedChatId, setSelectedChatId] = useState(null);
     const [chats, setChats] = useState([]);
 

@@ -40,17 +40,6 @@ function BlogView() {
             {block.data.text}
           </p>
         );
-      //   case 'list':
-      // return (
-      //   <ul key={block._id} className="list-disc ml-6 text-base text-gray-700 font-inter">
-      //     {block.data.items.map((item, index) => (
-      //       <li key={`${block._id}_${index}`}>
-      //         {item}
-      //       </li>
-      //     ))}
-      //   </ul>
-      // );
-      
       default:
         return null;
     }
@@ -59,7 +48,6 @@ function BlogView() {
   const handleReport = (reason, customMessage) => {
     console.log('Report reason:', reason);
     console.log('Custom message:', customMessage);
-    // Handle the report submission logic here (e.g., send a report request to the server)
   };
 
   if (!blog) {
@@ -98,21 +86,6 @@ function BlogView() {
             <img className="sm:h-[34rem] mt-10 w-full object-contain" src={blog.image} alt="Featured Image" />
           </header>
 
-          {/* <div className="flex justify-start items-center space-x-4 mt-4">
-            <div className="flex items-center space-x-2">
-              <HandClappingIcon
-                width="24"
-                height="24"
-                // onClick={handleClap}
-                className="text-red-500 hover:text-black"
-              />
-              <span> 40</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <CommentIcon width="24" height="24" className="text-gray-500 hover:text-black" />
-              <span>{'55'}</span>
-            </div>
-          </div> */}
 
           <div className="mx-auto mt-10 max-w-screen-md space-y-12">
             {blog.content.blocks.map((block) => renderBlock(block))}
