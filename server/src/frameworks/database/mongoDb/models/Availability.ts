@@ -1,6 +1,6 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
-// TypeScript interface for Availability
+
 export interface IAvailability extends Document {
   mentorId: mongoose.Types.ObjectId;
   date: Date;
@@ -12,7 +12,7 @@ export interface IAvailability extends Document {
   status: 'Pending' | 'Completed';
 }
 
-// Mongoose schema for Availability
+
 const AvailabilitySchema: Schema = new Schema({
   mentorId: { type: Schema.Types.ObjectId, ref: 'Users', required: true },
   date: { type: Date, required: true },

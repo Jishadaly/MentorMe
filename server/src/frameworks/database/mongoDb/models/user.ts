@@ -16,7 +16,6 @@
       verified:boolean;
       isMentee:boolean;
       isMentor:boolean;
-      // Mentor-specific fields
       Languages:Array<string>;
       yearOfExperience:string;
       skills:Array<string>

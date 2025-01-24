@@ -1,5 +1,4 @@
-// models/Feedback.ts
-import mongoose, { Document, Schema, Model, model } from 'mongoose';
+import { Document, Schema, Model, model } from 'mongoose';
 import { IFeedback } from '../../../domain/entities/types/user/feedback';
 
 interface IFeedbackDocument extends IFeedback, Document {}

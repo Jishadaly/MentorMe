@@ -1,6 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
-// TypeScript interface for Slot
 export interface ISlot {
   date: Date;
   startTime: string;
@@ -15,10 +14,7 @@ const SlotSchema: Schema = new Schema({
   endTime: { type: String },
   isBooked: { type: Boolean, default: false },
   bookedBy: { type: Schema.Types.ObjectId, ref: 'Mentee', default: null }
-},
-
-);
-
+},);
 
 const Slots = mongoose.model<ISlot>('Slots', SlotSchema)
 export default Slots;

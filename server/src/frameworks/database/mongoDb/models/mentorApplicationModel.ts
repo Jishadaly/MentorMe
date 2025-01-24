@@ -1,9 +1,9 @@
 import mongoose, { Document, Schema } from 'mongoose';
 import { ISlot  } from './slots';
-// import Slots from './slots';
 
 
-// Define the interface for MentorApplication.
+
+
 interface IMentorApplication extends Document {
   user: mongoose.Types.ObjectId;
   name: string;
@@ -24,7 +24,7 @@ interface IMentorApplication extends Document {
 }
 
 
-// Define the MentorApplication schema
+
 const MentorApplicationSchema: Schema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
@@ -93,6 +93,6 @@ const MentorApplicationSchema: Schema = new Schema({
   }],
 });
 
-// Create and export the model
+
 const MentorApplication = mongoose.model<IMentorApplication>('MentorApplication', MentorApplicationSchema);
 export default MentorApplication;

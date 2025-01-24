@@ -64,7 +64,6 @@ export default {
       console.log(blocked);
       
       const response = await adminInteractor.updateBlockStatus(id,blocked)
-      // const Mentors = await adminInteractor.updateBlockStatus();
       res.status(200).json({message: "user blocked  successfully"});
     } catch (error) {
       res.status(500).json({error: error})
