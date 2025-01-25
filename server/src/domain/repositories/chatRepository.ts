@@ -61,7 +61,6 @@ export default {
                 .populate('latestMessage')
                 .sort({ updatedAt: -1 });
 
-            // console.log('Initial results:', results);
 
             results = await Users.populate(results, {
                 path: "latestMessage.sender",
@@ -93,12 +92,10 @@ export default {
     },
     getMessages: async (chatId: string, userId: string) => {
         try {
-            // const messages = await Message.find({ chat: chatId }).populate({ path: 'sender', select: 'profilePic ' })
-            // return messages;
-            // Fetch messages by chatId and populate sender
+    
             const messages = await Message.find({ chat: chatId }).populate({ path: 'sender', select: 'profilePic' });
 
-            // Update isRead to true for messages not read by the current user
+
             await Message.updateMany({ chat: chatId, isRead: false, readBy: { $ne: userId } }, { $set: { isRead: true }, $addToSet: { readBy: userId } });
 
             return messages;
