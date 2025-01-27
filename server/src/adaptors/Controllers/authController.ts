@@ -1,9 +1,12 @@
 import { Request, Response, NextFunction } from "express"
 import userInteractor from "../../domain/usecases/auth/authInteractor";
+import { otpGeneratorFun } from "../../domain/utils/generateOtp";
+import sendMail from "../../domain/helper/sendMail";
 import authInteractor from "../../domain/usecases/auth/authInteractor";
+import { generateOtpEmailContent, generateResendOtpEmailContent } from "../../domain/helper/mailer/emailTempletes";
 import jwt from 'jsonwebtoken';
 import { generateToken } from "../../domain/helper/jwtHelper";
-
+import { Multer } from 'multer'; // Import Multer types
 
 declare module 'express-serve-static-core' {
    interface Request {
