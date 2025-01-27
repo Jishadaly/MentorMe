@@ -6,7 +6,7 @@ import adminRouter from './frameworks/webserver/routes/adminRoute';
 import blogRouter from './frameworks/webserver/routes/blogRoute';
 import chatRouter from './frameworks/webserver/routes/chatRoutes';
 const app:Application = express();
-const port = 3000;
+const port = process.env.PORT;
 import { configureSocket } from './config/socketConfig';
 
 app.use(express.json());
