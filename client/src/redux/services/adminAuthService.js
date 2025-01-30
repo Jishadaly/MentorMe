@@ -14,9 +14,9 @@ export const loginAdmin = createAsyncThunk(
       const token = response.data.response.token.accessToken;
       console.log('tokeeeeeeeeeeeeeeeeeeeeen',token);
       
-      localStorage.setItem('admin', JSON.stringify(admin));
+      // localStorage.setItem('admin', JSON.stringify(admin));
       // localStorage.setItem('token', token);
-      Cookies.set('Admintoken',token) 
+      Cookies.set('admintoken',token)
       return { admin, token };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
