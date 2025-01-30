@@ -1,4 +1,5 @@
-import { authInstanceAxios } from "../axiosInstence";
+// import { authInstanceAxios } from "../axiosInstence";
+import { authInstanceAxios } from "./adminAxios";
 
 export const getApplicationMentores = async (endPoint) => {
   const response = await authInstanceAxios.get(`/${endPoint}`)

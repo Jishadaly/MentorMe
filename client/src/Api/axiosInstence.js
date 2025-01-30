@@ -49,12 +49,10 @@ export const setupInterceptors = (navigate, dispatch) => {
 
               try {
                 const response = await axios.post(`${baseUrl}/user/refreshToken`, {}, { withCredentials: true });
-                console.log("response", response);
-
+  
                 const accessToken = response.data.accessToken
                 Cookies.set('token', accessToken);
-                console.log("new access token added token added ", accessToken);
-
+              
                 authInstanceAxios.defaults.headers.Authorization = `Bearer ${accessToken}`;
                 originalRequest.headers.Authorization = `Bearer ${accessToken}`;
 
@@ -68,7 +66,7 @@ export const setupInterceptors = (navigate, dispatch) => {
             }
             
             if (message === 'Access denied: User is blocked') {
-              toast.error('Your account has been blocked. Please contact support.');
+              toast.error('Your account has been blocked. Please contact support team.');
 
               setTimeout(() => {
                 Cookies.remove('token');

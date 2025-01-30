@@ -64,7 +64,6 @@ export default {
          const { email, password } = req.body
          const response = await userInteractor.loginUser(email, password);
          const {  refreshToken } = response
-         console.log({refreshToken});
          
          res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, sameSite: 'strict' });
          res.status(200).json({ message: "user login success", response })
