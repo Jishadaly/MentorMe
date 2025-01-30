@@ -3,7 +3,7 @@ import { createUser, verifyUserdb, getUserbyEMail, checkIsmentor, updateUserPass
 import { Encrypt } from "../../helper/hashPassword";
 import { generateToken } from "../../helper/jwtHelper";
 import { findAdmin } from "../../repositories/adminReposetory";
-import { checkExistingUser, saveGoogleUser, saveProfilePicture, saveResetToken, checkResetToken , getStoredOtp , deleteAllOtp , updateOtp} from "../../repositories/userRepository";
+import { checkExistingUser, saveGoogleUser, saveProfilePicture, saveResetToken, checkResetToken , deletePassResetToken , getStoredOtp , deleteAllOtp , updateOtp} from "../../repositories/userRepository";
 import sendMail from "../../helper/sendMail";
 import { generateOtpEmailContent, generatePasswordResetEmailContent, generateResendOtpEmailContent } from "../../helper/mailer/emailTempletes";
 import { generateRandomToken } from "../../utils/generateRandomToken";
@@ -163,7 +163,7 @@ export default {
     forgotResetPassword: async (token: string, password: string) => {
         try {
             const resetToken = await checkResetToken(token);
-            if (!resetToken) throw Error('Invalid or expired reset token');
+            if (!resetToken) throw Error('Invalid reset token');
 
             // Check if the token has expired
             if (resetToken.expiresAt < new Date()) {
@@ -175,6 +175,7 @@ export default {
 
             const hashedPassword = await Encrypt.cryptPassword(password);
             const updated = updateUserPass(userId, hashedPassword);
+            await deletePassResetToken(token)
             return updated;
             
         } catch (error) {
@@ -208,7 +209,6 @@ export default {
 
             const hashedPassword = await Encrypt.cryptPassword(newPass);
             return updateUserPass(userId, hashedPassword);
-
         } catch (error) {
             throw error
         }

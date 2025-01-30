@@ -17,7 +17,6 @@ declare module 'express-serve-static-core' {
 export default {
    userRegistration: async (req: Request, res: Response, next: NextFunction) => {
       try {
-         const { name, email } = req.body;
          const user = await userInteractor.registerUser(req.body);
          res.status(200).json({ message: "user created successfully"});
       } catch (error: any) {

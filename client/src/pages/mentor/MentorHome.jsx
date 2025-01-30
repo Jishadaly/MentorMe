@@ -1,26 +1,4 @@
 
-// import React from 'react';
-// import Header from './partials/Header';
-// import SideNav from './partials/SideNav';
-// import { useSelector } from 'react-redux';
-// import { useNavigate } from 'react-router-dom';
-
-// const MentorHome = () => {
-//   const navigate = useNavigate() 
-
-//   const user = useSelector((state)=> state.auth.user);
-//   return (
-//     <div className="flex min-h-screen bg-gray-100">
-//       {/* Main Content */}
-//       <main className="flex-1">
-      
-//         </main>
-        
-      
-//     </div>
-//   );
-// };
-// export default MentorHome;
 
 
 import React from 'react';
@@ -31,7 +9,7 @@ const MentorHome = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
 
-  // Dummy data for the dashboard
+
   const recentlyAdded = [
     { name: 'Lela Mraz', role: 'Full Stack Intern', phone: '985-959-1871', email: 'darwin11@yahoo.com', date: '02 November 2023' },
     { name: 'Lena Heller', role: 'JS Intern', phone: '714-432-3304', email: 'naomi33@yahoo.com', date: '01 November 2023' },

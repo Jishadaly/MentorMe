@@ -3,8 +3,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import { loginUser  ,mentorLogin , googleAuth } from '../services/userAuthServices';
 import Cookies from 'js-cookie';
 
-
-
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
@@ -17,8 +15,6 @@ const authSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.token = null;
-      // localStorage.removeItem('user');
-      // localStorage.removeItem('token');
       Cookies.remove('token');
     },
   },

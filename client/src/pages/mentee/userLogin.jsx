@@ -17,7 +17,6 @@ function UserLogin() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.auth);
-
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (values, { setSubmitting }) => {
@@ -33,13 +32,10 @@ function UserLogin() {
       .catch((err) => {
         console.error("ererrer", err)
         toast.error(err)
-      }
-      );
-
-
+      });
   };
 
-  const handleGoogleAuthClick = async () => {
+  const handleGoogleAuthClick = async() => {
 
     await signInWithPopup(auth, provider).then((data) => {
  

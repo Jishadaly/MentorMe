@@ -13,14 +13,10 @@ export default function Room() {
     const meetingRef = useRef(null);
     const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
 
-
-    
-
     const handleLeaveRoom = () => {
             setIsFeedbackOpen(true);
     };
 
-    
     const myMeeting = async (element) => {
         const YOUR_APP_ID = 1892844379;
         const SERVER_SECRET = "94c9f1db477002fec47e8894f8b8e454";

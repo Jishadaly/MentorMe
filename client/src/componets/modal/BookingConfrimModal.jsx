@@ -11,12 +11,12 @@ function BookingConfirmModal({ onClose , mentorData , mentee , slot , price}) {
       
       const slotId = slot._id;
       const mentor = mentorData.user._id;
-      console.log("11111111111111",mentor);
+  
         try {
             const data = await createCheckoutSession('user/create-checkout-session',
                { mentee , mentor , slotId , price });
             if (data.url) {
-              window.location.href = data.url; // Redirect to the Stripe Checkout page
+              window.location.href = data.url; 
             } else {
               console.error('Error: No URL returned from server');
             }

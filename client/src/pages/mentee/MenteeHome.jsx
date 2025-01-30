@@ -3,7 +3,6 @@ import { getMentors } from '@/Api/services/mentorServices';
 import { useNavigate } from 'react-router-dom';
 import ProfileCard from '@/componets/ProfileCard';
 import SkeletonCard from './home/SkeletonCard';
-import Cookies from 'js-cookie';
 
 
 const MenteeHome = () => {
@@ -15,7 +14,6 @@ const MenteeHome = () => {
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const token = Cookies.get('token');
         const response = await getMentors('user/getMentors');
 
         setTimeout(() => {

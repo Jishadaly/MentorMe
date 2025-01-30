@@ -1,20 +1,12 @@
 import React, { useEffect, useState } from "react";
 import StatisticsCard from "../admin/widgets/cards/statistics-card";
 import {
-  BanknotesIcon,
-  UserPlusIcon,
-  UsersIcon,
-  ChartBarIcon,
-  MegaphoneIcon,
-  ExclamationCircleIcon,
   CheckBadgeIcon,
-  CogIcon,
   ClockIcon,
   BookOpenIcon,
-  CurrencyRupeeIcon
+  
 } from "@heroicons/react/24/solid";
 import { Typography } from "@material-tailwind/react";
-import ApexChart from "@/componets/ApexChart";
 import MentorChart from "@/componets/chart/MentorChart";
 import { getMentorDashboardData } from "@/Api/services/adminServices";
 import moment from "moment";
@@ -33,8 +25,6 @@ export default function MentorDashboard() {
 
   const [recentSessions, setRecentSessions] = useState([])
   const [recentBlogs, setRecentBlogs] = useState([])
-
-  console.log({ recentSessions });
 
 
   const options = {
@@ -82,7 +72,7 @@ export default function MentorDashboard() {
 
   const fetchChartData = async () => {
     try {
-      const response = await getMentorDashboardData('user/getMentorDashboard'); // Fetch mentor-specific data
+      const response = await getMentorDashboardData('user/getMentorDashboard'); 
       const { availableSessionStats, bookedSessionStats, completedSessionStats, blogCreationStats } = response.chartData;
       const { blogCount, mentorSessionCount, mentorBookedSessionCount, mentorCompletedSessionCount } = response.stats;
       const { recentBlogs, recentSessions } = response;
@@ -148,10 +138,6 @@ export default function MentorDashboard() {
     name: 'Blogs Created',
     data: blogCreationData.map((data) => [new Date(data.month).getTime(), data.count]),
   };
-
-
-
-
 
 
   const statisticsCardsData = [

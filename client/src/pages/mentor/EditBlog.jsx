@@ -62,54 +62,12 @@ const EditBlog = () => {
     },
     validationSchema,
     enableReinitialize: true,
-    // onSubmit: async (values) => {
-    //   if (editorInstance.current) {
-    //     const outputData = await editorInstance.current.save();
-
-    //     // Check if content is empty
-    //     if (outputData.blocks.length === 0) {
-    //       toast.error('Content is required');
-    //       return;
-    //     }
-
-        
-
-    //     const blogData = {
-    //       ...values,
-    //       content: outputData,
-    //       blogId,
-    //     };
-
-    //     try {
-    //       const updatePromise = new Promise((resolve, reject) => {
-    //         setTimeout(() => {
-    //           updatePost('user/updateBlog', blogData)
-    //             .then((data) => resolve({ message: 'Your Blog is updated' }))
-    //             .catch((error) => reject(error));
-    //         }, 1500);
-    //       });
-
-    //       await toast.promise(updatePromise, {
-    //         loading: 'Blog updating...',
-    //         success: (data) => {
-    //           navigate('/mentor/blogs');
-    //           return data.message
-    //         },
-    //         error: 'Error updating blog',
-    //       });
-
-
-    //     } catch (error) {
-    //       toast.error('Error updating blog');
-    //     }
-    //   }
-    // },
 
     onSubmit : async (values) => {
       if (editorInstance.current) {
         const outputData = await editorInstance.current.save();
     
-        // Check if content is empty
+        
         if (outputData.blocks.length === 0) {
           toast.error('Content is required');
           return;
@@ -118,9 +76,9 @@ const EditBlog = () => {
         const formData = new FormData();
         formData.append('title', values.title);
         formData.append('summary', values.summary);
-        formData.append('content', JSON.stringify(outputData)); // Stringify the content
+        formData.append('content', JSON.stringify(outputData)); 
         formData.append('blogId', blogId);
-        formData.append('mentorId', blog.mentor._id); // Ensure mentorId is a string
+        formData.append('mentorId', blog.mentor._id);
         if (values.image) {
           formData.append('image', values.image);
         }

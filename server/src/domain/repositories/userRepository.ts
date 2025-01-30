@@ -91,6 +91,9 @@ export const checkIsmentor = async (email: string) => {
 export const checkResetToken = async (token: string) => {
   return await ResetToken.findOne({ token });
 }
+export const deletePassResetToken = async(token :string) =>{
+  return await ResetToken.deleteOne({token});
+}
 
 export const createOtp = async (email: string, otp: string) => {
   return await OTP.create({ email, otp });

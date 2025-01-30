@@ -56,12 +56,12 @@ import { generateRamdomId } from "../utils/generateRadandomTokens";
          const from = new Date(slot.from);
          const to = new Date(slot.to);
 
-         // Check if slot is in the past
+         
          if (from < currentDateTime || to < currentDateTime) {
             throw new Error("Cannot add slots in the past.");
          }
 
-         const response = await mentorRepository.addSlotes(mentorId, slot); // Adjusted to handle array of slots
+         const response = await mentorRepository.addSlotes(mentorId, slot); 
 
          return response;
       } catch (error: any) {
@@ -99,7 +99,7 @@ import { generateRamdomId } from "../utils/generateRadandomTokens";
          const slot = await mentorRepository.bookAslot(menteeId, mentorId, slotId, roomId);
 
          if (slot) {
-            console.log("boooooooooked slot", slot);
+      
             const menteeName = slot.bookedBy
             const sessionDate = new Date(slot.date).toLocaleDateString('en-US', {
                year: 'numeric',
