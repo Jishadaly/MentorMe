@@ -31,7 +31,6 @@ function ForgotPassword() {
 
     const handleSubmit = async (values, { setSubmitting, resetForm }) => {
         try {
-           
             const response = await sendForgotLink('user/sendForgotPasswordLink', values);
             toast.success('resend password sended in your mail , check your mail');
             setSubmitting(false)
@@ -102,9 +101,6 @@ function ForgotPassword() {
                         </Form>
                     )}
                 </Formik>
-
-
-
             </div>
 
         </div>
