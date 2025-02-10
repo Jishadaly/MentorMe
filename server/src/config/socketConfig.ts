@@ -10,8 +10,7 @@ export const configureSocket = (server: HttpServer) => {
   });
 
   io.on('connection', (socket: any) => {
-    console.log('A user connected');
-
+    
     socket.on('joinChat', (chatId: any) => {
       socket.join(chatId); 
       console.log(`User joined chat: ${chatId}`);
