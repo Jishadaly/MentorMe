@@ -12,24 +12,13 @@ export default {
 
   mentorApplicationFormSub: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { userId, name, email, bio, jobTitle, company, location, programmingLanguages, skills, languagePreference, linkedInProfile, motivation } = req.body;
-      const user = userId;
+      // const { userId, name, email, bio, jobTitle, company, location, programmingLanguages, skills, languagePreference, linkedInProfile, motivation } = req.body;
+      const user = req.userId;
       const datas = {
-        user,
-        name,
-        email,
-        bio,
-        jobTitle,
-        company,
-        location,
-        programmingLanguages,
-        skills,
-        languagePreference,
-        linkedInProfile,
-        motivation,
+        ...req.body,
         createdAt: new Date()
       }
-      const response = await mentorInteractor.mentorApplicationForm(datas);
+      await mentorInteractor.mentorApplicationForm(datas);
       res.status(200).json({ message: "your mentor request submited succecfully please wait for while" })
     } catch (error: any) {
       console.log(error);

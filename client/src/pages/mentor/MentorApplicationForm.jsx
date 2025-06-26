@@ -11,29 +11,29 @@ function MentorApplicationForm() {
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate()
-  
+
   const userId = useParams();
 
   useEffect(() => {
     fetchLocations(setLocations, setLoading);
   }, []);
 
-  const handleSubmit = async (values, {setSubmitting}) => {
-     const applicationData = {...values , ...userId}
-     setSubmitting(false);
+  const handleSubmit = async (values, { setSubmitting }) => {
+    const applicationData = { ...values, ...userId }
+    setSubmitting(false);
     try {
-      const response = await mentorApplicationFormApi('user/mentorAppicationForm' , applicationData);
+      const response = await mentorApplicationFormApi('user/mentorAppicationForm', applicationData);
       toast.success(response.data.message);
       navigate('/mentor/MentorConfirmationPage');
-      
+
     } catch (error) {
       toast.error(error.response.data.error);
-    }finally{
+    } finally {
       setSubmitting(false);
     }
   }
 
-  
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-white">
       <div className="container mx-auto my-4 px-4 lg:px-20">
@@ -46,7 +46,8 @@ function MentorApplicationForm() {
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
-            {({ values, touched , errors, isSubmitting, handleChange }) => (
+            {({ values, touched, errors, isSubmitting, handleChange }) => (
+              
               <Form>
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                   <div className="flex flex-col">
@@ -75,7 +76,7 @@ function MentorApplicationForm() {
                       rows="5"
                       name="bio"
                     />
-                   {touched.bio && errors.bio && <div className="text-red-500">{errors.bio}</div>}
+                    {touched.bio && errors.bio && <div className="text-red-500">{errors.bio}</div>}
                   </div>
                   <div className="flex flex-col">
                     <label className="text-gray-700">Job Title*</label>
@@ -100,6 +101,10 @@ function MentorApplicationForm() {
                       className="w-full bg-gray-100 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
                       component="select"
                       name="location"
+                      disabled={loading || locations.length === 0}
+                      onChange={(e) => {
+                        console.log(e.target.value);
+                      }}
                     >
                       <option value="" disabled>
                         {loading ? 'Loading...' : 'Select Location'}
@@ -110,8 +115,11 @@ function MentorApplicationForm() {
                         </option>
                       ))}
                     </Field>
+                   
+
                     {touched.location && errors.location && <div className="text-red-500">{errors.location}</div>}
                   </div>
+                   
                   <div className="flex flex-col">
                     <label className="text-gray-700">Programming Languages*</label>
                     <FieldArray name="programmingLanguages">

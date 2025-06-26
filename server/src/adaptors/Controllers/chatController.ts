@@ -13,18 +13,17 @@ export default {
 
         try {
             const { menteeId, mentorId, } = req.query;
-
-            if (!menteeId && !mentorId) throw Error("heeu");
+            if (!menteeId && !mentorId) throw Error("they are not provided mentor id and mentee id");
             const mentee: any = menteeId
             const mentor: any = mentorId
             const chatId = await chatInteractor.startChat(mentee, mentor);
-
             res.status(200).json(chatId)
         } catch (e: any) {
             console.log(e);
             res.status(400).json(e.message);
         }
     },
+
     sendMessage: async (req: Request, res: Response, next: NextFunction) => {
         try {
             
@@ -35,7 +34,7 @@ export default {
             let imageUrl: string = '';
 
             if (req.file) {
-                imageUrl = req.file.path; // Cloudinary URL for the uploaded image
+                imageUrl = req.file.path;
             }
             if (!senderId) throw Error('user not authorised');
             const savedMessage = await chatInteractor.sendMessage(id, mssg, senderId, imageUrl);

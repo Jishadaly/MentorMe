@@ -1,6 +1,6 @@
  export const fetchLocations = async (setLocations,setLoading) => {
   try {
-    const response = await fetch('https://restcountries.com/v3.1/all');
+    const response = await fetch('https://restcountries.com/v3.1/independent?status=true');
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }

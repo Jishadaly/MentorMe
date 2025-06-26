@@ -14,7 +14,6 @@ export default function Messages({ chatId }) {
   const [message, setMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [typingMessage, setTypingMessage] = useState('');
-  const [opositeUser, setOpositeuser] = useState('');
   const [attachment, setAttachment] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isSending, setIsSending] = useState(false);

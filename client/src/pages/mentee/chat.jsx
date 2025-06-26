@@ -38,7 +38,7 @@ export default function Chat() {
             )
         );
     }
-
+    
     useEffect(() => {
         console.log("fetching data");
         fetchAllChats();

@@ -67,7 +67,6 @@ export default {
                 select: "userName email",
             });
 
-         
             results = await Promise.all(results.map(async (chat: any) => {
                 const unreadCount = await Message.countDocuments({
                     chat: chat._id,
@@ -81,8 +80,6 @@ export default {
                 };
             }));
 
-
-
             return results;
         } catch (error) {
             console.log(error);
@@ -92,13 +89,11 @@ export default {
     },
     getMessages: async (chatId: string, userId: string) => {
         try {
-    
+
             const messages = await Message.find({ chat: chatId }).populate({ path: 'sender', select: 'profilePic' });
-
-
             await Message.updateMany({ chat: chatId, isRead: false, readBy: { $ne: userId } }, { $set: { isRead: true }, $addToSet: { readBy: userId } });
-
             return messages;
+            
         } catch (error) {
             throw error
         }
