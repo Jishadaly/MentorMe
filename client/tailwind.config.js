@@ -32,7 +32,8 @@ module.exports = withMT({
   darkMode: "class",
   theme: {
     fontFamily: {
-      'sans': ['Helvetica', 'Arial', 'sans-serif'],
+      // 'sans': ['Helvetica', 'Arial', 'sans-serif'],
+      sans: ['Inter', 'sans-serif'],
     },
     extend: {
       animation: {

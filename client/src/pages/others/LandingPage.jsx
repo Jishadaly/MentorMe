@@ -1,9 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { InfiniteMovingCardsDemo } from '@/componets/animations/InfiniteMovingCards';
+import { getPopulerMentors } from '../../Api/services/mentorServices';
 
 const LandingPage = () => {
-  const navigate = useNavigate()
+  
+  const [populerMentors, setPopulerMentors] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  useEffect(() => {
+    function fetchMenors() {
+      getPopulerMentors('user/getMentors')
+        .then((response) => {
+          setPopulerMentors(response.mentors);
+          console.log('Popular Mentors:', response);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error('Error fetching popular mentors:', err);
+          setError('Failed to load popular mentors');
+          setLoading(false);
+        });
+    }
+    fetchMenors();
+  }
+  , []);
 
   return (
     <div className="text-gray-700 bg-white" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif' }}>
@@ -13,12 +35,12 @@ const LandingPage = () => {
           <a className="font-extrabold text-2xl font-sans" href="#">
             MentorMe
           </a>
-          <div className="block lg:hidden">
+          {/* <div className="block lg:hidden">
             <button className="flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-gray-800 hover:border-teal-500 appearance-none focus:outline-none">
               <svg xmlns="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" ></svg>
 
             </button>
-          </div>
+          </div> */}
           <div className="hidden lg:block">
             <ul className="inline-flex">
               <li>
@@ -53,8 +75,53 @@ const LandingPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Mentor Profiles */}
+      <section className="bg-gray-100 ">
+        <div className="container mx-auto px-6 py-20">
+          <h2 className="text-4xl font-sans font-extrabold text-center text-gray-800 mb-8">
+            Meet Our Mentors
+          </h2>
+          <div className="flex flex-wrap justify-center">
+            {/* Mentor Profile Cards */}
+            {loading ? (
+              <div className="w-full text-center">
+                <p className="text-gray-700">Loading mentors...</p>
+              </div>
+            ) : error ? (
+              <div className="w-full text-center">
+                <p className="text-red-500">{error}</p>
+              </div>
+            ) : populerMentors.length === 0 ? (
+              <div className="w-full text-center">
+                <p className="text-gray-700">No mentors available at the moment.</p>
+              </div>
+            ) : populerMentors && populerMentors.map((mentor) => (
+              <div className="w-full md:w-1/2 lg:w-1/3 px-4 mb-8">
+              <div className="bg-gray-50 border border-gray-300 rounded-xl p-6 flex flex-col items-center shadow-sm">
+                <img
+                  src={mentor?.profilePic || 'https://via.placeholder.com/150'}
+                  alt="Profile"
+                  className="w-24 h-24 rounded-full mb-4 border border-gray-300 object-cover"
+                />
+                <h3 className="text-lg font-semibold text-gray-800 mb-1 ">{mentor?.userName}</h3>
+                <p className="text-sm text-gray-600 mb-1">{mentor?.mentorAdditional?.jobTitle}</p>
+                <p className="text-sm text-gray-600 mb-1">{mentor.mentorAdditional.company}</p>
+                <p className="text-sm text-gray-600 mb-4">3+ years experience</p>
+                <button className="bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-medium py-2 px-4 rounded-full">
+                  View Profile
+                </button>
+              </div>
+            </div>
+            
+            ))}
+          
+            {/* Add more mentor profile cards here */}
+          </div>
+        </div>
+      </section>
       {/* Features */}
-      <section className="container mx-auto px-6 p-10">
+      <section className="container mx-auto px-6 md:py-10">
         <h2 className="text-4xl font-sans font-extrabold text-center text-gray-800 mb-8">
           Key Features
         </h2>
@@ -63,60 +130,15 @@ const LandingPage = () => {
           <InfiniteMovingCardsDemo />
         </div>
       </section>
-      {/* Mentor Profiles */}
-      <section className="bg-gray-100">
-        <div className="container mx-auto px-6 py-20">
-          <h2 className="text-4xl font-sans font-extrabold text-center text-gray-800 mb-8">
-            Meet Our Mentors
-          </h2>
-          <div className="flex flex-wrap justify-center">
-            {/* Mentor Profile Cards */}
-            <div className="w-full md:w-1/2 lg:w-1/3 px-4 mb-8">
-              <div className="bg-white rounded-lg shadow-xl p-6">
-                <h3 className="text-xl font-bold mb-2 text-gray-800">John Doe</h3>
-                <p className="text-gray-700">Senior Software Engineer</p>
-                <p className="text-gray-700">10+ years of experience</p>
-                <button className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 mt-4 rounded-full">
-                  View Profile
-                </button>
-              </div>
-            </div>
-
-            <div className="w-full md:w-1/2 lg:w-1/3 px-4 mb-8">
-              <div className="bg-white rounded-lg shadow-xl p-6">
-                <h3 className="text-xl font-bold mb-2 text-gray-800">John Doe</h3>
-                <p className="text-gray-700">Senior Software Engineer</p>
-                <p className="text-gray-700">10+ years of experience</p>
-                <button className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 mt-4 rounded-full">
-                  View Profile
-                </button>
-              </div>
-            </div>
-
-            <div className="w-full md:w-1/2 lg:w-1/3 px-4 mb-8">
-              <div className="bg-white rounded-lg shadow-xl p-6">
-                <h3 className="text-xl font-bold mb-2 text-gray-800">John Doe</h3>
-                <p className="text-gray-700">Senior Software Engineer</p>
-                <p className="text-gray-700">10+ years of experience</p>
-                <button className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 mt-4 rounded-full">
-                  View Profile
-                </button>
-              </div>
-            </div>
-
-            {/* Add more mentor profile cards here */}
-          </div>
-        </div>
-      </section>
       {/* Testimonials */}
-      <section className="container mx-auto px-6 py-20">
+      <section className="container mx-auto px-6 md:py-20">
         <h2 className="text-4xl font-sans font-extrabold text-center text-gray-800 mb-8">
           Student Testimonials
         </h2>
         <div className="flex flex-wrap justify-center">
           {/* Testimonial Cards */}
           <div className="w-full md:w-1/2 lg:w-1/3 px-4 mb-8">
-            <div className="bg-white rounded-lg shadow-xl p-6">
+            <div className="bg-white rounded-lg border-2 p-6">
               <p className="text-gray-700">
                 "MentorMe helped me land my first job as a developer. The personalized mentorship was invaluable!"
               </p>
@@ -124,16 +146,16 @@ const LandingPage = () => {
             </div>
           </div>
           <div className="w-full md:w-1/2 lg:w-1/3 px-4 mb-8">
-            <div className="bg-white rounded-lg shadow-xl p-6">
-              <p className="text-gray-700">
+          <div className="bg-white rounded-lg border-2 p-6">
+          <p className="text-gray-700">
                 "MentorMe helped me land my first job as a developer. The personalized mentorship was invaluable!"
               </p>
               <p className="text-gray-800 font-bold mt-4">- Emily Smith</p>
             </div>
           </div>
           <div className="w-full md:w-1/2 lg:w-1/3 px-4 mb-8">
-            <div className="bg-white rounded-lg shadow-xl p-6">
-              <p className="text-gray-700">
+          <div className="bg-white rounded-lg border-2 p-6">
+          <p className="text-gray-700">
                 "MentorMe helped me land my first job as a developer. The personalized mentorship was invaluable!"
               </p>
               <p className="text-gray-800 font-bold mt-4">- Emily Smith</p>

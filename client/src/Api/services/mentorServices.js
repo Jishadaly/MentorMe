@@ -1,3 +1,4 @@
+import axios from "axios";
 import { authInstanceAxios } from "../axiosInstence";
 
 export const getMentors = async (endPoint) => {
@@ -53,5 +54,11 @@ export const markRead = async (endPoint, notifyId) => {
 
 export const updateSessionStatus = async (endPoint, status , sessionId) => {
   const response = await authInstanceAxios.patch(`/${endPoint}?id=${sessionId}&status=${status}`);
+  return response.data;
+}
+
+export const getPopulerMentors = async (endPoint) => {
+const baseUrl = import.meta.env.VITE_API_BASE_URL
+  const response = await axios.get(`${baseUrl}/${endPoint}`);
   return response.data;
 }

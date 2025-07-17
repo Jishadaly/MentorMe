@@ -13,7 +13,9 @@ mentorRouter.put('/updateMentor' ,protect, mentorController.updateMentorProfile)
 mentorRouter.get('/getNotifications',protect,mentorController.getNotifications);
 mentorRouter.patch('/editNotification',protect,mentorController.editNotification);
 mentorRouter.get('/getMentorDashboard' , protect , checkBlocked , mentorController.getMentorDashboard);
-mentorRouter.get('/getMentors', protect,checkBlocked,checkRole(['mentee', 'mentor', 'admin']), mentorController.getMentors);
+// mentorRouter.get('/getMentors', protect,checkBlocked,checkRole(['mentee', 'mentor', 'admin']), mentorController.getMentors);
+mentorRouter.get('/getMentors',mentorController.getMentors);
+
 
 
 export default mentorRouter
