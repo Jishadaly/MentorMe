@@ -1,4 +1,4 @@
-import { Formik, Form, ErrorMessage } from 'formik';
+import { Formik, Form } from 'formik';
 import { validationSchema, initialValue } from '../../utils/validations/userSignupValidation';
 import { userRegister } from '../../Api/services/auth/user-auth-service';
 import { useState } from 'react';
@@ -27,8 +27,7 @@ const Signup = () => {
     setSubmitting(true);
 
     try {
-      const response = await userRegister('user/signup', values);
-      const user = response.data.user;
+      await userRegister('user/signup', values);
       setIsModalOpen(true);
 
     } catch (error) {

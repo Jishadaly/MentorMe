@@ -41,64 +41,65 @@ import MentorDashboard from '@/pages/mentor/MentorDashboard'
 import ForgotPassword from '../pages/others/forgotPassword'
 import ResetPassword from '../pages/others/resetPasswordPage'
 
-const router = createBrowserRouter( 
+const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/'>
       <Route index element={<LandingPage />} />
- 
-      <Route  element={<Protected/> }>
-      
-        <Route path='/mentee' element={<MenteeLayout/>}>
-        <Route index element={<MenteeHome />} />
-            <Route path='home' element={<MenteeHome/>}/>
-            <Route path='mentorDetails/:mentorId' element={<MentorDetails/>}/>
-            <Route path='calles' element={<CallesPage/>}/>
-            <Route path='profile' element={<MenteeProfile/>}/>
-            <Route path='blogs' element={<BlogList/>}/>
-            <Route path='blogView/:blogId' element={<BlogView/>}/>
-            <Route path='chat' element={<Chat/>}/>
-            <Route path='notifications' element={<Notifications/>}/>
+
+      {/* <Route  element={<Protected/> }> */}
+      <Route >
+
+        <Route path='/mentee' element={<MenteeLayout />}>
+          <Route path='home' element={<MenteeHome />} />
+          <Route index element={<MenteeHome />} />
+          <Route path='mentorDetails/:mentorId' element={<MentorDetails />} />
+          <Route path='profile' element={<MenteeProfile />} />
+          <Route path='blogs' element={<BlogList />} />
+          <Route path='blogView/:blogId' element={<BlogView />} />
+          <Route path='calles' element={<CallesPage />} />
+          <Route path='chat' element={<Chat />} />
+          <Route path='notifications' element={<Notifications />} />
         </Route>
       </Route>
 
-      <Route element={<AdminProtected/> }>
+      <Route element={<AdminProtected />}>
         <Route path='/admin'>
-        <Route index element={<AdminHome/>} />
-         <Route path='home' element={<AdminHome/>}/>
-         <Route path='slotManage' element={<SlotManage/>}/>
-        </Route>                                                          
+          <Route index element={<AdminHome />} />
+          <Route path='home' element={<AdminHome />} />
+          <Route path='slotManage' element={<SlotManage />} />
+        </Route>
       </Route>
 
-      <Route  element={<MentorProtected/>}> 
-        <Route path='/mentor' element={<MentorLayout/>}>
+      <Route element={<MentorProtected />}>
+        <Route path='/mentor' element={<MentorLayout />}>
           <Route index element={<MentorDashboard />} />
           {/* <Route path='home' element={<MentorDashboard/>}/> */}
-          <Route path='availability' element={<MentorAvailability/>}/>
-          <Route path='Createblogs' element={<CreateBlogs/>} />
-          <Route path='blogs' element={<Blogs/>} />
-          <Route path='editBlog/:blogId' element={<EditBlog/>}/>
-          <Route path='chat' element={<MentorChat/>}/>
-          <Route path='chat' element={<Chat/>}/>
-          <Route path='profile' element={<MentorProfile/>}/>
-          <Route path='sessions' element= {<Sessions/>}/>
-          <Route path='notifications' element={<Notifications/>}/>
-          <Route path='dashboard' element={<MentorDashboard/>}/>
-          
-        </Route>    
+          <Route path='availability' element={<MentorAvailability />} />
+          <Route path='Createblogs' element={<CreateBlogs />} />
+          <Route path='blogs' element={<Blogs />} />
+          <Route path='editBlog/:blogId' element={<EditBlog />} />
+          <Route path='chat' element={<MentorChat />} />
+          <Route path='chat' element={<Chat />} />
+          <Route path='profile' element={<MentorProfile />} />
+          <Route path='sessions' element={<Sessions />} />
+          <Route path='notifications' element={<Notifications />} />
+          <Route path='dashboard' element={<MentorDashboard />} />
+
+        </Route>
       </Route>
 
       <Route path="/mentee/login" element={<UserLogin />} />
       <Route path="/forgotPassword" element={<ForgotPassword />} />
-      <Route path="/mentor/login" element={<MentorLogin />}/>
-      <Route path="/signup" element={<Signup />}/>                      
-      <Route path='/chooseRole/:userId' element={<RoleSelectorCard/>} />
-      <Route path='/mentorAppForm/:userId' element={<MentorApplicationForm/>} />
+      <Route path="/mentor/login" element={<MentorLogin />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path='/chooseRole/:userId' element={<RoleSelectorCard />} />
+      <Route path='/mentorAppForm/:userId' element={<MentorApplicationForm />} />
       {/* <Route path='/menteeAppForm/:userId' element={<MenteeAditionalForm/>} />     */}
-      <Route path='/mentor/MentorConfirmationPage' element={<ConfirmationPage/>} />
-      <Route path='/admin/login' element={<AdminLogin/>} />
-      <Route path="*" element={ <PageNotFound/>}/>
-      <Route path='/meet/:roomId' element= {<Room/>} />
-      <Route path='/resetPassword' element={<ResetPassword/>} />
+      <Route path='/mentor/MentorConfirmationPage' element={<ConfirmationPage />} />
+      <Route path='/admin/login' element={<AdminLogin />} />
+      <Route path="*" element={<PageNotFound />} />
+      <Route path='/meet/:roomId' element={<Room />} />
+      <Route path='/resetPassword' element={<ResetPassword />} />
 
     </Route>
   )

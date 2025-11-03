@@ -6,13 +6,9 @@ export const loginUser = createAsyncThunk(
   'auth/userLogin',
   async ({ endpoint, userData }, thunkAPI) => {
     try {
-      console.log(endpoint, userData);
       const response = await authInstanceAxios.post(`/${endpoint}`, userData);
-      console.log(response);
       const user = response.data.response.user;
       const token = response.data.response.accessToken;
-      console.log(token);
-
 
       Cookies.set('token', token)
 
@@ -35,7 +31,7 @@ export const mentorLogin = createAsyncThunk(
 
       Cookies.set('token', token);
 
-      
+
 
       return { user, token };
     } catch (error) {
@@ -57,7 +53,6 @@ export const googleAuth = createAsyncThunk(
 
       return { user, token };
     } catch (error) {
-      console.log(error);
       return thunkAPI.rejectWithValue(error.response.data);
     }
   }

@@ -1,33 +1,29 @@
-import { useNavigate } from "react-router-dom";
 import { createCheckoutSession } from "@/Api/services/menteeService";
-import { toast } from "sonner";
 import moment from "moment";
 
 
-function BookingConfirmModal({ onClose , mentorData , mentee , slot , price}) {
-    
-     
-    const handleAccept = async ()=>{
-      
-      const slotId = slot._id;
-      const mentor = mentorData.user._id;
-  
-        try {
-            const data = await createCheckoutSession('user/create-checkout-session',
-               { mentee , mentor , slotId , price });
-            if (data.url) {
-              window.location.href = data.url; 
-            } else {
-              console.error('Error: No URL returned from server');
-            }
-            
-          } catch (error) {
-            console.error('Error creating checkout session:', error);
-          }
-        };
+function BookingConfirmModal({ onClose, mentorData, mentee, slot, price }) {
+
+  const handleAccept = async () => {
+
+    const slotId = slot._id;
+    const mentor = mentorData.user._id;
+
+    try {
+      const data = await createCheckoutSession('user/create-checkout-session',
+        { mentee, mentor, slotId, price });
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        console.error('Error: No URL returned from server');
+      }
+
+    } catch (error) {
+      console.error('Error creating checkout session:', error);
+    }
+  };
 
 
-   
   return (
     <div
       id="static-modal"
@@ -66,23 +62,23 @@ function BookingConfirmModal({ onClose , mentorData , mentee , slot , price}) {
             </button>
           </div>
           <div className="p-4 md:p-5 space-y-4">
-    <p className="text-base leading-relaxed text-gray-800 font-inter">
-        You are about to book a mentorship session with our expert developer, {mentorData.name}.
-    </p>
-    <p className="text-base leading-relaxed text-gray-800 font-inter">
-        This one-hour mentorship session will provide you with the opportunity to discuss your project, get valuable insights, and receive guidance tailored to your needs.
-    </p>
-    <p className="text-base leading-relaxed text-gray-800 font-inter">
-        Please confirm the following details:
-    </p>
-    <ul className="text-base leading-relaxed text-gray-800 font-inter">
-        <li>Date: {moment(slot.date).format('MMMM Do, YYYY')}</li>
-        <li>Time: {moment(slot.startTime, 'HH:mm').format('h:mm A')} - {moment(slot.endTime, 'HH:mm').format('h:mm A')}</li>
-    </ul>
-    <p className="text-base leading-relaxed text-gray-800 font-inter">
-        Click "Confirm" to proceed with the booking. We look forward to helping you achieve your goals!
-    </p>
-</div>
+            <p className="text-base leading-relaxed text-gray-800 font-inter">
+              You are about to book a mentorship session with our expert developer, {mentorData.name}.
+            </p>
+            <p className="text-base leading-relaxed text-gray-800 font-inter">
+              This one-hour mentorship session will provide you with the opportunity to discuss your project, get valuable insights, and receive guidance tailored to your needs.
+            </p>
+            <p className="text-base leading-relaxed text-gray-800 font-inter">
+              Please confirm the following details:
+            </p>
+            <ul className="text-base leading-relaxed text-gray-800 font-inter">
+              <li>Date: {moment(slot.date).format('MMMM Do, YYYY')}</li>
+              <li>Time: {moment(slot.startTime, 'HH:mm').format('h:mm A')} - {moment(slot.endTime, 'HH:mm').format('h:mm A')}</li>
+            </ul>
+            <p className="text-base leading-relaxed text-gray-800 font-inter">
+              Click "Confirm" to proceed with the booking. We look forward to helping you achieve your goals!
+            </p>
+          </div>
           <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
             <button
               onClick={handleAccept}

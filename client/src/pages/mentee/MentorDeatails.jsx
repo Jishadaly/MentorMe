@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { FiStar, FiCalendar as FiCalendarIcon, FiDollarSign } from 'react-icons/fi';
-import Header from './partials/Header';
-import Sidenav from './partials/Sidenav';
 import { useParams } from 'react-router-dom';
 import { fetchMentorData, getMentorReviwes } from '@/Api/services/menteeService';
 import CustomDatePicker from '@/componets/DatePicker';
 import { useSelector } from 'react-redux';
 import BookingConfirmModal from '@/componets/modal/BookingConfrimModal';
-import { FaCode } from 'react-icons/fa';
 import { FaBriefcase , FaGlobe} from 'react-icons/fa';
 
 const MentorDetails = () => {

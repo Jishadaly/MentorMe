@@ -9,7 +9,7 @@ mentorRouter.post('/mentorAppicationForm',mentorController.mentorApplicationForm
 mentorRouter.get('/getMentor' ,protect,checkBlocked, mentorController.getMentor);
 mentorRouter.get('/getMentorApplication', protect, mentorController.getApplicationId);
 mentorRouter.get('/getMentorDetails' ,protect, mentorController.getMentorDetails);
-mentorRouter.put('/updateMentor' ,protect, mentorController.updateMentorProfile);
+mentorRouter.patch('/updateMentor' ,protect, mentorController.updateMentorProfile);
 mentorRouter.get('/getNotifications',protect,mentorController.getNotifications);
 mentorRouter.patch('/editNotification',protect,mentorController.editNotification);
 mentorRouter.get('/getMentorDashboard' , protect , checkBlocked , mentorController.getMentorDashboard);

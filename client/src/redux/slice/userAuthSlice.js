@@ -1,4 +1,3 @@
-// src/features/auth/authSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 import { loginUser  ,mentorLogin , googleAuth } from '../services/userAuthServices';
 import Cookies from 'js-cookie';
@@ -59,10 +58,8 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      
   },
 });
 
 export const { logout } = authSlice.actions;
-
 export default authSlice.reducer;

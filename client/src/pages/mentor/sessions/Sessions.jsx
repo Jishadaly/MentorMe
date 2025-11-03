@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { getSessions } from '@/Api/services/mentorServices';
-import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 import { useNavigate } from 'react-router-dom';
-import { BellIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
+import {  ChevronDownIcon } from '@heroicons/react/24/outline';
 import { updateSessionStatus } from '@/Api/services/mentorServices';
 import { TickIcon } from '@/componets/icons/chatIcons';
 
@@ -23,8 +22,7 @@ function Dropdown({ options, onSelect }) {
                 <button
                     key={index}
                     className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    onClick={() => onSelect(option)}
-                >
+                    onClick={() => onSelect(option)} >
                     {option}
                 </button>
             ))}
@@ -37,13 +35,10 @@ function Card({ date, startTime, endTime, name, profilePic, role, roomId, onJoin
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [status, setStatus] = useState('');
 
-    useEffect(() => {
-        
+    useEffect(() => {        
         setStatus(sessionStatus)
-        console.log("123123",sessionStatus);
     }, [])
-
-
+    
     const handleDropdownToggle = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
@@ -97,8 +92,6 @@ function Card({ date, startTime, endTime, name, profilePic, role, roomId, onJoin
     )}
   </div>
 )}
-
-
         </div>
     );
 }
@@ -120,8 +113,6 @@ export default function Sessions() {
         console.log(sessions);
         setSessions(sessions);
     };
-
-
 
     useEffect(() => {
         fetchSessions();

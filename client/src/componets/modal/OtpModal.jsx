@@ -37,7 +37,6 @@ export function OtpModal({ isOpen, onClose, email }) {
       }, 1000);
     }
 
-    // Cleanup the interval on component unmount
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
@@ -45,26 +44,6 @@ export function OtpModal({ isOpen, onClose, email }) {
       }
     };
   }, []);
-
-
-  const startTimer = () => {
-    intervalRef.current = setInterval(() => {
-      setTimeLeft(prevTime => {
-        if (prevTime > 0) {
-          return prevTime - 1;
-        } else {
-          setShowResentOtpBtn(true);
-          clearInterval(intervalRef.current);
-          intervalRef.current = null;
-          return 0;
-        }
-      });
-    }, 1000);
-  };
-
-
-
-
 
   const handleChange = (e) => {
     setOtp(e.target.value)
@@ -84,7 +63,7 @@ export function OtpModal({ isOpen, onClose, email }) {
   }
 
   const handleResendOtp = () => {
-   setTimeLeft(60);
+    setTimeLeft(60);
     setShowResentOtpBtn(false);
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
@@ -144,7 +123,7 @@ export function OtpModal({ isOpen, onClose, email }) {
       </div>
       <DialogBody className="px-4 pb-4">
         <Typography className="mb-4" color="gray" variant="lead">
-          Please enter the OTP sent to your email. <span className='text-sm text-red-800'>{timeLeft} seconds remaining.</span>
+          Please enter the OTP sent to your email. <span className='text-sm text-red-800'>{timeLeft} seconds remaining. </span>
         </Typography>
 
         <div className="mb-4">

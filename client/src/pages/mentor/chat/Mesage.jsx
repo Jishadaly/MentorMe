@@ -142,7 +142,7 @@ export default function Messages({ chatId }) {
   }, [chatId]);
 
   return (
-    <div ref={messagesContainerRef} className="flex-1 grid gap-2 bg-indigo-50   w-full p-10">
+    <div ref={messagesContainerRef} className="flex-1 grid gap-2 bg-indigo-100   w-full p-10">
       {messages.map((msg, index) => (
         <div
           key={index}
@@ -192,37 +192,55 @@ export default function Messages({ chatId }) {
         </div>
       )}
 
-      <div className="  fixed bottom-4  flex items-center gap-2 bg-white p-3 rounded-lg w-[1000px]">
+      {/* ✅ Chat Input Bar */}
+      <div
+        className="
+    fixed bottom-3 
+    left-2 right-2                 /* full width on small screens */
+    md:left-[280px] lg:left-[400px] xl:left-[690px]  /* adjust based on sidebar width / screen */
+    md:right-6 
+    flex items-center gap-3 
+    bg-white p-3 pr-5 rounded-lg shadow-md 
+    w-auto 
+    transition-all duration-200 
+  "
+      >
         <input
           type="text"
           placeholder="Type your message..."
           value={message}
-          onChange={(e) => handleChange(e)}
+          onChange={handleChange}
           onBlur={() => {
             setIsTyping(false);
             socket.emit('stopTyping', { chatId, sender: currentUserId });
           }}
-          
-          onKeyPress={(e) => {
-            if (e.key === 'Enter') {
-              handleSend();
-            }
-          }}
-
-          className="flex-1 bg-transparent focus:outline-none bg-fixed "
+          onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+          className="flex-1 bg-transparent focus:outline-none text-sm md:text-base"
         />
-        <SmileIcon onClick={toggleEmojiPicker} className="w-4 h-4 text-gray-500 cursor-pointer" />
+
+        <SmileIcon
+          onClick={toggleEmojiPicker}
+          className="w-5 h-5 text-gray-500 cursor-pointer hover:text-gray-700"
+        />
 
         <label className="cursor-pointer">
           <input type="file" className="hidden" onChange={handleAttachmentChange} />
-          <AttachmentIcon className="w-5 h-5 text-gray-500" />
+          <AttachmentIcon className="w-5 h-5 text-gray-500 hover:text-gray-700" />
         </label>
 
-        <button onClick={handleSend} className="text-gray-500 hover:text-gray-700 p-1">
-          <SendIcon className="w-5 h-5 text-indigo-500" />
-          <span className="sr-only">Send</span>
+        <button
+          onClick={handleSend}
+          disabled={isSending}
+          className="p-2 rounded-md hover:bg-indigo-50 transition"
+        >
+          {isSending ? (
+            <ReactLoading type="spin" color="#6366f1" height={18} width={18} />
+          ) : (
+            <SendIcon className="w-5 h-5 text-indigo-600" />
+          )}
         </button>
       </div>
+
 
       {attachment && (
         <div className="flex items-center gap-2 mb-14 ">

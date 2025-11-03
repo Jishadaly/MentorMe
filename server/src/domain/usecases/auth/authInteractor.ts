@@ -65,7 +65,7 @@ export default {
                 throw Error( "User not found" );
              }
              const otp = otpGeneratorFun();
-             console.log("RESENT OTP", otp);
+
              await updateOtp(email , otp);
              const emailContent = generateResendOtpEmailContent(user.userName, otp);
              await sendMail(user.email, emailContent);
