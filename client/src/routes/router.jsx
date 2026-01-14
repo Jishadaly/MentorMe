@@ -46,8 +46,8 @@ const router = createBrowserRouter(
     <Route path='/'>
       <Route index element={<LandingPage />} />
 
-      {/* <Route  element={<Protected/> }> */}
-      <Route >
+      {/* <Route > */}
+      <Route  element={<Protected/> }>
 
         <Route path='/mentee' element={<MenteeLayout />}>
           <Route path='home' element={<MenteeHome />} />
