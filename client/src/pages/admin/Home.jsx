@@ -1,5 +1,3 @@
-
-
 import React, { useState } from "react";
 import Sidenav from "./widgets/layout/sidenav";
 import Header from "./partials/Header";

@@ -1,200 +1,3 @@
-// import React, { useEffect, useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import { InfiniteMovingCardsDemo } from '@/componets/animations/InfiniteMovingCards';
-// import { getPopulerMentors } from '../../Api/services/mentorServices';
-
-// const LandingPage = () => {
-  
-//   const [populerMentors, setPopulerMentors] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-//   const navigate = useNavigate();
-//   useEffect(() => {
-//     function fetchMenors() {
-//       getPopulerMentors('user/getMentors')
-//         .then((response) => {
-//           setPopulerMentors(response.mentors);
-//           console.log('Popular Mentors:', response);
-//           setLoading(false);
-//         })
-//         .catch((err) => {
-//           console.error('Error fetching popular mentors:', err);
-//           setError('Failed to load popular mentors');
-//           setLoading(false);
-//         });
-//     }
-//     fetchMenors();
-//   }
-//   , []);
-
-//   return (
-//     <div className="text-gray-700 bg-white" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif' }}>
-//       {/* Nav */}
-//       <nav>
-//         <div className="container mx-auto px-6 py-2 flex justify-between items-center">
-//           <a className="font-extrabold text-2xl font-sans" href="#">
-//             MentorMe
-//           </a>
-//           {/* <div className="block lg:hidden">
-//             <button className="flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-gray-800 hover:border-teal-500 appearance-none focus:outline-none">
-//               <svg xmlns="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" ></svg>
-
-//             </button>
-//           </div> */}
-//           <div className="hidden lg:block">
-//             <ul className="inline-flex">
-//               <li>
-//                 <a className="px-4 font-bold" href="/">Home</a>
-//               </li>
-//               <li>
-//                 <a className="px-4 hover:text-gray-800" href="#">About</a>
-//               </li>
-//               <li>
-//                 <a className="px-4 hover:text-gray-800" href="#">Contact</a>
-//               </li>
-//             </ul>
-//           </div>
-//         </div>
-//       </nav>
-//       {/* Hero */}
-//       <div className="py-20" style={{ background: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)' }}>
-//         <div className="container mx-auto px-6">
-//           <h2 className=" mb-2 text-white font-extrabold text-2xl font-sans">
-//             Welcome to MentorMe!
-//           </h2>
-//           <h3 className="text-2xl mb-8 text-gray-200">
-//             Find your programming mentor or mentee and level up your skills.
-//           </h3>
-//           <div className="flex justify-center">
-//             <button onClick={() => navigate('/mentor')} className="bg-white font-bold rounded-full py-4 px-8 shadow-lg uppercase tracking-wider mr-4">
-//               Mentor
-//             </button>
-//             <button onClick={() => navigate('/mentee/home')} className="bg-white font-bold rounded-full py-4 px-8 shadow-lg uppercase tracking-wider">
-//               Mentee
-//             </button>
-//           </div>
-//         </div>
-//       </div>
-
-//       {/* Mentor Profiles */}
-//       <section className="bg-gray-100 ">
-//         <div className="container mx-auto px-6 py-20">
-//           <h2 className="text-4xl font-sans font-extrabold text-center text-gray-800 mb-8">
-//             Meet Our Mentors
-//           </h2>
-//           <div className="flex flex-wrap justify-center">
-//             {/* Mentor Profile Cards */}
-//             {loading ? (
-//               <div className="w-full text-center">
-//                 <p className="text-gray-700">Loading mentors...</p>
-//               </div>
-//             ) : error ? (
-//               <div className="w-full text-center">
-//                 <p className="text-red-500">{error}</p>
-//               </div>
-//             ) : populerMentors.length === 0 ? (
-//               <div className="w-full text-center">
-//                 <p className="text-gray-700">No mentors available at the moment.</p>
-//               </div>
-//             ) : populerMentors && populerMentors.map((mentor) => (
-//               <div className="w-full md:w-1/2 lg:w-1/3 px-4 mb-8">
-//               <div className="bg-gray-50 border border-gray-300 rounded-xl p-6 flex flex-col items-center shadow-sm">
-//                 <img
-//                   src={mentor?.profilePic || 'https://via.placeholder.com/150'}
-//                   alt="Profile"
-//                   className="w-24 h-24 rounded-full mb-4 border border-gray-300 object-cover"
-//                 />
-//                 <h3 className="text-lg font-semibold text-gray-800 mb-1 ">{mentor?.userName}</h3>
-//                 <p className="text-sm text-gray-600 mb-1">{mentor?.mentorAdditional?.jobTitle}</p>
-//                 <p className="text-sm text-gray-600 mb-1">{mentor.mentorAdditional.company}</p>
-//                 <p className="text-sm text-gray-600 mb-4">3+ years experience</p>
-//                 <button className="bg-indigo-500 hover:bg-indigo-600 text-white text-sm font-medium py-2 px-4 rounded-full">
-//                   View Profile
-//                 </button>
-//               </div>
-//             </div>
-            
-//             ))}
-          
-//             {/* Add more mentor profile cards here */}
-//           </div>
-//         </div>
-//       </section>
-//       {/* Features */}
-//       <section className="container mx-auto px-6 md:py-10">
-//         <h2 className="text-4xl font-sans font-extrabold text-center text-gray-800 mb-8">
-//           Key Features
-//         </h2>
-//         <div className="flex items-center flex-wrap mb-20">
-
-//           <InfiniteMovingCardsDemo />
-//         </div>
-//       </section>
-//       {/* Testimonials */}
-//       <section className="container mx-auto px-6 md:py-20">
-//         <h2 className="text-4xl font-sans font-extrabold text-center text-gray-800 mb-8">
-//           Student Testimonials
-//         </h2>
-//         <div className="flex flex-wrap justify-center">
-//           {/* Testimonial Cards */}
-//           <div className="w-full md:w-1/2 lg:w-1/3 px-4 mb-8">
-//             <div className="bg-white rounded-lg border-2 p-6">
-//               <p className="text-gray-700">
-//                 "MentorMe helped me land my first job as a developer. The personalized mentorship was invaluable!"
-//               </p>
-//               <p className="text-gray-800 font-bold mt-4">- Emily Smith</p>
-//             </div>
-//           </div>
-//           <div className="w-full md:w-1/2 lg:w-1/3 px-4 mb-8">
-//           <div className="bg-white rounded-lg border-2 p-6">
-//           <p className="text-gray-700">
-//                 "MentorMe helped me land my first job as a developer. The personalized mentorship was invaluable!"
-//               </p>
-//               <p className="text-gray-800 font-bold mt-4">- Emily Smith</p>
-//             </div>
-//           </div>
-//           <div className="w-full md:w-1/2 lg:w-1/3 px-4 mb-8">
-//           <div className="bg-white rounded-lg border-2 p-6">
-//           <p className="text-gray-700">
-//                 "MentorMe helped me land my first job as a developer. The personalized mentorship was invaluable!"
-//               </p>
-//               <p className="text-gray-800 font-bold mt-4">- Emily Smith</p>
-//             </div>
-//           </div>
-//           {/* Add more testimonial cards here */}
-//         </div>
-//       </section>
-//       {/* Call to Action */}
-//       <section style={{ backgroundColor: '#667eea' }}>
-//         <div className="container mx-auto px-6 text-center py-20">
-//           <h2 className="mb-6 text-4xl font-sans font-extrabold text-center text-white mb-8e">
-//             Limited Spots Available!
-//           </h2>
-//           <h3 className="my-4 text-2xl text-white">
-//             Join MentorMe today and accelerate your programming journey!
-//           </h3>
-//           <button onClick={() => navigate('/signup')} className="bg-white font-bold rounded-full mt-6 py-4 px-8 shadow-lg uppercase tracking-wider">
-//             Sign Up Now
-//           </button>
-//         </div>
-//       </section>
-//       {/* Footer */}
-//       <footer className="bg-gray-100">
-//         <div className="container mx-auto px-6 pt-10 pb-6">
-//           <div className="flex flex-wrap">
-//             {/* Add content for footer */}
-//           </div>
-//         </div>
-//       </footer>
-//     </div>
-//   );
-// };
-
-// export default LandingPage;
-
-// 
-
-
 import { useState, useEffect } from "react"
 import { ChevronRight, Star, Users, Award } from "lucide-react"
 import { motion } from "framer-motion"
@@ -400,10 +203,6 @@ export default function LandingPage() {
         </div>
       </motion.nav>
 
-      {/* 🔥 REST OF SECTIONS */}
-      {/* Hero, Mentors, Testimonials, Features, CTA, Footer */}
-      {/* ⛔ FULL CONTENT REMAINS EXACTLY SAME AS YOU PROVIDED */}
-
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-6 relative overflow-hidden">
         <motion.div
@@ -424,7 +223,7 @@ export default function LandingPage() {
             variants={itemVariants}
           >
             Grow with Expert{" "}
-            <span className="bg-gradient-to-r from-purple-600 to-purple-500 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r  from-blue-800 to-purple-700 bg-clip-text text-transparent">
               Guidance
             </span>
           </motion.h2>
@@ -436,7 +235,7 @@ export default function LandingPage() {
 
           <motion.div className="flex gap-4 justify-center" variants={itemVariants}>
             <motion.button
-              className="bg-purple-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-purple-700 transition flex items-center gap-2 group"
+              className="bg-gradient-to-tr from-blue-800 to-purple-700 text-white px-8 py-4 rounded-full font-semibold hover:bg-purple-700 transition flex items-center gap-2 group"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={()=> navigate('/mentee')}
@@ -558,6 +357,7 @@ export default function LandingPage() {
                     className="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
+                    onClick={()=> navigate(`/mentee/mentorDetails/${mentor._id}`)}
                   >
                     Book Session
                   </motion.button>
@@ -707,7 +507,7 @@ export default function LandingPage() {
       {/* CTA Section */}
       <motion.section
         id="cta"
-        className="py-20 px-6 bg-gradient-to-r from-purple-600 to-purple-500 text-white rounded-3xl mx-6 mb-20"
+        className="py-20 px-6 bg-gradient-to-r  from-blue-800 to-purple-700 text-white rounded-3xl mx-6 mb-20"
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}

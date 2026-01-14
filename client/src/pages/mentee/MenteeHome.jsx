@@ -52,7 +52,10 @@ const MenteeHome = () => {
             <h1 className="text-5xl font-extrabold font-inter">
               Build with the
               <br />
+              <span className=' from-blue-800 to-purple-700'>
+
               best
+              </span>
             </h1>
           </div>
           <div className="flex mb-6 items-center">
