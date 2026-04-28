@@ -8,10 +8,11 @@ import {
 } from "@heroicons/react/24/solid";
 import { Typography } from "@material-tailwind/react";
 import MentorChart from "@/componets/chart/MentorChart";
-import { getMentorDashboardData } from "@/Api/services/adminServices";
+import { getMentorDashboardData } from "@/Api/services/mentorServices";
 import moment from "moment";
 
 export default function MentorDashboard() {
+  console.log("mentor response")
 
   const [availableSessionData, setAvailableSessionData] = useState([]);
   const [bookedSessionData, setBookedSessionData] = useState([]);
@@ -66,13 +67,14 @@ export default function MentorDashboard() {
     },
     yaxis: {
       min: 0,
-    },
+  },
   };
 
 
   const fetchChartData = async () => {
     try {
-      const response = await getMentorDashboardData('user/getMentorDashboard'); 
+      const response = await getMentorDashboardData('user/getMentorDashboard');
+     
       const { availableSessionStats, bookedSessionStats, completedSessionStats, blogCreationStats } = response.chartData;
       const { blogCount, mentorSessionCount, mentorBookedSessionCount, mentorCompletedSessionCount } = response.stats;
       const { recentBlogs, recentSessions } = response;

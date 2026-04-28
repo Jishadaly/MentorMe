@@ -5,6 +5,7 @@ import { IDateRange } from "../entities/dateRange";
 import { getBookdslotdb, sameUser } from "../repositories/userRepository";
 import { generateNotification } from "../utils/generateNotification";
 import { generateRamdomId } from "../utils/generateRadandomTokens";
+import { log } from "console";
 
 
    export default {
@@ -94,11 +95,15 @@ import { generateRamdomId } from "../utils/generateRadandomTokens";
 
    slotBooking: async (menteeId: string, mentorId: string, slotId: string) => {
       try {
+         console.log("slote route 1")
+
 
          const roomId = generateRamdomId();
          const slot = await mentorRepository.bookAslot(menteeId, mentorId, slotId, roomId);
 
+
          if (slot) {
+            console.log("sloteeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
       
             const menteeName = slot.bookedBy
             const sessionDate = new Date(slot.date).toLocaleDateString('en-US', {

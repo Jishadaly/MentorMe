@@ -18,7 +18,6 @@ export const authInstanceAxios = axios.create({
 authInstanceAxios.interceptors.request.use(
   (config) => {
     const token = Cookies.get('adminToken');
-    console.log('tokrn',token);
     
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;

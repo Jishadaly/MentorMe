@@ -62,3 +62,8 @@ const baseUrl = import.meta.env.VITE_API_BASE_URL
   const response = await axios.get(`${baseUrl}/${endPoint}`);
   return response.data;
 }
+
+export const getMentorDashboardData = async(endPoint)=>{
+  const response  = await authInstanceAxios.get(`/${endPoint}`);
+  return response.data
+}

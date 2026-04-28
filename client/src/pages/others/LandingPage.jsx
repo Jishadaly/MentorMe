@@ -357,7 +357,7 @@ export default function LandingPage() {
                     className="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={()=> navigate(`/mentee/mentorDetails/${mentor._id}`)}
+                    onClick={()=> navigate(`/mentee/mentorDetails/${mentor?.mentorAdditional?._id}`)}
                   >
                     Book Session
                   </motion.button>
