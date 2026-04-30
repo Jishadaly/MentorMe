@@ -82,6 +82,151 @@ export default {
     return mentor;
   },
 
+
+
+// ============================================
+// 4. UPDATED REPOSITORY - Database Operations
+// ============================================
+generateBulkSlots: (config: {
+  mentorId: string;
+  dateRange: { start: any; end:  any };
+  timeSlots: { start: string; end: string };
+  sessionDuration: number;
+  breakDuration: number;
+  price: number;
+  selectedDays: number[];
+}) => {
+  const slots = [];
+  const { mentorId, dateRange, timeSlots, sessionDuration, breakDuration, price, selectedDays } = config;
+  
+  const currentDate = new Date(dateRange.start);
+  const endDate = new Date(dateRange.end);
+
+  while (currentDate <= endDate) {
+    // Check if this day is selected
+    if (selectedDays.includes(currentDate.getDay())) {
+      // Parse time slots
+      const [startHour, startMin] = timeSlots.start.split(':').map(Number);
+      const [endHour, endMin] = timeSlots.end.split(':').map(Number);
+
+      const dayStart = new Date(currentDate);
+      dayStart.setHours(startHour, startMin, 0, 0);
+
+      const dayEnd = new Date(currentDate);
+      dayEnd.setHours(endHour, endMin, 0, 0);
+
+      let slotStart = new Date(dayStart);
+
+      // Generate slots for this day
+      while (slotStart < dayEnd) {
+        const slotEnd = new Date(slotStart.getTime() + sessionDuration * 60000);
+
+        if (slotEnd <= dayEnd) {
+          slots.push({
+            mentorId,
+            date: new Date(currentDate),
+            startTime: slotStart.toISOString(),
+            endTime: slotEnd.toISOString(),
+            duration: sessionDuration,
+            price,
+            isBooked: false,
+            status: 'Available'
+          });
+        }
+
+        // Add session duration + break duration
+        slotStart = new Date(slotEnd.getTime() + breakDuration * 60000);
+      }
+    }
+
+    // Move to next day
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  return slots;
+},
+
+checkSlotConflicts: async (mentorId: string, newSlots: any[]) => {
+  try {
+    const conflicts = [];
+
+    for (const slot of newSlots) {
+      const existing = await Availability.findOne({
+        mentorId,
+        date: slot.date,
+        $or: [
+          {
+            startTime: { $lt: slot.endTime },
+            endTime: { $gt: slot.startTime }
+          }
+        ]
+      });
+
+      if (existing) {
+        conflicts.push(slot);
+      }
+    }
+
+    return conflicts;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+},
+
+addBulkSlots: async (slots: any[]) => {
+  try {
+    const createdSlots = await Availability.insertMany(slots);
+    
+    // Update mentor application
+    const slotIds = createdSlots.map(slot => slot._id);
+    await MentorApplication.findOneAndUpdate(
+      { user: slots[0].mentorId },
+      { $push: { availabilities: { $each: slotIds } } }
+    );
+
+    return createdSlots;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+},
+
+deleteSlot: async (slotId: string) => {
+  try {
+    const slot = await Availability.findByIdAndDelete(slotId);
+    
+    if (slot) {
+      await MentorApplication.findOneAndUpdate(
+        { user: slot.mentorId },
+        { $pull: { availabilities: slotId } }
+      );
+    }
+
+    return slot;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+},
+
+findSlotById: async (slotId: string) => {
+  return await Availability.findById(slotId);
+},
+
+updateSlotPrice: async (slotIds: string[], newPrice: number) => {
+  try {
+    const result = await Availability.updateMany(
+      { 
+        _id: { $in: slotIds },
+        isBooked: false 
+      },
+      { $set: { price: newPrice } }
+    );
+
+    return result;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+},
+
   findExistingSlot: async (mentorId: string, slot: DateRange) => {
     try {
       const from = new Date(slot.from);
@@ -181,23 +326,6 @@ export default {
       throw error
     }
   },
-
-  deleteSlot: async (slotId: string) => {
-    try {
-
-      const deletedSlot = await Availability.findByIdAndDelete(slotId);
-      if (!deletedSlot) {
-        throw new Error('Slot not found');
-      }
-      console.log(deletedSlot);
-
-      return deletedSlot;
-    } catch (error) {
-      throw error
-    }
-  }
-  ,
-
   getMentorApplication: async (mentorId: string) => {
     const mentorApplication = await MentorApplication.findOne({ user: mentorId }).populate('availabilities');
     if (!mentorApplication) throw new Error("there is no mentor application")

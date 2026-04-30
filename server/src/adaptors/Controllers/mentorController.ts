@@ -52,6 +52,69 @@ export default {
     }
   },
 
+
+// ============================================
+// 2. UPDATED CONTROLLER - Batch slot creation
+// ============================================
+addBulkSlots: async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { 
+      mentorId, 
+      dateRange,      // { start: Date, end: Date }
+      timeSlots,      // { start: string, end: string }
+      sessionDuration, // in minutes (30, 60, 90, 120)
+      breakDuration,  // in minutes (0, 15, 30)
+      price,          // session price
+      selectedDays    // array of day numbers [0-6], 0 = Sunday
+    } = req.body;
+
+    const addedSlots = await mentorInteractor.addBulkSlots({
+      mentorId,
+      dateRange,
+      timeSlots,
+      sessionDuration,
+      breakDuration,
+      price,
+      selectedDays
+    });
+
+    res.status(200).json({ 
+      message: `${addedSlots.length} slots added successfully`, 
+      addedSlots 
+    });
+  } catch (error: any) {
+    console.error("Error adding slots:", error);
+    res.status(400).json({ error: error.message });
+  }
+},
+
+deleteSlot: async (req: Request, res: Response, next: NextFunction) => {
+  console.log('ehreete')
+  try {
+    const { slotId } = req.params;
+    const deletedSlot = await mentorInteractor.deleteSlot(slotId);
+    res.status(200).json({ 
+      message: "Slot deleted successfully", 
+      deletedSlot 
+    });
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
+  }
+},
+
+updateSlotPrice: async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { slotIds, newPrice } = req.body;
+    const updatedSlots = await mentorInteractor.updateSlotPrice(slotIds, newPrice);
+    res.status(200).json({ 
+      message: "Prices updated successfully", 
+      updatedSlots 
+    });
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
+  }
+},
+
   addSlots: async (req: Request, res: Response, next: NextFunction) => {
     console.log(req.body);
     try {
@@ -116,17 +179,17 @@ export default {
   },
 
 
-  deleteSlot: async (req: Request, res: Response, next: NextFunction) => {
-    const { slotId } = req.query;
-    try {
-      if (!slotId) throw new Error("slot id is undefined")
-      const slotID = slotId as string;
-      const deletedSlot = await mentorInteractor.deleteSlot(slotID)
-      res.status(200).json({ message: "slot deleted succefully", deletedSlot })
-    } catch (error: any) {
-      res.status(400).json(error.message)
-    }
-  },
+  // deleteSlot: async (req: Request, res: Response, next: NextFunction) => {
+  //   const { slotId } = req.query;
+  //   try {
+  //     if (!slotId) throw new Error("slot id is undefined")
+  //     const slotID = slotId as string;
+  //     const deletedSlot = await mentorInteractor.deleteSlot(slotID)
+  //     res.status(200).json({ message: "slot deleted succefully", deletedSlot })
+  //   } catch (error: any) {
+  //     res.status(400).json(error.message)
+  //   }
+  // },
 
   getBookedSlotes: async (req: Request, res: Response, next: NextFunction) => {
     try {

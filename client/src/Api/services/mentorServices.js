@@ -6,15 +6,28 @@ export const getMentors = async (endPoint) => {
   return response;
 }
 
-export const addSlots = async (endPoint, slots) => {
-  const response = await authInstanceAxios.post(`/${endPoint}`, slots);
+// export const addSlots = async (endPoint, slots) => {
+//   const response = await authInstanceAxios.post(`/${endPoint}`, slots);
+//   return response.data;
+// }
+
+export const addBulkSlots = async (endPoint, config) => {
+  const response = await authInstanceAxios.post(`/${endPoint}`, config);
   return response.data;
 }
 
 export const deleteSlot = async (endPoint, slotId) => {
+  console.log("slooo",slotId,endPoint)
   const response = await authInstanceAxios.delete(`/${endPoint}?slotId=${slotId}`);
+  console.log(response,'res')
   return response.data;
 }
+
+export const updateSlotPrice = async (endPoint, config) => {
+  const response = await authInstanceAxios.patch(`/${endPoint}`,config);
+  return response.data;
+}
+
 
 export const getMentorApplication = async (endPoint, mentorId) => {
   const response = await authInstanceAxios.get(`/${endPoint}?mentorId=${mentorId}`);

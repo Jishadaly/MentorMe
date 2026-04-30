@@ -8,7 +8,7 @@ import { generateRamdomId } from "../utils/generateRadandomTokens";
 import { log } from "console";
 
 
-   export default {
+export default {
    mentorApplicationForm: async (formData: ApplicationForm) => {
       try {
          const savedData = await mentorRepository.saveApplicationForm(formData);
@@ -45,6 +45,92 @@ import { log } from "console";
       }
    },
 
+   addBulkSlots: async (config: {
+      mentorId: string;
+      dateRange: { start: any; end: any };
+      timeSlots: { start: string; end: string };
+      sessionDuration: number;
+      breakDuration: number;
+      price: number;
+      selectedDays: number[];
+   }) => {
+      try {
+         const {
+            mentorId,
+            dateRange,
+            timeSlots,
+            sessionDuration,
+            breakDuration,
+            price,
+            selectedDays
+         } = config;
+
+         // Validation
+         if (new Date(dateRange.start) < new Date()) {
+            throw new Error("Cannot add slots in the past.");
+         }
+
+         if (sessionDuration < 15 || sessionDuration > 240) {
+            throw new Error("Session duration must be between 15 and 240 minutes.");
+         }
+
+         // Generate all slots
+         const slotsToCreate = mentorRepository.generateBulkSlots({
+            mentorId,
+            dateRange,
+            timeSlots,
+            sessionDuration,
+            breakDuration,
+            price,
+            selectedDays
+         });
+
+         // Check for conflicts
+         const conflicts = await mentorRepository.checkSlotConflicts(mentorId, slotsToCreate);
+
+         if (conflicts.length > 0) {
+            throw new Error(`Found ${conflicts.length} conflicting slots. Please adjust your schedule.`);
+         }
+
+         // Create all slots
+         const createdSlots = await mentorRepository.addBulkSlots(slotsToCreate);
+
+         return createdSlots;
+      } catch (error: any) {
+         throw error;
+      }
+   },
+
+   deleteSlot: async (slotId: string) => {
+      try {
+         const slot = await mentorRepository.findSlotById(slotId);
+
+         if (!slot) {
+            throw new Error("Slot not found");
+         }
+
+         if (slot.isBooked) {
+            throw new Error("Cannot delete a booked slot");
+         }
+
+         return await mentorRepository.deleteSlot(slotId);
+      } catch (error: any) {
+         throw error;
+      }
+   },
+
+   updateSlotPrice: async (slotIds: string[], newPrice: number) => {
+      try {
+         if (newPrice <= 0) {
+            throw new Error("Price must be greater than 0");
+         }
+
+         return await mentorRepository.updateSlotPrice(slotIds, newPrice);
+      } catch (error: any) {
+         throw error;
+      }
+   },
+
    addSlotes: async (mentorId: string, slot: IDateRange) => {
       try {
          const duplicateSlot = await mentorRepository.findExistingSlot(mentorId, slot);
@@ -57,12 +143,12 @@ import { log } from "console";
          const from = new Date(slot.from);
          const to = new Date(slot.to);
 
-         
+
          if (from < currentDateTime || to < currentDateTime) {
             throw new Error("Cannot add slots in the past.");
          }
 
-         const response = await mentorRepository.addSlotes(mentorId, slot); 
+         const response = await mentorRepository.addSlotes(mentorId, slot);
 
          return response;
       } catch (error: any) {
@@ -70,20 +156,6 @@ import { log } from "console";
 
       }
    },
-
-   deleteSlot: async (slotId: string) => {
-      try {
-         const isbooked = await mentorRepository.slotIdbooked(slotId);
-         if (isbooked) {
-            throw new Error("slot already booked ");
-         }
-         const response = await mentorRepository.deleteSlot(slotId)
-         return response
-      } catch (error) {
-         throw error
-      }
-   },
-
    getMentorApplication: async (mentorId: string) => {
       try {
          const response = await mentorRepository.getMentorApplication(mentorId);
@@ -103,7 +175,7 @@ import { log } from "console";
 
 
          if (slot) {
-      
+
             const menteeName = slot.bookedBy
             const sessionDate = new Date(slot.date).toLocaleDateString('en-US', {
                year: 'numeric',
@@ -199,15 +271,15 @@ import { log } from "console";
       const notification = await mentorRepository.markAsReadNotification(notfyId)
       return notification
    },
-   updateStatus:async( id:string , status:string )=>{
+   updateStatus: async (id: string, status: string) => {
       try {
-         const updatedStatus = await mentorRepository.updateSlotStatus(id , status);
+         const updatedStatus = await mentorRepository.updateSlotStatus(id, status);
          return updatedStatus;
       } catch (error) {
          throw error
       }
    },
-   getDashboardStatus:async( mentorId:string  )=>{
+   getDashboardStatus: async (mentorId: string) => {
       try {
          const updatedStatus = await mentorRepository.getDashboardStatus(mentorId);
          return updatedStatus;

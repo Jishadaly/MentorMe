@@ -6,6 +6,10 @@ import checkBlocked from '../../middlewares/jwt/checkBlocked'
 
 const slotRouter = express.Router()
 
+
+slotRouter.post('/availability/bulk', protect, checkRole(['mentor']), mentorController.addBulkSlots);
+slotRouter.delete('/availability/:slotId', protect, checkRole(['mentor']), mentorController.deleteSlot);
+slotRouter.patch('/availability/price', protect, checkRole(['mentor']), mentorController.updateSlotPrice);
 slotRouter.post('/addSlots' ,protect, mentorController.addSlots);
 slotRouter.delete('/deleteSlot' , protect,mentorController.deleteSlot);
 slotRouter.post('/slotBooking' ,protect, mentorController.slotBooking);
