@@ -103,7 +103,6 @@ import { log } from "console";
 
 
          if (slot) {
-            console.log("sloteeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
       
             const menteeName = slot.bookedBy
             const sessionDate = new Date(slot.date).toLocaleDateString('en-US', {

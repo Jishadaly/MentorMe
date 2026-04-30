@@ -19,7 +19,7 @@ function MentorApplicationForm() {
   }, []);
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    const applicationData = { ...values, ...userId }
+    const applicationData = { ...values, user:userId }
     setSubmitting(false);
     try {
       const response = await mentorApplicationFormApi('user/mentorAppicationForm', applicationData);
@@ -102,9 +102,7 @@ function MentorApplicationForm() {
                       component="select"
                       name="location"
                       disabled={loading || locations.length === 0}
-                      onChange={(e) => {
-                        console.log(e.target.value);
-                      }}
+                
                     >
                       <option value="" disabled>
                         {loading ? 'Loading...' : 'Select Location'}

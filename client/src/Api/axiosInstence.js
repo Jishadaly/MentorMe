@@ -30,7 +30,6 @@ authInstanceAxios.interceptors.request.use(
 export const setupInterceptors = (navigate, dispatch) => {
   authInstanceAxios.interceptors.response.use(
     (response) => {
-      console.log({ response });
       return response;
     },
     async (error) => {

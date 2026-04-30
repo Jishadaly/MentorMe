@@ -16,8 +16,8 @@ interface DateRange {
 
 export default {
   saveApplicationForm: async (formData: ApplicationForm) => {
+    console.log({formData})
     try {
-
       const newForm = new MentorApplication({
         ...formData
       });
