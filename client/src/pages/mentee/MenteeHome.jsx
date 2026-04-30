@@ -118,62 +118,69 @@ const MenteeHome = () => {
     companies: [],
     minRating: 0,
     maxPrice: 10000,
-    experience: []
   });
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getUsers = async () => {
+    const fetchMentors = async () => {
       try {
         const response = await getMentors('user/getMentors');
+
+        console.log(response.data.mentors)
+
         setTimeout(() => {
           setMentors(response.data.mentors);
           setLoading(false);
-        }, 1500);
+        }, 1000);
+
       } catch (err) {
         console.error('Error fetching mentors:', err);
         setLoading(false);
       }
     };
-    getUsers();
+
+    fetchMentors();
   }, []);
 
   const handleCardClick = (mentorId) => {
     navigate(`/mentee/mentorDetails/${mentorId}`);
   };
 
-  // Apply all filters
+  // ✅ FILTER LOGIC (UPDATED)
   const filteredMentors = mentors.filter((mentor) => {
-    const { userName, mentorAdditional } = mentor;
-    const { company, programmingLanguages, rating, rate } = mentorAdditional || {};
-    const lowerCaseSearchTerm = searchTerm.toLowerCase();
+    const lowerSearch = searchTerm.toLowerCase();
 
-    // Search filter
-    const matchesSearch = 
-      userName.toLowerCase().includes(lowerCaseSearchTerm) ||
-      (company && company.toLowerCase().includes(lowerCaseSearchTerm)) ||
-      (programmingLanguages && programmingLanguages.some(lang => 
-        lang.toLowerCase().includes(lowerCaseSearchTerm)
-      ));
+    const matchesSearch =
+      mentor.name.toLowerCase().includes(lowerSearch) ||
+      mentor.company?.toLowerCase().includes(lowerSearch) ||
+      mentor.skills?.some(skill =>
+        skill.toLowerCase().includes(lowerSearch)
+      );
 
-    // Skills filter
-    const matchesSkills = filters.skills.length === 0 || 
-      (programmingLanguages && filters.skills.some(skill => 
-        programmingLanguages.includes(skill)
-      ));
+    const matchesSkills =
+      filters.skills.length === 0 ||
+      filters.skills.some(skill => mentor.skills?.includes(skill));
 
-    // Company filter
-    const matchesCompany = filters.companies.length === 0 || 
-      filters.companies.includes(company);
+    const matchesCompany =
+      filters.companies.length === 0 ||
+      filters.companies.includes(mentor.company);
 
-    // Rating filter
-    const matchesRating = !rating || rating >= filters.minRating;
+    const matchesRating =
+      mentor.avgRating >= filters.minRating;
 
-    // Price filter
-    const matchesPrice = !rate || rate <= filters.maxPrice;
+    const matchesPrice =
+      mentor.lastSessionPrice <= filters.maxPrice;
 
-    return matchesSearch && matchesSkills && matchesCompany && matchesRating && matchesPrice;
+    return (
+      matchesSearch &&
+      matchesSkills &&
+      matchesCompany &&
+      matchesRating &&
+      matchesPrice
+    );
   });
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
@@ -212,7 +219,7 @@ const MenteeHome = () => {
                 </button>
               )}
             </div>
-            
+
             <button
               onClick={() => setIsFilterOpen(!isFilterOpen)}
               className="px-6 py-3 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center gap-2 font-medium text-gray-700 hover:text-indigo-600 hover:border-indigo-300"
@@ -254,7 +261,7 @@ const MenteeHome = () => {
 
         {/* Filter Panel */}
         {isFilterOpen && (
-          <FilterPanel 
+          <FilterPanel
             mentors={mentors}
             filters={filters}
             setFilters={setFilters}
@@ -274,18 +281,18 @@ const MenteeHome = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredMentors.map((mentor, index) => (
                 <ProfileCard
-                  key={mentor.mentorAdditional._id}
-                  company={mentor.mentorAdditional.company}
-                  profilePicture={mentor.profilePic}
+                  key={index}
                   index={index}
-                  name={mentor.userName}
-                  jobTitle={mentor.mentorAdditional.jobTitle}
-                  programmingLanguages={mentor.mentorAdditional.programmingLanguages}
-                  mentorAdditionalId={mentor.mentorAdditional._id}
-                  rating={mentor.mentorAdditional.rating}
-                  sessions={mentor.mentorAdditional.sessions}
-                  rate={mentor.mentorAdditional.rate}
-                  handleCardClick={handleCardClick}
+                  name={mentor.name}
+                  company={mentor.company}
+                  jobTitle={mentor.jobTitle}
+                  profilePicture={mentor.profilePic}
+                  programmingLanguages={mentor.skills}
+                  rating={mentor.avgRating}
+                  sessions={mentor.totalSessions}
+                  rate={mentor.lastSessionPrice}
+                  totalReviews={mentor.totalReviews}
+                  handleCardClick={() => handleCardClick(mentor.mentorId)}
                 />
               ))}
             </div>

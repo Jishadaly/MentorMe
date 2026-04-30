@@ -16,7 +16,7 @@ interface DateRange {
 
 export default {
   saveApplicationForm: async (formData: ApplicationForm) => {
-    console.log({formData})
+    console.log({ formData })
     try {
       const newForm = new MentorApplication({
         ...formData
@@ -68,6 +68,53 @@ export default {
 
   },
 
+  getMentorsBasic: async () => {
+    return await Users.find({ isMentor: true })
+      .select("userName profilePic mentorAdditional")
+      .populate({
+        path: "mentorAdditional",
+        select: "jobTitle company skills"
+      })
+      .lean();
+  },
+
+  getMentorSessionStats: async (mentorId: string) => {
+    const sessions = await Availability.find({
+      mentorId,
+      status: "Completed"
+    })
+      .sort({ date: -1 })
+      .select("price")
+      .lean();
+
+    return {
+      totalSessions: sessions.length,
+      lastSessionPrice: sessions[0]?.price || 0
+    };
+  },
+
+  getMentorRatingStats: async (mentorId: string) => {
+    const stats = await Feedback.aggregate([
+      {
+        $match: {
+          mentorId: new mongoose.Types.ObjectId(mentorId)
+        }
+      },
+      {
+        $group: {
+          _id: "$mentorId",
+          avgRating: { $avg: "$rating" },
+          totalReviews: { $sum: 1 }
+        }
+      }
+    ]);
+  
+    return {
+      avgRating: stats[0]?.avgRating || 0,
+      totalReviews: stats[0]?.totalReviews || 0
+    };
+  },
+
   getMentors: async () => {
     const mentors = await Users.find({ isMentor: true }).populate('mentorAdditional');
     return mentors
@@ -84,148 +131,149 @@ export default {
 
 
 
-// ============================================
-// 4. UPDATED REPOSITORY - Database Operations
-// ============================================
-generateBulkSlots: (config: {
-  mentorId: string;
-  dateRange: { start: any; end:  any };
-  timeSlots: { start: string; end: string };
-  sessionDuration: number;
-  breakDuration: number;
-  price: number;
-  selectedDays: number[];
-}) => {
-  const slots = [];
-  const { mentorId, dateRange, timeSlots, sessionDuration, breakDuration, price, selectedDays } = config;
-  
-  const currentDate = new Date(dateRange.start);
-  const endDate = new Date(dateRange.end);
 
-  while (currentDate <= endDate) {
-    // Check if this day is selected
-    if (selectedDays.includes(currentDate.getDay())) {
-      // Parse time slots
-      const [startHour, startMin] = timeSlots.start.split(':').map(Number);
-      const [endHour, endMin] = timeSlots.end.split(':').map(Number);
+  // ============================================
+  // 4. UPDATED REPOSITORY - Database Operations
+  // ============================================
+  generateBulkSlots: (config: {
+    mentorId: string;
+    dateRange: { start: any; end: any };
+    timeSlots: { start: string; end: string };
+    sessionDuration: number;
+    breakDuration: number;
+    price: number;
+    selectedDays: number[];
+  }) => {
+    const slots = [];
+    const { mentorId, dateRange, timeSlots, sessionDuration, breakDuration, price, selectedDays } = config;
 
-      const dayStart = new Date(currentDate);
-      dayStart.setHours(startHour, startMin, 0, 0);
+    const currentDate = new Date(dateRange.start);
+    const endDate = new Date(dateRange.end);
 
-      const dayEnd = new Date(currentDate);
-      dayEnd.setHours(endHour, endMin, 0, 0);
+    while (currentDate <= endDate) {
+      // Check if this day is selected
+      if (selectedDays.includes(currentDate.getDay())) {
+        // Parse time slots
+        const [startHour, startMin] = timeSlots.start.split(':').map(Number);
+        const [endHour, endMin] = timeSlots.end.split(':').map(Number);
 
-      let slotStart = new Date(dayStart);
+        const dayStart = new Date(currentDate);
+        dayStart.setHours(startHour, startMin, 0, 0);
 
-      // Generate slots for this day
-      while (slotStart < dayEnd) {
-        const slotEnd = new Date(slotStart.getTime() + sessionDuration * 60000);
+        const dayEnd = new Date(currentDate);
+        dayEnd.setHours(endHour, endMin, 0, 0);
 
-        if (slotEnd <= dayEnd) {
-          slots.push({
-            mentorId,
-            date: new Date(currentDate),
-            startTime: slotStart.toISOString(),
-            endTime: slotEnd.toISOString(),
-            duration: sessionDuration,
-            price,
-            isBooked: false,
-            status: 'Available'
-          });
-        }
+        let slotStart = new Date(dayStart);
 
-        // Add session duration + break duration
-        slotStart = new Date(slotEnd.getTime() + breakDuration * 60000);
-      }
-    }
+        // Generate slots for this day
+        while (slotStart < dayEnd) {
+          const slotEnd = new Date(slotStart.getTime() + sessionDuration * 60000);
 
-    // Move to next day
-    currentDate.setDate(currentDate.getDate() + 1);
-  }
-
-  return slots;
-},
-
-checkSlotConflicts: async (mentorId: string, newSlots: any[]) => {
-  try {
-    const conflicts = [];
-
-    for (const slot of newSlots) {
-      const existing = await Availability.findOne({
-        mentorId,
-        date: slot.date,
-        $or: [
-          {
-            startTime: { $lt: slot.endTime },
-            endTime: { $gt: slot.startTime }
+          if (slotEnd <= dayEnd) {
+            slots.push({
+              mentorId,
+              date: new Date(currentDate),
+              startTime: slotStart.toISOString(),
+              endTime: slotEnd.toISOString(),
+              duration: sessionDuration,
+              price,
+              isBooked: false,
+              status: 'Available'
+            });
           }
-        ]
-      });
 
-      if (existing) {
-        conflicts.push(slot);
+          // Add session duration + break duration
+          slotStart = new Date(slotEnd.getTime() + breakDuration * 60000);
+        }
       }
+
+      // Move to next day
+      currentDate.setDate(currentDate.getDate() + 1);
     }
 
-    return conflicts;
-  } catch (error: any) {
-    throw new Error(error.message);
-  }
-},
+    return slots;
+  },
 
-addBulkSlots: async (slots: any[]) => {
-  try {
-    const createdSlots = await Availability.insertMany(slots);
-    
-    // Update mentor application
-    const slotIds = createdSlots.map(slot => slot._id);
-    await MentorApplication.findOneAndUpdate(
-      { user: slots[0].mentorId },
-      { $push: { availabilities: { $each: slotIds } } }
-    );
+  checkSlotConflicts: async (mentorId: string, newSlots: any[]) => {
+    try {
+      const conflicts = [];
 
-    return createdSlots;
-  } catch (error: any) {
-    throw new Error(error.message);
-  }
-},
+      for (const slot of newSlots) {
+        const existing = await Availability.findOne({
+          mentorId,
+          date: slot.date,
+          $or: [
+            {
+              startTime: { $lt: slot.endTime },
+              endTime: { $gt: slot.startTime }
+            }
+          ]
+        });
 
-deleteSlot: async (slotId: string) => {
-  try {
-    const slot = await Availability.findByIdAndDelete(slotId);
-    
-    if (slot) {
+        if (existing) {
+          conflicts.push(slot);
+        }
+      }
+
+      return conflicts;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  },
+
+  addBulkSlots: async (slots: any[]) => {
+    try {
+      const createdSlots = await Availability.insertMany(slots);
+
+      // Update mentor application
+      const slotIds = createdSlots.map(slot => slot._id);
       await MentorApplication.findOneAndUpdate(
-        { user: slot.mentorId },
-        { $pull: { availabilities: slotId } }
+        { user: slots[0].mentorId },
+        { $push: { availabilities: { $each: slotIds } } }
       );
+
+      return createdSlots;
+    } catch (error: any) {
+      throw new Error(error.message);
     }
+  },
 
-    return slot;
-  } catch (error: any) {
-    throw new Error(error.message);
-  }
-},
+  deleteSlot: async (slotId: string) => {
+    try {
+      const slot = await Availability.findByIdAndDelete(slotId);
 
-findSlotById: async (slotId: string) => {
-  return await Availability.findById(slotId);
-},
+      if (slot) {
+        await MentorApplication.findOneAndUpdate(
+          { user: slot.mentorId },
+          { $pull: { availabilities: slotId } }
+        );
+      }
 
-updateSlotPrice: async (slotIds: string[], newPrice: number) => {
-  try {
-    const result = await Availability.updateMany(
-      { 
-        _id: { $in: slotIds },
-        isBooked: false 
-      },
-      { $set: { price: newPrice } }
-    );
+      return slot;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  },
 
-    return result;
-  } catch (error: any) {
-    throw new Error(error.message);
-  }
-},
+  findSlotById: async (slotId: string) => {
+    return await Availability.findById(slotId);
+  },
+
+  updateSlotPrice: async (slotIds: string[], newPrice: number) => {
+    try {
+      const result = await Availability.updateMany(
+        {
+          _id: { $in: slotIds },
+          isBooked: false
+        },
+        { $set: { price: newPrice } }
+      );
+
+      return result;
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  },
 
   findExistingSlot: async (mentorId: string, slot: DateRange) => {
     try {
@@ -361,7 +409,7 @@ updateSlotPrice: async (slotIds: string[], newPrice: number) => {
   },
   getSessions: async (mentorId: string) => {
     try {
-      const sessions = await Availability.find({ mentorId: mentorId, isBooked: true }).populate({ path: "bookedBy", select: "userName -_id profilePic" })
+      const sessions = await Availability.find({ mentorId: mentorId, isBooked: true }).sort({date:-1}).populate({ path: "bookedBy", select: "userName -_id profilePic" })
       return sessions
     } catch (error) {
       throw error
@@ -478,7 +526,7 @@ updateSlotPrice: async (slotIds: string[], newPrice: number) => {
         },
         { $sort: { _id: 1 } }
       ]);
-      
+
       const chartData = {
         availableSessionStats,
         bookedSessionStats,
@@ -499,7 +547,7 @@ updateSlotPrice: async (slotIds: string[], newPrice: number) => {
         mentor: mentorId,
       });
 
-      const recentSessions = await Availability.find({ mentorId: mentorId , isBooked:true })
+      const recentSessions = await Availability.find({ mentorId: mentorId, isBooked: true })
         .populate({
           path: 'bookedBy',
           select: 'userName profilePic', // Select only userName and profilePic fields
@@ -527,29 +575,29 @@ updateSlotPrice: async (slotIds: string[], newPrice: number) => {
     }
   },
 
-  getSearchedMentors:async(query:string)=>{
+  getSearchedMentors: async (query: string) => {
     try {
-      
+
       const mentors = await Users.find({
-        isMentor: true, 
+        isMentor: true,
       })
         .populate({
           path: 'mentorAdditional',
           match: {
             $or: [
-              { name: { $regex: query, $options: 'i' } }, 
+              { name: { $regex: query, $options: 'i' } },
               { programmingLanguages: { $regex: query, $options: 'i' } },
-              { jobTitle: { $regex: query, $options: 'i' } }, 
-              { company: { $regex: query, $options: 'i' } }, 
+              { jobTitle: { $regex: query, $options: 'i' } },
+              { company: { $regex: query, $options: 'i' } },
             ],
           },
         })
-        .select('-password') 
-  
-     
+        .select('-password')
+
+
       const filteredMentors = mentors.filter(mentor => mentor.mentorAdditional);
-      console.log({filteredMentors})
-      
+      console.log({ filteredMentors })
+
       return filteredMentors;
     } catch (error) {
       console.error('Error searching mentors:', error);

@@ -32,18 +32,20 @@
 // ============================================
 import React from 'react';
 import { FiStar, FiDollarSign, FiAward, FiTrendingUp } from 'react-icons/fi';
+import { FaStar, FaStarHalfAlt } from 'react-icons/fa';
 
-export default function ProfileCard({ 
-  profilePicture, 
-  name, 
-  jobTitle, 
-  company, 
-  programmingLanguages, 
-  mentorAdditionalId, 
+export default function ProfileCard({
+  profilePicture,
+  name,
+  jobTitle,
+  company,
+  programmingLanguages,
+  mentorAdditionalId,
   rating = 4.8,
   sessions = 0,
   rate = 0,
-  handleCardClick 
+  totalReviews,
+  handleCardClick
 }) {
   return (
     <div className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 group">
@@ -56,7 +58,7 @@ export default function ProfileCard({
               alt={name}
               className="w-24 h-24 rounded-full border-4 border-white object-cover shadow-lg"
             />
-            {sessions > 50 && (
+            {sessions > 5 && (
               <div className="absolute -top-1 -right-1 w-8 h-8 bg-amber-400 rounded-full flex items-center justify-center border-2 border-white">
                 <FiAward className="text-white" size={16} />
               </div>
@@ -80,10 +82,15 @@ export default function ProfileCard({
 
         {/* Stats */}
         <div className="flex items-center gap-4 mb-4 pb-4 border-b border-gray-100">
-          <div className="flex items-center gap-1 text-amber-500">
+          {/* <div className="flex items-center gap-1 text-amber-500">
+
             <FiStar className="fill-amber-500" size={16} />
             <span className="font-semibold text-gray-900">{rating}</span>
-          </div>
+          </div> */}
+          <StarRating rating={rating} />
+          <span className="text-xs text-gray-500">
+            ({totalReviews})
+          </span>
           <div className="w-px h-4 bg-gray-300"></div>
           <div className="flex items-center gap-1 text-gray-600 text-sm">
             <FiTrendingUp size={16} />
@@ -127,3 +134,34 @@ export default function ProfileCard({
     </div>
   );
 }
+
+
+const StarRating = ({ rating = 0 }) => {
+  const totalStars = 5;
+
+  return (
+    <div className="flex items-center gap-1">
+      {[...Array(totalStars)].map((_, index) => {
+        const starValue = index + 1;
+
+        if (rating >= starValue) {
+          return <FaStar key={index} className="text-amber-500" size={16} />;
+        } else if (rating >= starValue - 0.5) {
+          return <FaStarHalfAlt key={index} className="text-amber-500" size={16} />;
+        } else {
+          return <FiStar key={index} className="text-gray-300" size={16} />;
+        }
+      })}
+
+      {rating > 0 ? (
+        <span className="ml-1 text-sm text-gray-700">
+          {rating.toFixed(1)}
+        </span>
+      ) : (
+        <span className="ml-1 text-sm text-gray-400">
+          No ratings
+        </span>
+      )}
+    </div>
+  );
+};
