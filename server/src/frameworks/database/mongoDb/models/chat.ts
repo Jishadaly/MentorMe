@@ -7,6 +7,7 @@ export interface chatDocument extends Document{
     latestMessage:Schema.Types.ObjectId;    
 }
 
+
 const chatSchema:Schema<chatDocument> = new Schema(
     {
         chatName:{

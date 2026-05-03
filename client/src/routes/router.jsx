@@ -40,6 +40,7 @@ import Notifications from '@/pages/others/notifications/Notifications'
 import MentorDashboard from '@/pages/mentor/MentorDashboard'
 import ForgotPassword from '../pages/others/forgotPassword'
 import ResetPassword from '../pages/others/resetPasswordPage'
+import MenteeSimpleLayout from '../pages/layouts/MenteeSimpleLayout'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -47,7 +48,7 @@ const router = createBrowserRouter(
       <Route index element={<LandingPage />} />
 
       {/* <Route > */}
-      <Route  element={<Protected/> }>
+      <Route element={<Protected />}>
 
         <Route path='/mentee' element={<MenteeLayout />}>
           <Route path='home' element={<MenteeHome />} />
@@ -57,8 +58,12 @@ const router = createBrowserRouter(
           <Route path='blogs' element={<BlogList />} />
           <Route path='blogView/:blogId' element={<BlogView />} />
           <Route path='calles' element={<CallesPage />} />
-          <Route path='chat' element={<Chat />} />
           <Route path='notifications' element={<Notifications />} />
+        </Route>
+
+        <Route path='/mentee' element={<MenteeSimpleLayout />}>
+          <Route path='chat' element={<Chat />} />
+
         </Route>
       </Route>
 
@@ -78,12 +83,19 @@ const router = createBrowserRouter(
           <Route path='Createblogs' element={<CreateBlogs />} />
           <Route path='blogs' element={<Blogs />} />
           <Route path='editBlog/:blogId' element={<EditBlog />} />
-          <Route path='chat' element={<MentorChat />} />
-          <Route path='chat' element={<Chat />} />
+          {/* <Route path='chat' element={<MentorChat />} /> */}
+          {/* <Route path='chat' element={<Chat />} /> */}
           <Route path='profile' element={<MentorProfile />} />
           <Route path='sessions' element={<Sessions />} />
           <Route path='notifications' element={<Notifications />} />
           <Route path='dashboard' element={<MentorDashboard />} />
+
+        </Route>
+
+        <Route path='/mentor' element={<MenteeSimpleLayout />}>
+
+          <Route path='chat' element={<Chat />} />
+
 
         </Route>
       </Route>
