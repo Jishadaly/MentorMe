@@ -57,6 +57,7 @@ export default {
 // 2. UPDATED CONTROLLER - Batch slot creation
 // ============================================
 addBulkSlots: async (req: Request, res: Response, next: NextFunction) => {
+
   try {
     const { 
       mentorId, 
@@ -67,6 +68,8 @@ addBulkSlots: async (req: Request, res: Response, next: NextFunction) => {
       price,          // session price
       selectedDays    // array of day numbers [0-6], 0 = Sunday
     } = req.body;
+
+    console.log(mentorId,"jjjjjjjjjjjjjjjjjjjj")
 
     const addedSlots = await mentorInteractor.addBulkSlots({
       mentorId,

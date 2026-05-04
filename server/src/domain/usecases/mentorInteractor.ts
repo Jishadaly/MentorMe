@@ -65,6 +65,8 @@ export default {
             selectedDays
          } = config;
 
+         console.log(mentorId,'llllllllllllllllllllllllllllll')
+
          // Validation
          if (new Date(dateRange.start) < new Date()) {
             throw new Error("Cannot add slots in the past.");
